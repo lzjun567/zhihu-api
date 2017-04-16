@@ -62,7 +62,5 @@ pip install -r requirement.txt
 
 ## 交流
 
-![公众号](gongzhonghao.png)
-
-![群](weixingroup.jpeg)
+![群](qrcode.jpeg)
 
