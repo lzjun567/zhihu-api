@@ -21,6 +21,11 @@ logging.basicConfig(level=logging.INFO)
 cookie_filename = os.path.join(os.path.expanduser('~'), "cookies.txt")
 
 
+class ZhihuError(Exception):
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args, **kwargs)
+
+
 def need_login(func):
     """
     用户认证(判断用户是否已经登录的装饰器)
@@ -72,6 +77,20 @@ class Zhihu(object):
         xsrf = soup.find('input', attrs={"name": "_xsrf"}).get("value")
         return xsrf
 
+    def _user_id(self, user_slug):
+        profile = self.user(user_slug=user_slug)
+        user_id = profile.get("id")
+        return user_id
+
+    def _user_slug(self, profile_url):
+        pattern = re.compile("https?://www.zhihu.com/people/([\w-]+)")
+        match = pattern.search(profile_url)
+        if match:
+            user_slug = match.group(1)
+            return user_slug
+        else:
+            raise ZhihuError("invalid profile url")
+
     def login(self, email, password):
         """
         登录需要的验证码会保存在当前目录,需要用户自己识别,并输入
@@ -112,18 +131,11 @@ class Zhihu(object):
         """
 
         if not any([user_id, profile_url, user_slug]):
-            raise Exception("至少指定一个关键字参数")
+            raise ZhihuError("至少指定一个关键字参数")
 
-        if not user_id and user_slug:
-            profile = self.user(user_slug)
-            user_id = profile.get("id")
-        elif not user_id and profile_url:
-            pattern = re.compile("https?://www.zhihu.com/people/([\w-]+)")
-            match = pattern.search(profile_url)
-            if match:
-                user_slug = match.group(1)
-                profile = self.user(user_slug)
-                user_id = profile.get("id")
+        if user_id is None:
+            user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
+            user_id = self._user_id(user_slug)
 
         data = {"type": "common", "content": content, "receiver_hash": user_id}
         response = self._session.post(URL.message(), json=data)
@@ -149,14 +161,9 @@ class Zhihu(object):
         """
 
         if not any([profile_url, user_slug]):
-            raise Exception("至少指定一个关键字参数")
+            raise ZhihuError("至少指定一个关键字参数")
 
-        if not user_slug and profile_url:
-
-            pattern = re.compile("https?://www.zhihu.com/people/([\w-]+)")
-            match = pattern.search(profile_url)
-            if match:
-                user_slug = match.group(1)
+        user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
         response = self._session.get(URL.profile(user_slug))
         if response.ok:
             return response.json()
