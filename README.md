@@ -2,7 +2,7 @@
 
 ### 目标
 
-本着学习的目的，试图构建一个更加简洁、优雅的、Pythonic 的知乎 API。
+出于学习目的，试图构建一个更加简洁、优雅的、Pythonic 的知乎 API。
 
 
 ## 前置条件
@@ -75,9 +75,20 @@ pip install -r requirement.txt
 >>> zhihu.zhihu.send_message("你好,问候1", profile_url="https://www.zhihu.com/people/xiaoxiaodouzi")
 ```
 
+### 关注用户
+```
+>>> zhihu.follow(profile_url="https://www.zhihu.com/people/gao-yu-dong-41")
+{"follower_count": 6}
+
+>>> zhihu.follow(user_slug="xiaoxiaodouzi")
+{"follower_count": 6}
+```
+
+
+
+
 ## TODO
 
-* 关注
 * 文章点赞
 * ...
 
@@ -85,6 +96,7 @@ pip install -r requirement.txt
 欢迎 PR, 所有贡献者都将出现在这里
 
 ## 交流
+群已经加不进，可以先加微信：lzjun567 拉你入群
 
 ![群](qrcode.jpeg)
 

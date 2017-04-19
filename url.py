@@ -6,27 +6,34 @@
 
 
 class URL(object):
+    host = "https://www.zhihu.com"
+
     # 登录
     @staticmethod
     def login():
-        return "https://www.zhihu.com/login/email"
+        return URL.host + "/login/email"
 
     # 私信
     @staticmethod
     def message():
-        return "https://www.zhihu.com/api/v4/messages"
+        return URL.host + "/api/v4/messages"
 
     # 验证码
     @staticmethod
     def captcha(timestamp):
-        return 'https://www.zhihu.com/captcha.gif?r={timestamp}&type=login'
+        return URL.host + "/captcha.gif?r={timestamp}&type=login".format(timestamp=timestamp)
 
     # 首页
     @staticmethod
     def index():
-        return "https://www.zhihu.com"
+        return URL.host + ""
 
     # 用户信息
     @staticmethod
-    def profile(url_token):
-        return "https://www.zhihu.com/api/v4/members/{url_token}".format(url_token=url_token)
+    def profile(user_slug):
+        return URL.host + "/api/v4/members/{user_slug}".format(user_slug=user_slug)
+
+    # 关注用户
+    @staticmethod
+    def follow(user_slug):
+        return URL.host + "/api/v4/members/{user_slug}/followers".format(user_slug=user_slug)
