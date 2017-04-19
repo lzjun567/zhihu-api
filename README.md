@@ -52,22 +52,6 @@ pip install -r requirement.txt
 ```python
 >>> zhihu.send_message("你好,问候3", user_id="1da75b85900e00adb072e91c56fd9149")
 
-{
-    'sender': {'avatar_url_template': 'https://pic3.zhimg.com/ca6bf4bb82d9cf152b618edcbda01606_{size}.jpg', 'badge': [],
-               'name': 'zhijun liu', 'is_advertiser': False,
-               'url': 'http://www.zhihu.com/api/v4/people/ba286d02fd9701a446d68ba85d0755c0', 'url_token': 'zhijun-liu',
-               'user_type': 'people', 'headline': '公众号：Python之禅',
-               'avatar_url': 'https://pic3.zhimg.com/ca6bf4bb82d9cf152b618edcbda01606_is.jpg', 'is_org': False,
-               'gender': 1, 'type': 'people', 'id': 'ba286d02fd9701a446d68ba85d0755c0'}, 'url': '', 'has_read': False,
-    'content': '你好,问候1',
-    'receiver': {'avatar_url_template': 'https://pic1.zhimg.com/v2-ca13758626bd7367febde704c66249ec_{size}.jpg',
-                 'badge': [], 'name': '我是小号', 'is_advertiser': False,
-                 'url': 'http://www.zhihu.com/api/v4/people/1da75b85900e00adb072e91c56fd9149',
-                 'url_token': 'xiaoxiaodouzi', 'user_type': 'people', 'headline': '程序员',
-                 'avatar_url': 'https://pic1.zhimg.com/v2-ca13758626bd7367febde704c66249ec_is.jpg', 'is_org': False,
-                 'gender': -1, 'type': 'people', 'id': '1da75b85900e00adb072e91c56fd9149'}, 'created_time': 1492318772,
-    'type': 'message', 'id': '2143862420'}
-
 # 还支持 user_slug
 >>> zhihu.send_message("你好,问候2", user_slug="xiaoxiaodouzi")
 
