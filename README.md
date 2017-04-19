@@ -72,12 +72,20 @@ pip install -r requirement.txt
 >>> zhihu.send_message("你好,问候2", user_slug="xiaoxiaodouzi")
 
 # 还支持 profile_url
->>> zhihu.zhihu.send_message("你好,问候1", profile_url="https://www.zhihu.com/people/xiaoxiaodouzi")
+>>> zhihu.send_message("你好,问候1", profile_url="https://www.zhihu.com/people/xiaoxiaodouzi")
 ```
+### 关注用户
+```
+>>> zhihu.follow(profile_url="https://www.zhihu.com/people/xiaoxiaodouzi")
 
+{'follower_count': 3}
+
+# 还可以用
+>>> zhihu.follow(user_slug="xiaoxiaodouzi")
+
+```
 ## TODO
 
-* 关注
 * 文章点赞
 * ...
 
