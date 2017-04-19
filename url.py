@@ -30,3 +30,8 @@ class URL(object):
     @staticmethod
     def profile(url_token):
         return "https://www.zhihu.com/api/v4/members/{url_token}".format(url_token=url_token)
+
+    # 关注用户
+    @staticmethod
+    def follow(url_token):
+        return "https://www.zhihu.com/api/v4/members/{url_token}/followers".format(url_token=url_token)

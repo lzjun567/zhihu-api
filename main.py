@@ -22,3 +22,5 @@ if __name__ == '__main__':
     zhihu.send_message("你好,问候2", user_slug="xiaoxiaodouzi")
     time.sleep(1)
     zhihu.send_message("你好,问候3", user_id=_id)
+    zhihu.follow(user_slug="xiaoxiaodouzi")
+    zhihu.follow(profile_url="https://www.zhihu.com/people/xiaoxiaodouzi")

@@ -169,3 +169,20 @@ class Zhihu(object):
             return response.json()
         else:
             self.logger.error(u"获取用户信息失败, status code: %s" % response.status_code)
+
+    @need_login
+    def follow(self, user_slug=None, profile_url=None):
+        """
+        关注指定用户
+        :param user_slug: 用户的个性域名
+        :param profile_url: 用户主页地址
+        """
+        if not any([profile_url, user_slug]):
+            raise ZhihuError(u"至少指定一个关键字参数")
+        user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
+        response = self._session.post(URL.follow(user_slug))
+        if response.ok:
+            self.logger.info(u"关注成功")
+            return response.json()
+        else:
+            self.logger.error(u"关注用户失败, status code: %s" % response.status_code)
