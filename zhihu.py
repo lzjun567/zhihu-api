@@ -14,6 +14,9 @@ import requests
 from bs4 import BeautifulSoup
 
 from url import URL
+import requests.packages.urllib3 as urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -64,16 +67,16 @@ class Zhihu(object):
         except:
             pass
 
-    def _get_captcha(self):
+    def _get_captcha(self, **kwargs):
         t = str(int(time.time() * 1000))
-        r = self._session.get(URL.captcha(t))
+        r = self._session.get(URL.captcha(t), **kwargs)
         with open('captcha.jpg', 'wb') as f:
             f.write(r.content)
         captcha = input("验证码：")
         return captcha
 
-    def _get_xsrf(self):
-        response = self._session.get(URL.index())
+    def _get_xsrf(self, **kwargs):
+        response = self._session.get(URL.index(), **kwargs)
         soup = BeautifulSoup(response.content, "html.parser")
         xsrf = soup.find('input', attrs={"name": "_xsrf"}).get("value")
         return xsrf
@@ -92,17 +95,17 @@ class Zhihu(object):
         else:
             raise ZhihuError("invalid profile url")
 
-    def login(self, email, password):
+    def login(self, email, password, **kwargs):
         """
         登录需要的验证码会保存在当前目录,需要用户自己识别,并输入
         """
         request_body = {'email': email,
                         'password': password,
-                        '_xsrf': self._get_xsrf(),
-                        "captcha": self._get_captcha(),
+                        '_xsrf': self._get_xsrf(**kwargs),
+                        "captcha": self._get_captcha(**kwargs),
                         'remember_me': 'true'}
 
-        response = self._session.post(URL.login(), data=request_body)
+        response = self._session.post(URL.login(), data=request_body, **kwargs)
         if response.ok:
             data = response.json()
             if data.get("r") == 0:
@@ -118,7 +121,7 @@ class Zhihu(object):
         return False
 
     @need_login
-    def send_message(self, content, user_id=None, profile_url=None, user_slug=None):
+    def send_message(self, content, user_id=None, profile_url=None, user_slug=None, **kwargs):
         """
         给指定的用户发私信
         :param content 私信内容
@@ -139,7 +142,7 @@ class Zhihu(object):
             user_id = self._user_id(user_slug)
 
         data = {"type": "common", "content": content, "receiver_hash": user_id}
-        response = self._session.post(URL.message(), json=data)
+        response = self._session.post(URL.message(), json=data, **kwargs)
         data = response.json()
         if data.get("error"):
             self.logger.info("私信发送失败, %s" % data.get("error").get("message"))
@@ -148,7 +151,7 @@ class Zhihu(object):
         return data
 
     @need_login
-    def user(self, user_slug=None, profile_url=None):
+    def user(self, user_slug=None, profile_url=None, **kwargs):
         """
         获取用户信息
         :param user_slug : 用户的个性域名
@@ -165,14 +168,14 @@ class Zhihu(object):
             raise ZhihuError("至少指定一个关键字参数")
 
         user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
-        response = self._session.get(URL.profile(user_slug))
+        response = self._session.get(URL.profile(user_slug), **kwargs)
         if response.ok:
             return response.json()
         else:
             self.logger.error(u"获取用户信息失败, status code: %s" % response.status_code)
 
     @need_login
-    def follow(self, user_slug=None, profile_url=None):
+    def follow(self, user_slug=None, profile_url=None, **kwargs):
         """
         关注用户
         :param user_slug:
@@ -187,9 +190,13 @@ class Zhihu(object):
 
         user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
         logging.info(URL.follow(user_slug))
-        response = self._session.post(URL.follow(user_slug))
+        response = self._session.post(URL.follow(user_slug), **kwargs)
         logging.info(response.text)
         if response.ok:
             return response.json()
         else:
             self.logger.error(u"关注失败, status code: %s" % response.status_code)
+
+    @need_login
+    def vote_up_answer(self):
+        pass
