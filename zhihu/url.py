@@ -37,3 +37,8 @@ class URL(object):
     @staticmethod
     def follow(user_slug):
         return URL.host + "/api/v4/members/{user_slug}/followers".format(user_slug=user_slug)
+
+    # 赞同/反对/中立
+    @staticmethod
+    def vote_up(answer_id):
+        return URL.host + "/api/v4/answers/{id}/voters".format(id=answer_id)
