@@ -2,13 +2,13 @@
 
 ### 目标
 
-出于学习目的，试图构建一个更加简洁、优雅的、Pythonic 的知乎 API。
+试图构建一个更加简洁、优雅的、Pythonic 的知乎 API。
 
 
 ## 前置条件
 
 * Python3.x
-* Requests2
+* Requests
 * BeautifulSoup4
 
 ## 安装
@@ -19,7 +19,7 @@ cd  zhihu-api
 pip install -r requirement.txt
 ```
 
-## API使用
+## API
 
 ### 用户个人公开信息
 ```
@@ -68,6 +68,21 @@ pip install -r requirement.txt
 {"follower_count": 6}
 ```
 
+### 点赞
+```
+>>> from zhihu import Answer
+>>> data = Answer(id=14005147).vote_up()
+>>> data
+>>> {"voting": 1, "voteup_count": 314}
+
+>>> data = Answer(url="https://www.zhihu.com/question/19761434/answer/14005147").vote_up()
+```
+
+### 反对
+vote_down
+
+### 中立
+vote_neutral
 
 
 
@@ -82,5 +97,5 @@ pip install -r requirement.txt
 ## 交流
 群已经加不进，可以先加微信：lzjun567 拉你入群
 
-![群](qrcode.jpeg)
+![群](https://dn-mhke0kuv.qbox.me/30f70119cd4a840560d4.jpeg)
 
