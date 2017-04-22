@@ -4,6 +4,8 @@ from zhihu.url import URL
 from . import Model
 import re
 
+from ..auth import need_login
+
 
 class Answer(Model):
     def __init__(self, id=None, url=None):
@@ -24,18 +26,21 @@ class Answer(Model):
             self.log("操作失败")
         return r.text
 
+    @need_login
     def vote_up(self, **kwargs):
         """
         赞同
         """
         return self.request(data={"type": "up"}, **kwargs)
 
+    @need_login
     def vote_down(self, **kwargs):
         """
         反对
         """
         return self.request(data={"type": "down"}, **kwargs)
 
+    @need_login
     def vote_neutral(self, **kwargs):
         """
         中立

@@ -11,8 +11,8 @@ from http import cookiejar
 import requests
 import requests.packages.urllib3 as urllib3
 from bs4 import BeautifulSoup
-from error import ZhihuError
-from url import URL
+from ..error import ZhihuError
+from ..url import URL
 
 from zhihu.settings import COOKIES
 from zhihu.settings import HEADERS

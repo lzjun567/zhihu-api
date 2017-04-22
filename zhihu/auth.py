@@ -15,7 +15,6 @@ def need_login(func):
         assert isinstance(self, Model)
         success = True
         # TODO 1. 不能这样简单粗暴判断cookie文件存不存在,因为有可能文件里面的cookie信息已经过期,也有可能只是一个空文件
-
         if not os.path.exists(COOKIES):
             success = False
             while not success:
