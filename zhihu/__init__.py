@@ -1,3 +1,7 @@
 # encoding: utf-8
-__author__ = 'liuzhijun'
 
+from .models import answer
+from .models import zhihu
+
+Answer = answer.Answer
+Zhihu = zhihu.Zhihu
