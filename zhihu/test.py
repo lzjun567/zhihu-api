@@ -1,4 +1,4 @@
-from zhihu import Answer
+from zhihu import
 
 import unittest
 import time
