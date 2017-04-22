@@ -14,16 +14,16 @@
 ## 安装
 
 ```python
-git@github.com:lzjun567/zhihu-api.git
+git clone git@github.com:lzjun567/zhihu-api.git
 cd  zhihu-api
-pip install -r requirement.txt
+pip install .
 ```
 
 ## API使用
 
 ### 用户个人公开信息
 ```
->>> from zhihu import Zhihu
+>>> from zhihu.zhihu import Zhihu
 >>> zhihu = Zhihu()
 >>> zhihu.user(profile_url="https://www.zhihu.com/people/xiaoxiaodouzi")
 

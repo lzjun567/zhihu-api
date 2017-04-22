@@ -13,7 +13,7 @@ from http import cookiejar
 import requests
 from bs4 import BeautifulSoup
 
-from url import URL
+from .url import URL
 import requests.packages.urllib3 as urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
