@@ -7,6 +7,7 @@
 
 class URL(object):
     host = "https://www.zhihu.com"
+    zhuanlan_host = "https://zhuanlan.zhihu.com"
 
     # 登录
     @staticmethod
@@ -42,3 +43,7 @@ class URL(object):
     @staticmethod
     def vote_up(answer_id):
         return URL.host + "/api/v4/answers/{id}/voters".format(id=answer_id)
+
+    @staticmethod
+    def post(post_id):
+        return URL.zhuanlan_host + '/api/posts/{id}'.format(id=post_id)
