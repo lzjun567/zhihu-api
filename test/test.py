@@ -41,6 +41,3 @@ class AnswerTestCase(unittest.TestCase):
         data = Answer(url="https://www.zhihu.com/question/19761434/answer/14005147").thank_cancel()
         self.assertIn("is_thanked", data)
         self.assertIn("false", data)
-
-if __name__ == "__main__":
-    unittest.main()
