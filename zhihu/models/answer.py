@@ -17,10 +17,10 @@ class Answer(Model):
                 self.id = match.group(1)
         super(Answer, self).__init__()
 
-    def request(self, data=None, **kwargs):
-        url = URL.vote_up(self.id)
-        r = self._session.post(url, json=data, **kwargs)
-        if r.ok:
+    def request(self, method=None, url=None, data=None, **kwargs):
+        url = getattr(URL, url)(self.id)
+        r = getattr(self._session, method)(url, json=data, **kwargs)
+        if r:
             self.log("操作成功")
         else:
             self.log("操作失败")
@@ -31,18 +31,32 @@ class Answer(Model):
         """
         赞同
         """
-        return self.request(data={"type": "up"}, **kwargs)
+        return self.request(method="post", url="vote_up", data={"type": "up"}, **kwargs)
 
     @need_login
     def vote_down(self, **kwargs):
         """
         反对
         """
-        return self.request(data={"type": "down"}, **kwargs)
+        return self.request(method="post", url="vote_up", data={"type": "down"}, **kwargs)
 
     @need_login
     def vote_neutral(self, **kwargs):
         """
         中立
         """
-        return self.request(data={"type": "neutral"}, **kwargs)
+        return self.request(method="post", url="vote_up", data={"type": "neutral"}, **kwargs)
+
+    @need_login
+    def thank(self, **kwargs):
+        """
+        感谢
+        """
+        return self.request(method="post", url="thank", **kwargs)
+
+    @need_login
+    def thank_cancel(self, **kwargs):
+        """
+        感谢取消
+        """
+        return self.request(method="delete", url="thank", **kwargs)
