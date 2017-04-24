@@ -6,7 +6,11 @@
 import logging
 import re
 import time
-from http import cookiejar
+
+try:
+    from http import cookiejar  # py3
+except:
+    import cookielib as cookiejar  # py2
 
 import requests
 import requests.packages.urllib3 as urllib3
@@ -14,8 +18,7 @@ from bs4 import BeautifulSoup
 from ..error import ZhihuError
 from ..url import URL
 
-from zhihu.settings import COOKIES
-from zhihu.settings import HEADERS
+from zhihu import settings
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -24,8 +27,8 @@ class Model(object):
     def __init__(self):
         self._session = requests.Session()
         self._session.verify = False
-        self._session.headers = HEADERS
-        self._session.cookies = cookiejar.LWPCookieJar(filename=COOKIES)
+        self._session.headers = settings.HEADERS
+        self._session.cookies = cookiejar.LWPCookieJar(filename=settings.COOKIES_FILE)
         try:
             self._session.cookies.load(ignore_discard=True)
         except:
