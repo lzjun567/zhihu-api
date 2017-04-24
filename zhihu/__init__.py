@@ -1,7 +1,7 @@
 # encoding: utf-8
 
-from .models import answer
-from .models import zhihu
+from zhihu.models import answer
+from zhihu.models import common
 
 Answer = answer.Answer
-Zhihu = zhihu.Zhihu
+Zhihu = common.Common

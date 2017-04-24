@@ -8,4 +8,4 @@ HEADERS = {"Host": "www.zhihu.com",
                          ' (KHTML, like Gecko) Chrome/56.0.2924.87',
            }
 
-COOKIES = os.path.join(os.path.expanduser('~'), "cookies.txt")
+COOKIES_FILE = os.path.join(os.path.expanduser('~'), "cookies.txt")

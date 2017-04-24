@@ -1,10 +1,10 @@
 # encoding: utf-8
 
-from zhihu.url import URL
-from . import Model
 import re
 
-from ..auth import need_login
+from zhihu.url import URL
+from zhihu.models import Model
+from zhihu.auth import need_login
 
 
 class Answer(Model):
