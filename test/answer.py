@@ -6,7 +6,6 @@ import time
 class AnswerTestCase(unittest.TestCase):
     def test_vote_up_with_id(self):
         data = Answer(id=14005147).vote_up()
-        print(data)
         self.assertIn("voting", data)
         self.assertIn("voteup_count", data)
 
