@@ -1,4 +1,5 @@
 from zhihu import Answer
+from zhihu import Article
 import unittest
 import time
 
@@ -29,3 +30,10 @@ class AnswerTestCase(unittest.TestCase):
         data = Answer(url="https://www.zhihu.com/question/19761434/answer/14005147").vote_neutral()
         self.assertIn("voting", data)
         self.assertIn("voteup_count", data)
+
+class ArticleTestCase(unittest.TestCase):
+    def test_request(self):
+        article = Article(id=26096748)
+        data = article.request()
+        self.assertIn("content", data.keys())
+        self.assertIn("content", article.__dict__.keys())

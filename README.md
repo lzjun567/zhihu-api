@@ -84,7 +84,18 @@ vote_down
 ### 中立
 vote_neutral
 
+### 获取文章
+```
+from zhihu.url import URL
+from zhihu.models.zhihu import Zhihu
 
+zhihuClient = Zhihu()
+jsondata = zhihuClient.post(26459091)
+jsondata.keys()
+
+>>> dict_keys(['excerptTitle', 'summary', 'tipjarState', 'reviewers', 'author', 'slug', 'links', 'meta', 'reviewingCommentsCount', 'url', 'titleImageSize', 'rating', 'title', 'likesCount', 'collapsedCount', 'canComment', 'content', 'topics', 'pageCommentsCount', 'commentsCount', 'sourceUrl', 'state', 'href', 'commentPermission', 'publishedTime', 'snapshotUrl', 'isTitleImageFullScreen', 'titleImage', 'lastestLikers'])
+
+```
 
 ## TODO
 
