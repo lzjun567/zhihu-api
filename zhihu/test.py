@@ -24,7 +24,7 @@ class AnswerTestCase(unittest.TestCase):
         self.assertIn("voting", data)
         self.assertIn("voteup_count", data)
 
-    def test_vote_nature_with_url(self):
+    def test_vote_neutral_with_url(self):
         time.sleep(1)
         data = Answer(url="https://www.zhihu.com/question/19761434/answer/14005147").vote_neutral()
         self.assertIn("voting", data)
