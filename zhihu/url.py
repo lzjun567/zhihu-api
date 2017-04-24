@@ -45,5 +45,5 @@ class URL(object):
         return URL.host + "/api/v4/answers/{id}/voters".format(id=answer_id)
 
     @staticmethod
-    def post(post_id):
+    def article(post_id):
         return URL.zhuanlan_host + '/api/posts/{id}'.format(id=post_id)

@@ -80,16 +80,3 @@ class Zhihu(Model):
             return response.json()
         else:
             self.logger.error(u"关注失败, status code: %s" % response.status_code)
-
-    @need_login
-    def post(self, post_id=None):
-        if not post_id:
-            raise ZhihuError("指定文章id")
-
-        self._session.headers['Host'] = 'zhuanlan.zhihu.com'
-        response = self._session.get(URL.post(post_id))
-        self._session.headers['Host'] = 'www.zhihu.com'
-        if response.ok:
-            return response.json()
-        else:
-            self.logger.error(u"文章获取失败, status code: %s" % response.status_code)
