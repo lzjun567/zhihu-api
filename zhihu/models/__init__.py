@@ -1,8 +1,5 @@
 # encoding: utf-8
 
-"""
-知乎API
-"""
 import logging
 import re
 import time
