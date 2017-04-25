@@ -48,11 +48,7 @@ class URL(object):
     def thank(answer_id):
         return URL.host + "/api/v4/answers/{id}/thankers".format(id=answer_id)
 
-    # 关注某问题
+    # 关注某问题/取消关注某问题
     @staticmethod
     def follow_question(question_id):
-
-    # 取消关注某问题
-    @staticmethod
-    def unfollow_question(question_id):
         return URL.host + "/api/v4/questions/{id}/followers".format(id=question_id)
