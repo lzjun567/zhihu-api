@@ -43,7 +43,7 @@ class URL(object):
     def vote_up(answer_id):
         return URL.host + "/api/v4/answers/{id}/voters".format(id=answer_id)
 
-    # 某答案下感谢答主
+    # 某答案下感谢答主/取消感谢
     @staticmethod
     def thank(answer_id):
         return URL.host + "/api/v4/answers/{id}/thankers".format(id=answer_id)

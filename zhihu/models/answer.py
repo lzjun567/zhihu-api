@@ -2,20 +2,28 @@
 
 import re
 
-from zhihu.url import URL
-from zhihu.models import Model
 from zhihu.auth import need_login
+from zhihu.error import ZhihuError
+from zhihu.models import Model
+from zhihu.url import URL
 
 
 class Answer(Model):
     def __init__(self, id=None, url=None):
+        id = id if id is not None else self._extract_id(url)
+        if not id:
+            raise ZhihuError("没有指定回答的id")
         self.id = str(id)
-        if id is None and url:
-            pattern = re.compile("https://www.zhihu.com/question/\d+/answer/([\w-]+)")
-            match = pattern.search(url)
-            if match:
-                self.id = match.group(1)
         super(Answer, self).__init__()
+
+    @staticmethod
+    def _extract_id(url):
+        """
+        从url中提取目标id
+        """
+        pattern = re.compile("https://www.zhihu.com/question/\d+/answer/([\w-]+)")
+        match = pattern.search(url)
+        return match.group(1) if match else None
 
     def request(self, method=None, url_name=None, data=None, **kwargs):
         url_name = getattr(URL, url_name)(self.id)
