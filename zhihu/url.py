@@ -104,3 +104,8 @@ class URL(object):
     @staticmethod
     def register():
         return URL.host + "/register/phone_num"
+
+    # 搜索内容／用户／话题
+    @staticmethod
+    def search():
+        return URL.host + "/search"
