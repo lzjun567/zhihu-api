@@ -21,12 +21,13 @@ class Search(Model):
         return self._extract_questions(html)
 
     def _get_search_response(self, type='content', q=''):
-        response = self._session.get(URL.search(), params={'type': type, 'q':q})
+        response = self._session.get(URL.search(), params={'type': type, 'q': q})
         return response.text
 
-    def _extract_questions(self, html):
+    @staticmethod
+    def _extract_questions(html):
         soup = BeautifulSoup(html, 'html.parser')
         ul = soup.find('ul', {'class': ['list', 'contents', 'navigable']})
-        ids = [li.div.a['href'][10:] for li in ul.findChildren() if li.name == 'li']
-        titles = [li.div.a.getText() for li in ul.findChildren() if li.name == 'li']
+        ids = [li.div.a['href'][10:] for li in ul.findChildren(recursive=False)]
+        titles = [li.div.a.getText() for li in ul.findChildren(recursive=False)]
         return ids, titles
