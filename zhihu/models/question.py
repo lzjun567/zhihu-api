@@ -2,37 +2,35 @@
 
 import re
 
-from zhihu.url import URL
-from zhihu.models import Model
 from zhihu.auth import need_login
+from zhihu.error import ZhihuError
+from zhihu.models import Model
+from zhihu.url import URL
 
 
 class Question(Model):
     def __init__(self, id=None, url=None):
+        id = id if id is not None else self._extract_id(url)
+        if not id:
+            raise ZhihuError("没有指定问题的id或者url")
         self.id = str(id)
-        if id is None and url:
-            pattern = re.compile("https://www.zhihu.com/question/(\d+)")
-            match = pattern.search(url)
-            if match:
-                self.id = match.group(1)
         super(Question, self).__init__()
 
-    def request(self, method=None, url_name=None, data=None, **kwargs):
-        url_name = getattr(URL, url_name)(self.id)
-        r = getattr(self._session, method)(url_name, json=data, **kwargs)
-        if r:
-            self.log("操作成功")
-        else:
-            self.log("操作失败")
-        return r.text
+    @staticmethod
+    def _extract_id(url):
+        """
+        从url中提取目标id
+        """
+        pattern = re.compile("https://www.zhihu.com/question/(\d+).*?")
+        match = pattern.search(url)
+        return match.group(1) if match else None
 
     @need_login
     def follow_question(self, **kwargs):
         """关注某问题"""
-        return self.request(method="post", url_name="follow_question", data=None, **kwargs)
+        return self._execute(url=URL.follow_question(self.id), **kwargs)
 
     @need_login
     def unfollow_question(self, **kwargs):
         """取消关注某问题"""
-        return self.request(method="delete", url_name="follow_question", data=None, **kwargs)
-
+        return self._execute(method="delete", url=URL.unfollow_question(self.id), **kwargs)

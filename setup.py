@@ -3,8 +3,8 @@ from setuptools import setup
 setup(
     name="zhihu",
     packages=["zhihu"],
-    include_package_data= True,
-    install_requires = [
+    include_package_data=True,
+    install_requires=[
         "pytest-runner",
         "requests",
         "beautifulsoup4"
@@ -12,7 +12,7 @@ setup(
     setup_requires=[
         'pytest-runner',
     ],
-    tests_require= [
+    tests_require=[
         "pytest"
     ]
 )
