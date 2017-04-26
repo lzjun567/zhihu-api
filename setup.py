@@ -2,9 +2,14 @@ from setuptools import setup
 
 setup(
     name="zhihu",
-    packages=["zhihu"],
+
+    packages=[
+        "zhihu",
+        "zhihu.models"
+    ],
     include_package_data=True,
     install_requires=[
+
         "pytest-runner",
         "requests",
         "beautifulsoup4"
