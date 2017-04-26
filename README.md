@@ -23,7 +23,12 @@
 
 ```python
 pip install git+git://github.com/lzjun567/zhihu-api
+
+# 升级到最新的代码，附加参数  --upgrade
+# 推荐
+pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 ```
+
 
 ## API
 
@@ -103,6 +108,7 @@ vote_neutral
 * [@BigBorg](https://github.com/BigBorg)
 * [@xiaowenlong100](https://github.com/xiaowenlong100)
 * [chenghengchao](https://github.com/chenghengchao)
+* [MaxPoon](https://github.com/MaxPoon)
 
 ## 交流
 群已经加不进，可以先加微信：lzjun567 拉你入群
