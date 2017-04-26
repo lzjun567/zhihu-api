@@ -12,7 +12,7 @@ class Answer(Model):
     def __init__(self, id=None, url=None):
         id = id if id is not None else self._extract_id(url)
         if not id:
-            raise ZhihuError("没有指定回答的id")
+            raise ZhihuError("没有指定回答的id或者url")
         self.id = str(id)
         super(Answer, self).__init__()
 
@@ -25,46 +25,37 @@ class Answer(Model):
         match = pattern.search(url)
         return match.group(1) if match else None
 
-    def request(self, method=None, url_name=None, data=None, **kwargs):
-        url_name = getattr(URL, url_name)(self.id)
-        r = getattr(self._session, method)(url_name, json=data, **kwargs)
-        if r:
-            self.log("操作成功")
-        else:
-            self.log("操作失败")
-        return r.text
-
     @need_login
     def vote_up(self, **kwargs):
         """
         赞同
         """
-        return self.request(method="post", url_name="vote_up", data={"type": "up"}, **kwargs)
+        return self._execute(url=URL.vote_up(self.id), data={"type": "up"}, **kwargs)
 
     @need_login
     def vote_down(self, **kwargs):
         """
         反对
         """
-        return self.request(method="post", url_name="vote_up", data={"type": "down"}, **kwargs)
+        return self._execute(url=URL.vote_down(self.id), data={"type": "down"}, **kwargs)
 
     @need_login
     def vote_neutral(self, **kwargs):
         """
         中立
         """
-        return self.request(method="post", url_name="vote_up", data={"type": "neutral"}, **kwargs)
+        return self._execute(url=URL.vote_neutral(self.id), data={"type": "neutral"}, **kwargs)
 
     @need_login
     def thank(self, **kwargs):
         """
         感谢
         """
-        return self.request(method="post", url_name="thank", **kwargs)
+        return self._execute(url=URL.thank(self.id), **kwargs)
 
     @need_login
     def thank_cancel(self, **kwargs):
         """
         感谢取消
         """
-        return self.request(method="delete", url_name="thank", **kwargs)
+        return self._execute(method="delete", url=URL.thank_cancel(self.id), **kwargs)

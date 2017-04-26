@@ -78,7 +78,7 @@ class Common(Model):
             raise ZhihuError("至少指定一个关键字参数")
 
         user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
-        response = self._session.post(URL.follow(user_slug), **kwargs)
+        response = self._session.post(URL.follow_people(user_slug), **kwargs)
         if response.ok:
             return response.json()
         else:

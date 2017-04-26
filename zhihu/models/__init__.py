@@ -102,3 +102,19 @@ class Model(object):
         else:
             self.logger.error(response.content)
         return False
+
+    def _execute(self, method="post", url=None, data=None, **kwargs):
+        """
+        用户执行某些交互操作（点赞、关注等）的请求方法
+        :param method: 请求方法
+        :param url:     请求URL
+        :param data:    请求数据
+        :param kwargs:  requests支持的参数，比如可以设置代理参数
+        :return: text
+        """
+        r = getattr(self._session, method)(url, json=data, **kwargs)
+        if r.ok:
+            self.log("操作成功")
+        else:
+            self.log("操作失败")
+        return r.text
