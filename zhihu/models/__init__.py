@@ -3,6 +3,7 @@
 import logging
 import re
 import time
+import platform, os, subprocess
 
 try:
     from http import cookiejar  # py3
@@ -44,6 +45,14 @@ class Model(object):
         r = self._session.get(URL.captcha(t), **kwargs)
         with open('captcha.jpg', 'wb') as f:
             f.write(r.content)
+
+        if platform.system() == 'Darwin':
+            subprocess.call(['open', 'captcha.jpg'])
+        elif platform.system() == 'Linux':
+            subprocess.call(['xdg-open', 'captcha.jpg'])
+        else:
+            os.startfile('captcha.jpg')
+
         captcha = input("验证码：")
         return captcha
 
