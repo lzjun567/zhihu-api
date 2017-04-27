@@ -1,15 +1,9 @@
 # encoding: utf-8
-__author__ = 'liuzhijun'
 
-# encoding: utf-8
-# !/usr/bin/env python
-
-"""
-知乎API
-"""
-
-from .models import answer
-from .models import zhihu
+from zhihu.models import answer
+from zhihu.models import common
+from zhihu.models import question
 
 Answer = answer.Answer
-Zhihu = zhihu.Zhihu
+Zhihu = common.Common
+Question = question.Question

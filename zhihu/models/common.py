@@ -1,12 +1,16 @@
 # encoding: utf-8
 
-from . import Model
-from ..auth import need_login
-from ..error import ZhihuError
-from ..url import URL
+"""
+通用的操作放在此模块中
+"""
+
+from zhihu.auth import need_login
+from zhihu.error import ZhihuError
+from zhihu.models import Model
+from zhihu.url import URL
 
 
-class Zhihu(Model):
+class Common(Model):
     @need_login
     def send_message(self, content, user_id=None, profile_url=None, user_slug=None, **kwargs):
         """
@@ -20,7 +24,6 @@ class Zhihu(Model):
         >>> send_message(user_slug = "xiaoxiaodouzi")
         >>> send_message(user_id = "1da75b85900e00adb072e91c56fd9149")
         """
-
         if not any([user_id, profile_url, user_slug]):
             raise ZhihuError("至少指定一个关键字参数")
 
@@ -30,12 +33,11 @@ class Zhihu(Model):
 
         data = {"type": "common", "content": content, "receiver_hash": user_id}
         response = self._session.post(URL.message(), json=data, **kwargs)
-        data = response.json()
-        if data.get("error"):
-            self.logger.info("私信发送失败, %s" % data.get("error").get("message"))
+        if response.ok:
+            self.log("发送成功")
         else:
-            self.logger.info("发送成功")
-        return data
+            self.log("发送失败")
+        return response.text
 
     @need_login
     def user(self, user_slug=None, profile_url=None, **kwargs):
@@ -76,7 +78,7 @@ class Zhihu(Model):
             raise ZhihuError("至少指定一个关键字参数")
 
         user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
-        response = self._session.post(URL.follow(user_slug), **kwargs)
+        response = self._session.post(URL.follow_people(user_slug), **kwargs)
         if response.ok:
             return response.json()
         else:

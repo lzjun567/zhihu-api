@@ -1,5 +1,6 @@
-from zhihu import Answer
+# encoding: utf-8
 
+from zhihu import Answer
 import unittest
 import time
 
@@ -7,7 +8,6 @@ import time
 class AnswerTestCase(unittest.TestCase):
     def test_vote_up_with_id(self):
         data = Answer(id=14005147).vote_up()
-        print(data)
         self.assertIn("voting", data)
         self.assertIn("voteup_count", data)
 
@@ -25,8 +25,20 @@ class AnswerTestCase(unittest.TestCase):
         self.assertIn("voting", data)
         self.assertIn("voteup_count", data)
 
-    def test_vote_nature_with_url(self):
+    def test_vote_neutral_with_url(self):
         time.sleep(1)
         data = Answer(url="https://www.zhihu.com/question/19761434/answer/14005147").vote_neutral()
         self.assertIn("voting", data)
         self.assertIn("voteup_count", data)
+
+    def test_thank_with_url(self):
+        time.sleep(1)
+        data = Answer(url="https://www.zhihu.com/question/19761434/answer/14005147").thank()
+        self.assertIn("is_thanked", data)
+        self.assertIn("true", data)
+
+    def test_thank_cancel_with_url(self):
+        time.sleep(1)
+        data = Answer(url="https://www.zhihu.com/question/19761434/answer/14005147").thank_cancel()
+        self.assertIn("is_thanked", data)
+        self.assertIn("false", data)

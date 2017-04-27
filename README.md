@@ -4,6 +4,14 @@
 
 试图构建一个更加简洁、优雅的、Pythonic 的知乎 API。
 
+### 使用场景
+* 如果你想自动给你喜欢的人点赞
+* 如果你想批量关注用户
+* 如果你想批量发送信息
+* 如果你想构建一个自己的知乎客户端
+* 如果你想...
+
+如果你有以上需求，那么 zhihu-api 项目可能适合你，不过你要记住，如果是批量操作，你需要有频次地操作，否则容易被知乎判断为机器人。
 
 ## 前置条件
 
@@ -14,16 +22,19 @@
 ## 安装
 
 ```python
-git@github.com:lzjun567/zhihu-api.git
-cd  zhihu-api
-pip install -r requirement.txt
+pip install git+git://github.com/lzjun567/zhihu-api
+
+# 升级到最新的代码，附加参数  --upgrade
+# 推荐
+pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 ```
+
 
 ## API
 
 ### 用户个人公开信息
 ```
->>> from zhihu import Zhihu
+>>> from zhihu.zhihu import Zhihu
 >>> zhihu = Zhihu()
 >>> zhihu.user(profile_url="https://www.zhihu.com/people/xiaoxiaodouzi")
 
@@ -92,7 +103,12 @@ vote_neutral
 * ...
 
 ## 贡献者
-欢迎 PR, 所有贡献者都将出现在这里
+欢迎 PR, 所有贡献者都将出现在这里，排名部分先后
+
+* [@BigBorg](https://github.com/BigBorg)
+* [@xiaowenlong100](https://github.com/xiaowenlong100)
+* [chenghengchao](https://github.com/chenghengchao)
+* [MaxPoon](https://github.com/MaxPoon)
 
 ## 交流
 群已经加不进，可以先加微信：lzjun567 拉你入群
