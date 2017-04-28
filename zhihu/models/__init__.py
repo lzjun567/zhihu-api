@@ -1,9 +1,11 @@
 # encoding: utf-8
 
 import logging
+import os
+import platform
 import re
+import subprocess
 import time
-import platform, os, subprocess
 
 try:
     from http import cookiejar  # py3
@@ -22,11 +24,13 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class Model(object):
-    def __init__(self):
+    def __init__(self, **kwargs):
         self._session = requests.Session()
         self._session.verify = False
         self._session.headers = settings.HEADERS
         self._session.cookies = cookiejar.LWPCookieJar(filename=settings.COOKIES_FILE)
+        for k, v in kwargs.items():
+            setattr(self._session, k, v)
         try:
             self._session.cookies.load(ignore_discard=True)
         except:
