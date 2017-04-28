@@ -33,7 +33,7 @@ class QuestionTestCase(unittest.TestCase):
         self.assertEqual('', data)
 
     def test_get_comments_with_id(self):
-        total, data = Question(id=37050422).get_comments()
+        total, data = Question(id=23497514).get_comments() # id=37050422的评论较多，250多条
         self.assertEqual(type(total), type(0))
         self.assertEqual(type(data), type([]))
 
