@@ -24,9 +24,9 @@
 pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 ```
 
-## API
+### API
 
-### 用户个人公开信息
+**个人信息**
 ```
 >>> from zhihu.zhihu import Zhihu
 >>> zhihu = Zhihu()
@@ -47,24 +47,23 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 
 ```
 
-### 私信发送
+**私信发送**
 
 ```python
 >>> zhihu.send_message("你好,问候2", user_slug="xiaoxiaodouzi")
 ```
 
-### 关注/取消关注用户
+**关注用户**
 ```
 >>> zhihu.follow(user_slug="xiaoxiaodouzi")
 {"follower_count": 6}
-
+```
+**取消关注**
 >>> zhihu.unfollow(user_slug="xiaoxiaodouzi")
 {'follower_count': 5}
 ```
 
-## 回答
-
-### 点赞
+**点赞回答**
 ```
 >>> from zhihu import Answer
 >>> data = Answer(id=14005147).vote_up()
@@ -72,13 +71,25 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 >>> {"voting": 1, "voteup_count": 314}
 ```
 
-### 反对
-vote_down
+**反对**
+```
+>>> from zhihu import Answer
+>>> data = Answer(id=14005147).vote_down()
+>>> data
+>>> {"voting": 1, "voteup_count": 314}
+```
 
-### 中立
-vote_neutral
 
-### 专栏关注列表
+**中立**
+```
+>>> from zhihu import Answer
+>>> data = Answer(id=14005147).vote_neutral()
+>>> data
+>>> {"voting": 1, "voteup_count": 314}
+```
+
+
+**专栏的关注列表**
 ```
 >>> from zhihu import Column
 >>> column = Column(url="https://zhuanlan.zhihu.com/pythoneer")
