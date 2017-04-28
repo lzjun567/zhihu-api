@@ -4,7 +4,8 @@ import random
 
 #UserAgent list
 user_agent_list = [
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87"
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/56.0.2924.87",
         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 "  
         "(KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",  
         "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 "  
