@@ -1,11 +1,10 @@
-## 项目简介
-
 ### 目标
 
 试图构建一个更加简洁、优雅的、Pythonic 的知乎 API。
 
 ### 使用场景
-* 如果你想自动给你喜欢的人点赞
+* 如果你想基于知乎社区做数据分析
+* 如果你想通过程序自动给回答点赞
 * 如果你想批量关注用户
 * 如果你想批量发送信息
 * 如果你想构建一个自己的知乎客户端
@@ -22,13 +21,8 @@
 ## 安装
 
 ```python
-pip install git+git://github.com/lzjun567/zhihu-api
-
-# 升级到最新的代码，附加参数  --upgrade
-# 推荐
 pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 ```
-
 
 ## API
 
@@ -85,8 +79,6 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 >>> data = Answer(id=14005147).vote_up()
 >>> data
 >>> {"voting": 1, "voteup_count": 314}
-
->>> data = Answer(url="https://www.zhihu.com/question/19761434/answer/14005147").vote_up()
 ```
 
 ### 反对
@@ -95,12 +87,24 @@ vote_down
 ### 中立
 vote_neutral
 
+### 专栏关注列表
+column.followers
+```
+>>> from zhihu import Column
+>>> column = Column(url="https://zhuanlan.zhihu.com/pythoneer")
+>>> column.followers(limit=2, offset=1)
+[{u'bio': u'python', u'hash': u'463e2651f6a856d88c33bfb7fd673bf4', u'description': u'', u'isOrg': False,
+              u'name': u'zpf1024', u'profileUrl': u'https://www.zhihu.com/people/zpf1024',
+              u'avatar': {u'id': u'da8e974dc', u'template': u'https://pic1.zhimg.com/{id}_{size}.jpg'},
+              u'isOrgWhiteList': False, u'slug': u'zpf1024', u'uid': 841267452498296832L},
+             {u'bio': None, u'hash': u'45bbaa0aca55fec0d768ccb4845a1c53', u'description': u'', u'isOrg': False,
+              u'name': u'keyoka', u'profileUrl': u'https://www.zhihu.com/people/yi-hu-84',
+              u'avatar': {u'id': u'785bfd914', u'template': u'https://pic1.zhimg.com/{id}_{size}.jpg'},
+              u'isOrgWhiteList': False, u'slug': u'yi-hu-84', u'uid': 43738302775296L}]
+```
 
+每个接口都提供了不只一种方式调用，更多参考单元测试里面的例子
 
-## TODO
-
-* 文章点赞
-* ...
 
 ## 贡献者
 欢迎 PR, 所有贡献者都将出现在这里，排名部分先后

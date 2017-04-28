@@ -7,6 +7,7 @@
 
 class URL(object):
     host = "https://www.zhihu.com"
+    zhuanlan_host = "https://zhuanlan.zhihu.com"
 
     # 登录
     @staticmethod
@@ -66,3 +67,15 @@ class URL(object):
     @staticmethod
     def make_comments(question_id):
         return URL.host + "/api/v4/questions/{id}/comments".format(id=question_id)
+
+    # 专栏
+    @staticmethod
+    def column(slug):
+        return "https://zhuanlan.zhihu.com/api/columns/{slug}".format(slug=slug)
+
+    # 专栏的关注者
+    @staticmethod
+    def column_followers(slug):
+        a =  URL.zhuanlan_host + "/api/columns/{slug}/followers".format(slug=slug)
+        return a
+
