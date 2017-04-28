@@ -47,6 +47,6 @@ class QuestionTestCase(unittest.TestCase):
         self.assertIn('allow_reply', data)
 
     def test_make_comments_with_url(self):
-        data = Question(url='https://www.zhihu.com/question/21155768').make_comments("老问题了")
+        data = Question(url='https://www.zhihu.com/question/21155768').make_comments("哈哈哈")
         self.assertIn('type', data)
 
