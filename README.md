@@ -59,6 +59,7 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 {"follower_count": 6}
 ```
 **取消关注**
+```
 >>> zhihu.unfollow(user_slug="xiaoxiaodouzi")
 {'follower_count': 5}
 ```
