@@ -69,5 +69,4 @@ class URL(object):
     @staticmethod
     def column_followers(slug):
         a =  URL.zhuanlan_host + "/api/columns/{slug}/followers".format(slug=slug)
-        print(a)
         return a

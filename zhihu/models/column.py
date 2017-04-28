@@ -1,8 +1,10 @@
 # encoding: utf-8
 
-from zhihu.models import Model
-from zhihu.error import ZhihuError
 import re
+
+from zhihu.error import ZhihuError
+from zhihu.models import Model
+from zhihu.settings import ZHUANLAN_HEADERS
 from zhihu.url import URL
 
 
@@ -16,7 +18,7 @@ class Column(Model):
         if not slug:
             raise ZhihuError("没有指定专栏的的slug或者url")
         self.slug = slug
-        super(Column, self).__init__()
+        super(Column, self).__init__(headers=ZHUANLAN_HEADERS)
 
     @staticmethod
     def _extract_slug(url):
@@ -32,9 +34,7 @@ class Column(Model):
         用户关注列表
         :param limit: 最大获取条数,不能超过500条
         :param offset: 偏移量
-        :return:
+        :return: 返回用户列表
         """
         r = self._session.get(URL.column_followers(self.slug), params={"limit": limit, "offset": offset}, **kwargs)
-        print(r.url)
-        print(r.text)
         return r.json()
