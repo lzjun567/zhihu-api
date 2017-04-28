@@ -34,10 +34,10 @@ class Common(Model):
         data = {"type": "common", "content": content, "receiver_hash": user_id}
         response = self._session.post(URL.message(), json=data, **kwargs)
         if response.ok:
+            response.json()
             self.log("发送成功")
         else:
             self.log("发送失败")
-        return response.text
 
     @need_login
     def user(self, user_slug=None, profile_url=None, **kwargs):
@@ -99,7 +99,7 @@ class Common(Model):
             raise ZhihuError("至少指定一个关键字参数")
 
         user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
-        response = self._session.delete(URL.follow(user_slug), **kwargs)
+        response = self._session.delete(URL.follow_people(user_slug), **kwargs)
         if response.ok:
             return response.json()
         else:

@@ -31,8 +31,8 @@ class CommonTestCase(unittest.TestCase):
         """
         time.sleep(1)
         zhihu = Zhihu()
-        response = zhihu.follow(profile_url="https://www.zhihu.com/people/gao-yu-dong-41")
-        self.assertIn(response, 'follower_count')
+        data = zhihu.follow(profile_url="https://www.zhihu.com/people/gao-yu-dong-41")
+        self.assertIn('follower_count', data)
 
     def test_follow_with_user_slug(self):
         """
@@ -41,8 +41,8 @@ class CommonTestCase(unittest.TestCase):
         """
         time.sleep(1)
         zhihu = Zhihu()
-        response = zhihu.follow(user_slug="xiaoxiaodouzi")
-        self.assertIn(response, 'follower_count')
+        data = zhihu.follow(user_slug="xiaoxiaodouzi")
+        self.assertIn('follower_count', data)
 
     def test_follow_with_no_kwargs(self):
         """
@@ -60,8 +60,8 @@ class CommonTestCase(unittest.TestCase):
         """
         time.sleep(1)
         zhihu = Zhihu()
-        response = zhihu.unfollow(profile_url="https://www.zhihu.com/people/gao-yu-dong-41")
-        self.assertIn(response, 'follower_count')
+        data = zhihu.unfollow(profile_url="https://www.zhihu.com/people/gao-yu-dong-41")
+        self.assertIn('follower_count', data)
 
     def test_unfollow_with_user_slug(self):
         """
@@ -70,5 +70,5 @@ class CommonTestCase(unittest.TestCase):
         """
         time.sleep(1)
         zhihu = Zhihu()
-        response = zhihu.unfollow(user_slug="xiaoxiaodouzi")
-        self.assertIn(response, 'follower_count')
+        data = zhihu.unfollow(user_slug="xiaoxiaodouzi")
+        self.assertIn('follower_count', data)
