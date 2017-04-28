@@ -38,21 +38,22 @@ class Question(Model):
 
     @need_login
     def get_comments(self, **kwargs):
-        """查看当前的评论"""
+        """获得当前的评论"""
         data = {
-            "include": 'data%5B*%5D.author%2Ccollapsed%2Creply_to_author%2Cdisliked%2Ccontent%2Cvoting%2Cvote_count%2Cis_parent_author%2Cis_author,',
-            "order": 'normal',
-            "limit": "10",
-            "offset": "0",
-            "status": "0",
+            'limit': '10',
+            'offset': '0',
         }
-        data = self._execute(method="get", url=URL.get_comments(self.id) + 'comments?', data=data, **kwargs)
-        # print(type(data))
+        comments = []
+        data = self._execute(method="get", url=URL.get_comments(self.id), data=data, **kwargs)
         dataObj = json.loads(data)
-        # print(type(dataObj))
         totals = dataObj['paging']['totals']
-        content_data = dataObj['data']
-        return totals, content_data
+        comments.append(dataObj['data'])
+        # 每一次请求返回10条，循环以获得全部评论
+        while not dataObj['paging']['is_end']:
+            data = self._execute(method="get", url=dataObj['paging']['next'], **kwargs)
+            dataObj = json.loads(data)
+            comments.append(dataObj['data'])
+        return totals, comments
 
     @need_login
     def make_comments(self, comment, **kwargs):

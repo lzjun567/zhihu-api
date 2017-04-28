@@ -62,7 +62,7 @@ class URL(object):
 
     @staticmethod
     def get_comments(question_id):
-        return URL.host + "/api/v4/questions/{id}/".format(id=question_id)
+        return URL.host + "/api/v4/questions/{id}/comments".format(id=question_id)
 
     @staticmethod
     def make_comments(question_id):
