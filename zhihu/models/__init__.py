@@ -122,6 +122,7 @@ class Model(object):
         :return: text
         """
         r = getattr(self._session, method)(url, json=data, **kwargs)
+        # print(r.url)
         if r.ok:
             self.log("操作成功")
         else:
