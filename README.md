@@ -64,13 +64,16 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 >>> zhihu.zhihu.send_message("你好,问候1", profile_url="https://www.zhihu.com/people/xiaoxiaodouzi")
 ```
 
-### 关注用户
+### 关注/取消关注用户
 ```
 >>> zhihu.follow(profile_url="https://www.zhihu.com/people/gao-yu-dong-41")
 {"follower_count": 6}
 
 >>> zhihu.follow(user_slug="xiaoxiaodouzi")
 {"follower_count": 6}
+
+>>> zhihu.unfollow(user_slug="xiaoxiaodouzi")
+{'follower_count': 5}
 ```
 
 ### 点赞
