@@ -30,7 +30,7 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 ```
 >>> from zhihu.zhihu import Zhihu
 >>> zhihu = Zhihu()
->>> zhihu.user(profile_url="https://www.zhihu.com/people/xiaoxiaodouzi")
+>>> zhihu.user(user_slug="xiaoxiaodouzi")
 
 {'avatar_url_template': 'https://pic1.zhimg.com/v2-ca13758626bd7367febde704c66249ec_{size}.jpg',
      'badge': [],
@@ -45,33 +45,21 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
      'id': '1da75b85900e00adb072e91c56fd9149',
      'is_org': False}
 
-# 还可以用
->>> zhihu.user(user_slug="xiaoxiaodouzi")
-
 ```
 
 ### 私信发送
 
-
-
 ```python
->>> zhihu.send_message("你好,问候3", user_id="1da75b85900e00adb072e91c56fd9149")
-
-# 还支持 user_slug
 >>> zhihu.send_message("你好,问候2", user_slug="xiaoxiaodouzi")
-
-# 还支持 profile_url
->>> zhihu.zhihu.send_message("你好,问候1", profile_url="https://www.zhihu.com/people/xiaoxiaodouzi")
 ```
 
 ### 关注用户
 ```
->>> zhihu.follow(profile_url="https://www.zhihu.com/people/gao-yu-dong-41")
-{"follower_count": 6}
-
 >>> zhihu.follow(user_slug="xiaoxiaodouzi")
 {"follower_count": 6}
 ```
+
+## 回答
 
 ### 点赞
 ```
@@ -88,7 +76,6 @@ vote_down
 vote_neutral
 
 ### 专栏关注列表
-column.followers
 ```
 >>> from zhihu import Column
 >>> column = Column(url="https://zhuanlan.zhihu.com/pythoneer")
@@ -111,8 +98,9 @@ column.followers
 
 * [@BigBorg](https://github.com/BigBorg)
 * [@xiaowenlong100](https://github.com/xiaowenlong100)
-* [chenghengchao](https://github.com/chenghengchao)
-* [MaxPoon](https://github.com/MaxPoon)
+* [@chenghengchao](https://github.com/chenghengchao)
+* [@MaxPoon](https://github.com/MaxPoon)
+* [@Oopswc](https://github.com/Oopswc)
 
 ## 交流
 群已经加不进，可以先加微信：lzjun567 拉你入群
