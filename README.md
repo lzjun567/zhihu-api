@@ -1,11 +1,10 @@
-## 项目简介
-
 ### 目标
 
 试图构建一个更加简洁、优雅的、Pythonic 的知乎 API。
 
 ### 使用场景
-* 如果你想自动给你喜欢的人点赞
+* 如果你想基于知乎社区做数据分析
+* 如果你想通过程序自动给回答点赞
 * 如果你想批量关注用户
 * 如果你想批量发送信息
 * 如果你想构建一个自己的知乎客户端
@@ -22,16 +21,16 @@
 ## 安装
 
 ```python
-pip install git+git://github.com/lzjun567/zhihu-api
+pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 ```
 
-## API
+### API
 
-### 用户个人公开信息
+**个人信息**
 ```
 >>> from zhihu.zhihu import Zhihu
 >>> zhihu = Zhihu()
->>> zhihu.user(profile_url="https://www.zhihu.com/people/xiaoxiaodouzi")
+>>> zhihu.user(user_slug="xiaoxiaodouzi")
 
 {'avatar_url_template': 'https://pic1.zhimg.com/v2-ca13758626bd7367febde704c66249ec_{size}.jpg',
      'badge': [],
@@ -46,62 +45,77 @@ pip install git+git://github.com/lzjun567/zhihu-api
      'id': '1da75b85900e00adb072e91c56fd9149',
      'is_org': False}
 
-# 还可以用
->>> zhihu.user(user_slug="xiaoxiaodouzi")
-
 ```
 
-### 私信发送
-
-
+**私信发送**
 
 ```python
->>> zhihu.send_message("你好,问候3", user_id="1da75b85900e00adb072e91c56fd9149")
-
-# 还支持 user_slug
 >>> zhihu.send_message("你好,问候2", user_slug="xiaoxiaodouzi")
-
-# 还支持 profile_url
->>> zhihu.zhihu.send_message("你好,问候1", profile_url="https://www.zhihu.com/people/xiaoxiaodouzi")
 ```
 
-### 关注用户
+**关注用户**
 ```
->>> zhihu.follow(profile_url="https://www.zhihu.com/people/gao-yu-dong-41")
-{"follower_count": 6}
-
 >>> zhihu.follow(user_slug="xiaoxiaodouzi")
 {"follower_count": 6}
 ```
+**取消关注**
+```
+>>> zhihu.unfollow(user_slug="xiaoxiaodouzi")
+{'follower_count': 5}
+```
 
-### 点赞
+**点赞回答**
 ```
 >>> from zhihu import Answer
 >>> data = Answer(id=14005147).vote_up()
 >>> data
 >>> {"voting": 1, "voteup_count": 314}
-
->>> data = Answer(url="https://www.zhihu.com/question/19761434/answer/14005147").vote_up()
 ```
 
-### 反对
-vote_down
+**反对**
+```
+>>> from zhihu import Answer
+>>> data = Answer(id=14005147).vote_down()
+>>> data
+>>> {"voting": 1, "voteup_count": 314}
+```
 
-### 中立
-vote_neutral
+
+**中立**
+```
+>>> from zhihu import Answer
+>>> data = Answer(id=14005147).vote_neutral()
+>>> data
+>>> {"voting": 1, "voteup_count": 314}
+```
 
 
+**专栏的关注列表**
+```
+>>> from zhihu import Column
+>>> column = Column(url="https://zhuanlan.zhihu.com/pythoneer")
+>>> column.followers(limit=2, offset=1)
+[{u'bio': u'python', u'hash': u'463e2651f6a856d88c33bfb7fd673bf4', u'description': u'', u'isOrg': False,
+              u'name': u'zpf1024', u'profileUrl': u'https://www.zhihu.com/people/zpf1024',
+              u'avatar': {u'id': u'da8e974dc', u'template': u'https://pic1.zhimg.com/{id}_{size}.jpg'},
+              u'isOrgWhiteList': False, u'slug': u'zpf1024', u'uid': 841267452498296832L},
+             {u'bio': None, u'hash': u'45bbaa0aca55fec0d768ccb4845a1c53', u'description': u'', u'isOrg': False,
+              u'name': u'keyoka', u'profileUrl': u'https://www.zhihu.com/people/yi-hu-84',
+              u'avatar': {u'id': u'785bfd914', u'template': u'https://pic1.zhimg.com/{id}_{size}.jpg'},
+              u'isOrgWhiteList': False, u'slug': u'yi-hu-84', u'uid': 43738302775296L}]
+```
 
-## TODO
+每个接口都提供了不只一种方式调用，更多参考单元测试里面的例子
 
-* 文章点赞
-* ...
 
 ## 贡献者
 欢迎 PR, 所有贡献者都将出现在这里，排名部分先后
 
 * [@BigBorg](https://github.com/BigBorg)
 * [@xiaowenlong100](https://github.com/xiaowenlong100)
+* [@chenghengchao](https://github.com/chenghengchao)
+* [@MaxPoon](https://github.com/MaxPoon)
+* [@Oopswc](https://github.com/Oopswc)
 
 ## 交流
 群已经加不进，可以先加微信：lzjun567 拉你入群

@@ -1,7 +1,10 @@
 # encoding: utf-8
 
 import logging
+import os
+import platform
 import re
+import subprocess
 import time
 
 try:
@@ -21,11 +24,13 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class Model(object):
-    def __init__(self):
+    def __init__(self, **kwargs):
         self._session = requests.Session()
         self._session.verify = False
         self._session.headers = settings.HEADERS
         self._session.cookies = cookiejar.LWPCookieJar(filename=settings.COOKIES_FILE)
+        for k, v in kwargs.items():
+            setattr(self._session, k, v)
         try:
             self._session.cookies.load(ignore_discard=True)
         except:
@@ -44,6 +49,14 @@ class Model(object):
         r = self._session.get(URL.captcha(t), **kwargs)
         with open('captcha.jpg', 'wb') as f:
             f.write(r.content)
+
+        if platform.system() == 'Darwin':
+            subprocess.call(['open', 'captcha.jpg'])
+        elif platform.system() == 'Linux':
+            subprocess.call(['xdg-open', 'captcha.jpg'])
+        else:
+            os.startfile('captcha.jpg')
+
         captcha = input("验证码：")
         return captcha
 
@@ -102,3 +115,19 @@ class Model(object):
         else:
             self.logger.error(response.content)
         return False
+
+    def _execute(self, method="post", url=None, data=None, **kwargs):
+        """
+        用户执行某些交互操作（点赞、关注等）的请求方法
+        :param method: 请求方法
+        :param url:     请求URL
+        :param data:    请求数据
+        :param kwargs:  requests支持的参数，比如可以设置代理参数
+        :return: text
+        """
+        r = getattr(self._session, method)(url, json=data, **kwargs)
+        if r.ok:
+            self.log("操作成功")
+        else:
+            self.log("操作失败")
+        return r.text
