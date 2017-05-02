@@ -17,19 +17,16 @@ class Account(Model):
         :return:
         """
         email_regex = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
-        #check phone num with loose limit.
-        #allows: phonenum startwith 1 and length = 11 
         phone_regex = r"(^1\d{10}$)"
-        pattern = re.compile(email_regex)
-        phone   = re.compile(phone_regex)
+        email_pattern = re.compile(email_regex)
+        phone_pattern = re.compile(phone_regex)
 
-        if pattern.match(account):
+        if email_pattern.match(account):
             return self._login_with_email(account, password, **kwargs)
-        elif phone.match(account):
+        elif phone_pattern.match(account):
             return self._login_with_phone(account, password, **kwargs)
         else:
             self.log("登录名错误，需要重新输入.", level=logging.ERROR)
-            #if False, need reinput in auth.py
             return False
 
     def _login_with_phone(self, phone, password, **kwargs):
