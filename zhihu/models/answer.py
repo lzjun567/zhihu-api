@@ -30,32 +30,42 @@ class Answer(Model):
         """
         赞同
         """
-        return self._execute(url=URL.vote_up(self.id), data={"type": "up"}, **kwargs)
+        r = self._execute(url=URL.vote_up(self.id), data={"type": "up"}, **kwargs)
+        if r.ok:
+            return r.json()
 
     @need_login
     def vote_down(self, **kwargs):
         """
         反对
         """
-        return self._execute(url=URL.vote_down(self.id), data={"type": "down"}, **kwargs)
+        r = self._execute(url=URL.vote_down(self.id), data={"type": "down"}, **kwargs)
+        if r.ok:
+            return r.json()
 
     @need_login
     def vote_neutral(self, **kwargs):
         """
         中立
         """
-        return self._execute(url=URL.vote_neutral(self.id), data={"type": "neutral"}, **kwargs)
+        r = self._execute(url=URL.vote_neutral(self.id), data={"type": "neutral"}, **kwargs)
+        if r.ok:
+            return r.json()
 
     @need_login
     def thank(self, **kwargs):
         """
         感谢
         """
-        return self._execute(url=URL.thank(self.id), **kwargs)
+        r = self._execute(url=URL.thank(self.id), **kwargs)
+        if r.ok:
+            return r.json()
 
     @need_login
     def thank_cancel(self, **kwargs):
         """
         感谢取消
         """
-        return self._execute(method="delete", url=URL.thank_cancel(self.id), **kwargs)
+        r = self._execute(method="delete", url=URL.thank_cancel(self.id), **kwargs)
+        if r.ok:
+            return r.json()
