@@ -70,3 +70,9 @@ class URL(object):
     def column_followers(slug):
         a =  URL.zhuanlan_host + "/api/columns/{slug}/followers".format(slug=slug)
         return a
+
+    # 用户的“提问”清单列表
+    @staticmethod
+    def user_asks(slug):
+        return "https://www.zhihu.com/people/{slug}/asks".format(slug=slug)
+
