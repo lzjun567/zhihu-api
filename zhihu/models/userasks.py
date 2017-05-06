@@ -25,13 +25,13 @@ class Userasks(Model):
         super(Userasks, self).__init__()
 
     @staticmethod
-    def _extract_id(url):
+    def _extract_slug(url):
         """
         从url中提取目标id
         :param url: 
         :return: 
         """
-        pattern = re.compile("https://www.zhihu.com/people/(\w+).*?/")
+        pattern = re.compile("https://www.zhihu.com/people/(\w+).*?")
         match = pattern.search(url)
         return match.group(1) if match else None
 

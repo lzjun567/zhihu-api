@@ -7,7 +7,7 @@ def vote_up_with_id():
     data = Answer(id=14005147).vote_up()
     print(data)
 
-<<<<<<< HEAD
+
 def zhihu_user():
     data = Zhihu().user(user_slug="6xian")
     print(data)
