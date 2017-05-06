@@ -109,7 +109,7 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 
 
 ## 贡献者
-欢迎 PR, 所有贡献者都将出现在这里，排名部分先后
+欢迎 PR, 所有贡献者都将出现在这里，排名不分先后
 
 * [@BigBorg](https://github.com/BigBorg)
 * [@xiaowenlong100](https://github.com/xiaowenlong100)

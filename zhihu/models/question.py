@@ -25,12 +25,18 @@ class Question(Model):
         match = pattern.search(url)
         return match.group(1) if match else None
 
+    # def _execute(self, method="post", url=None, data=None, **kwargs):
+    #     super(Question, self)._execute(method=method, url=url, data=data, **kwargs)
+
     @need_login
     def follow_question(self, **kwargs):
         """关注某问题"""
-        return self._execute(url=URL.follow_question(self.id), **kwargs)
+        r = self._execute(url=URL.follow_question(self.id), **kwargs)
+        return r.json()
 
     @need_login
     def unfollow_question(self, **kwargs):
         """取消关注某问题"""
-        return self._execute(method="delete", url=URL.unfollow_question(self.id), **kwargs)
+        r = self._execute(method="delete", url=URL.unfollow_question(self.id), **kwargs)
+        if r.ok:
+            return {"is_following": False}
