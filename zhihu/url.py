@@ -9,10 +9,15 @@ class URL(object):
     host = "https://www.zhihu.com"
     zhuanlan_host = "https://zhuanlan.zhihu.com"
 
-    # 登录
+    # 邮箱登录
     @staticmethod
-    def login():
+    def email_login():
         return URL.host + "/login/email"
+
+    # 手机登录
+    @staticmethod
+    def phone_login():
+        return URL.host + "/login/phone_num"
 
     # 私信
     @staticmethod
@@ -69,5 +74,10 @@ class URL(object):
     @staticmethod
     def column_followers(slug):
         a =  URL.zhuanlan_host + "/api/columns/{slug}/followers".format(slug=slug)
-        print(a)
         return a
+
+    # 用户的“提问”清单列表
+    @staticmethod
+    def user_asks(slug):
+        return "https://www.zhihu.com/people/{slug}/asks".format(slug=slug)
+

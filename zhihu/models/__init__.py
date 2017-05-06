@@ -1,32 +1,49 @@
 # encoding: utf-8
 
 import logging
-import re
+import os
+import platform
+import subprocess
 import time
-import platform, os, subprocess
+import re
 
 try:
     from http import cookiejar  # py3
 except:
     import cookielib as cookiejar  # py2
 
+try:
+    input = raw_input  # py2
+except:
+    pass
+
 import requests
 import requests.packages.urllib3 as urllib3
 from bs4 import BeautifulSoup
-from ..error import ZhihuError
-from ..url import URL
+from zhihu.error import ZhihuError
+from zhihu.url import URL
 
 from zhihu import settings
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
+class RequestDataType(object):
+    """
+    发送请求时,传给知乎服务器的数据类型
+    有两种请求,1. 表单类型,2 json格式的字符串
+    """
+    FORM_DATA, JSON_DATA = range(2)
+
+
 class Model(object):
-    def __init__(self):
+    def __init__(self, **kwargs):
         self._session = requests.Session()
         self._session.verify = False
         self._session.headers = settings.HEADERS
         self._session.cookies = cookiejar.LWPCookieJar(filename=settings.COOKIES_FILE)
+        for k, v in kwargs.items():
+            setattr(self._session, k, v)
         try:
             self._session.cookies.load(ignore_discard=True)
         except:
@@ -52,7 +69,6 @@ class Model(object):
             subprocess.call(['xdg-open', 'captcha.jpg'])
         else:
             os.startfile('captcha.jpg')
-
         captcha = input("验证码：")
         return captcha
 
@@ -86,44 +102,18 @@ class Model(object):
         else:
             raise ZhihuError("invalid profile url")
 
-    def login(self, email, password, **kwargs):
+    def _execute(self, method="post", url=None, data=None, data_type=RequestDataType.JSON_DATA, **kwargs):
         """
-        登录需要的验证码会保存在当前目录,需要用户自己识别,并输入
-        """
-        # TODO 还有其他登录方式
-        request_body = {'email': email,
-                        'password': password,
-                        '_xsrf': self._get_xsrf(**kwargs),
-                        "captcha": self._get_captcha(**kwargs),
-                        'remember_me': 'true'}
-
-        response = self._session.post(URL.login(), data=request_body, **kwargs)
-        if response.ok:
-            data = response.json()
-            if data.get("r") == 0:
-                # 登录成功'
-                self._session.cookies.save()
-                self.logger.info("登录成功")
-                return True
-            else:
-                self.logger.info("登录失败, %s" % data.get("msg"))
-
-        else:
-            self.logger.error(response.content)
-        return False
-
-    def _execute(self, method="post", url=None, data=None, **kwargs):
-        """
-        用户执行某些交互操作（点赞、关注等）的请求方法
+        通用请求方法
         :param method: 请求方法
         :param url:     请求URL
         :param data:    请求数据
+        :param data_type:    提交的数据格式(可能是表单类型,也可能是json格式的字符串)
         :param kwargs:  requests支持的参数，比如可以设置代理参数
-        :return: text
+        :return: response
         """
-        r = getattr(self._session, method)(url, json=data, **kwargs)
-        if r.ok:
-            self.log("操作成功")
+        if data_type == RequestDataType.JSON_DATA:
+            r = getattr(self._session, method)(url, json=data, **kwargs)
         else:
-            self.log("操作失败")
-        return r.text
+            r = getattr(self._session, method)(url, data=data, **kwargs)
+        return r
