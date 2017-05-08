@@ -4,6 +4,7 @@ import unittest
 from zhihu import Zhihu
 from zhihu.error import ZhihuError
 import time
+from zhihu.models import Model
 
 
 class CommonTestCase(unittest.TestCase):

@@ -61,7 +61,7 @@ class Common(Model):
         if response.ok:
             return response.json()
         else:
-            self.logger.error(u"获取用户信息失败, status code: %s" % response.status_code)
+            self.log(u"获取用户信息失败, status code: %s" % response.status_code)
 
     @need_login
     def follow(self, user_slug=None, profile_url=None, **kwargs):
@@ -82,7 +82,7 @@ class Common(Model):
         if response.ok:
             return response.json()
         else:
-            self.logger.error(u"关注失败, status code: %s" % response.status_code)
+            self.log(u"关注失败, status code: %s" % response.status_code)
 
     @need_login
     def unfollow(self, user_slug=None, profile_url=None, **kwargs):
@@ -103,4 +103,4 @@ class Common(Model):
         if response.ok:
             return response.json()
         else:
-            self.logger.error(u"取消关注失败, status code: %s" % response.status_code)
+            self.log(u"取消关注失败, status code: %s" % response.status_code)

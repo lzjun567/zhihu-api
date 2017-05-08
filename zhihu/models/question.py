@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 import re
-import json
 
 from zhihu.auth import need_login
 from zhihu.error import ZhihuError
@@ -26,42 +25,18 @@ class Question(Model):
         match = pattern.search(url)
         return match.group(1) if match else None
 
+    # def _execute(self, method="post", url=None, data=None, **kwargs):
+    #     super(Question, self)._execute(method=method, url=url, data=data, **kwargs)
+
     @need_login
     def follow_question(self, **kwargs):
         """关注某问题"""
-        return self._execute(url=URL.follow_question(self.id), **kwargs)
+        r = self._execute(url=URL.follow_question(self.id), **kwargs)
+        return r.json()
 
     @need_login
     def unfollow_question(self, **kwargs):
         """取消关注某问题"""
-        return self._execute(method="delete", url=URL.unfollow_question(self.id), **kwargs)
-
-    @need_login
-    def get_comments(self, **kwargs):
-        """获得当前的评论"""
-        data = {
-            'limit': '10',
-            'offset': '0',
-        }
-        comments = []
-        data = self._execute(method="get", url=URL.get_comments(self.id), data=data, **kwargs)
-        dataObj = json.loads(data)
-        totals = dataObj['paging']['totals']
-        comments.append(dataObj['data'])
-        # 每一次请求返回10条，循环以获得全部评论
-        while not dataObj['paging']['is_end']:
-            data = self._execute(method="get", url=dataObj['paging']['next'], **kwargs)
-            dataObj = json.loads(data)
-            comments.append(dataObj['data'])
-        return totals, comments
-
-    @need_login
-    def make_comments(self, comment, **kwargs):
-        """添加评论"""
-        comment = comment
-        data = {
-            "include": 'author,collapsed,reply_to_author,disliked,content,voting,vote_count,is_parent_author,is_author',
-            "content": "<p>" + comment + "</p>",
-        }
-        response = self._execute(method="post", url=URL.make_comments(self.id), data=data, **kwargs)
-        return response
+        r = self._execute(method="delete", url=URL.unfollow_question(self.id), **kwargs)
+        if r.ok:
+            return {"is_following": False}
