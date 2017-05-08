@@ -65,6 +65,12 @@ class URL(object):
 
     unfollow_question = follow_question
 
+    @staticmethod
+    def get_comments(question_id):
+        return URL.host + "/api/v4/questions/{id}/comments".format(id=question_id)
+
+    make_comments = get_comments
+
     # 专栏
     @staticmethod
     def column(slug):
@@ -75,3 +81,4 @@ class URL(object):
     def column_followers(slug):
         a =  URL.zhuanlan_host + "/api/columns/{slug}/followers".format(slug=slug)
         return a
+

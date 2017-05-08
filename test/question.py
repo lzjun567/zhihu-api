@@ -28,4 +28,3 @@ class QuestionTestCase(unittest.TestCase):
     def test_unfollow_question_with_url(self):
         data = Question(url='https://www.zhihu.com/question/58684385').unfollow_question()
         self.assertEqual({"is_following": False}, data)
-
