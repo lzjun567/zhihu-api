@@ -59,8 +59,7 @@ class Common(Model):
         if not any([profile_url, user_slug]):
             raise ZhihuError("至少指定一个关键字参数")
 
-        user_slug = self._user_slug(
-            profile_url) if user_slug is None else user_slug
+        user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
         response = self._session.get(URL.profile(user_slug), **kwargs)
         if response.ok:
             return response.json()
@@ -84,8 +83,7 @@ class Common(Model):
         if not any([profile_url, user_slug]):
             raise ZhihuError("至少指定一个关键字参数")
 
-        user_slug = self._user_slug(
-            profile_url) if user_slug is None else user_slug
+        user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
         response = self._session.post(URL.follow_people(user_slug), **kwargs)
         if response.ok:
             return response.json()

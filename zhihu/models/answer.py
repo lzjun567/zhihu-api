@@ -21,8 +21,7 @@ class Answer(Model):
         """
         从url中提取目标id
         """
-        pattern = re.compile(
-            "https://www.zhihu.com/question/\d+/answer/([\w-]+)")
+        pattern = re.compile("https://www.zhihu.com/question/\d+/answer/([\w-]+)")
         match = pattern.search(url)
         return match.group(1) if match else None
 
@@ -31,8 +30,7 @@ class Answer(Model):
         """
         赞同
         """
-        r = self._execute(
-            url=URL.vote_up(self.id), data={"type": "up"}, **kwargs)
+        r = self._execute(url=URL.vote_up(self.id), data={"type": "up"}, **kwargs)
         if r.ok:
             return r.json()
         else:
@@ -45,8 +43,7 @@ class Answer(Model):
         """
         反对
         """
-        r = self._execute(
-            url=URL.vote_down(self.id), data={"type": "down"}, **kwargs)
+        r = self._execute(url=URL.vote_down(self.id), data={"type": "down"}, **kwargs)
         if r.ok:
             return r.json()
         else:
@@ -59,8 +56,7 @@ class Answer(Model):
         """
         中立
         """
-        r = self._execute(
-            url=URL.vote_neutral(self.id), data={"type": "neutral"}, **kwargs)
+        r = self._execute(url=URL.vote_neutral(self.id), data={"type": "neutral"}, **kwargs)
         if r.ok:
             return r.json()
         else:
