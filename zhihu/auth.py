@@ -1,14 +1,24 @@
 # encoding: utf-8
 
 import os
+import requests
 
 from zhihu.models import account
-from zhihu.settings import COOKIES_FILE
+import requests.utils
 
 try:
     input = raw_input  # py2
 except:
     pass
+
+
+def login():
+    success = False
+    while not success:
+        email = input("请输入email或者手机号码:")
+        password = input("请输入密码:")
+        success = account.Account().login(email, password)
+    # session.cookies.save(ignore_discard=True)
 
 
 def need_login(func):
@@ -17,16 +27,15 @@ def need_login(func):
     """
 
     def wrapper(self, *args, **kwargs):
-        success = True
-        # TODO 1. 不能这样简单粗暴判断cookie文件存不存在,因为有可能文件里面的cookie信息已经过期,也有可能只是一个空文件
-        if not os.path.exists(COOKIES_FILE):
-            success = False
-            while not success:
-                email = input("请输入email或者手机号码:")
-                password = input("请输入密码:")
-                success = account.Account().login(email, password)
-        if success:
-            result = func(self, *args, **kwargs)
-            return result
+        if 'z_c0' not in requests.utils.dict_from_cookiejar(self._session.cookies):
+            # 先尝试加载本地cookies
+            try:
+                self._session.cookies.load(ignore_discard=True)
+            except:
+                pass
+            # 如果加载cookies后依然无登录信息，则重新登录
+            if 'z_c0' not in requests.utils.dict_from_cookiejar(self._session.cookies):
+                login()
+        return func(self, *args, **kwargs)
 
     return wrapper

@@ -22,7 +22,6 @@ import requests.packages.urllib3 as urllib3
 from bs4 import BeautifulSoup
 from zhihu.error import ZhihuError
 from zhihu.url import URL
-
 from zhihu import settings
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -102,7 +101,12 @@ class Model(object):
         else:
             raise ZhihuError("invalid profile url")
 
-    def _execute(self, method="post", url=None, data=None, data_type=RequestDataType.JSON_DATA, **kwargs):
+    def _execute(self,
+                 method="post",
+                 url=None,
+                 data=None,
+                 data_type=RequestDataType.JSON_DATA,
+                 **kwargs):
         """
         通用请求方法
         :param method: 请求方法

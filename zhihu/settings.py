@@ -46,14 +46,16 @@ user_agent_list = [
 
 USER_AGENT = random.choice(user_agent_list)
 
-HEADERS = {"Host": "www.zhihu.com",
-           "Referer": "https://www.zhihu.com/",
-           'User-Agent': USER_AGENT
-           }
+HEADERS = {
+    "Host": "www.zhihu.com",
+    "Referer": "https://www.zhihu.com/",
+    'User-Agent': USER_AGENT
+}
 
-ZHUANLAN_HEADERS = {"Host": "zhuanlan.zhihu.com",
-                    "Referer": "https://zhuanlan.zhihu.com/",
-                    'User-Agent': USER_AGENT
-                    }
+ZHUANLAN_HEADERS = {
+    "Host": "zhuanlan.zhihu.com",
+    "Referer": "https://zhuanlan.zhihu.com/",
+    'User-Agent': USER_AGENT
+}
 
 COOKIES_FILE = os.path.join(os.path.expanduser('~'), "cookies.txt")
