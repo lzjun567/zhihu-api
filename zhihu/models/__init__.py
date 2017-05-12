@@ -101,12 +101,7 @@ class Model(object):
         else:
             raise ZhihuError("invalid profile url")
 
-    def _execute(self,
-                 method="post",
-                 url=None,
-                 data=None,
-                 data_type=RequestDataType.JSON_DATA,
-                 **kwargs):
+    def _execute(self, method="post", url=None, data=None, data_type=RequestDataType.JSON_DATA, **kwargs):
         """
         通用请求方法
         :param method: 请求方法

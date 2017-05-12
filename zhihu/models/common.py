@@ -11,12 +11,7 @@ from zhihu.url import URL
 
 class Common(Model):
     @need_login
-    def send_message(self,
-                     content,
-                     user_id=None,
-                     profile_url=None,
-                     user_slug=None,
-                     **kwargs):
+    def send_message(self, content, user_id=None, profile_url=None, user_slug=None, **kwargs):
         """
         给指定的用户发私信
         :param content 私信内容

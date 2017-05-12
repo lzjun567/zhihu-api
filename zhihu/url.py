@@ -26,8 +26,7 @@ class URL(object):
     # 验证码
     @staticmethod
     def captcha(timestamp):
-        return URL.host + "/captcha.gif?r={timestamp}&type=login".format(
-            timestamp=timestamp)
+        return URL.host + "/captcha.gif?r={timestamp}&type=login".format(timestamp=timestamp)
 
     # 首页
     @staticmethod
@@ -37,14 +36,12 @@ class URL(object):
     # 用户信息
     @staticmethod
     def profile(user_slug):
-        return URL.host + "/api/v4/members/{user_slug}".format(
-            user_slug=user_slug)
+        return URL.host + "/api/v4/members/{user_slug}".format(user_slug=user_slug)
 
     # 关注用户
     @staticmethod
     def follow_people(user_slug):
-        return URL.host + "/api/v4/members/{user_slug}/followers".format(
-            user_slug=user_slug)
+        return URL.host + "/api/v4/members/{user_slug}/followers".format(user_slug=user_slug)
 
     # 赞同/反对/中立
     @staticmethod
@@ -63,16 +60,14 @@ class URL(object):
     # 关注某问题/取消关注某问题
     @staticmethod
     def follow_question(question_id):
-        return URL.host + "/api/v4/questions/{id}/followers".format(
-            id=question_id)
+        return URL.host + "/api/v4/questions/{id}/followers".format(id=question_id)
 
     unfollow_question = follow_question
 
     # 专栏
     @staticmethod
     def column(slug):
-        return "https://zhuanlan.zhihu.com/api/columns/{slug}".format(
-            slug=slug)
+        return "https://zhuanlan.zhihu.com/api/columns/{slug}".format(slug=slug)
 
     # 专栏主页
     @staticmethod
@@ -82,11 +77,12 @@ class URL(object):
     # 专栏的关注者
     @staticmethod
     def column_followers(slug):
-        a = URL.zhuanlan_host + "/api/columns/{slug}/followers".format(
-            slug=slug)
+        a = URL.zhuanlan_host + "/api/columns/{slug}/followers".format(slug=slug)
         return a
 
     # 关注某专栏/取消关注某专栏
     @staticmethod
     def follow_column(slug):
         return URL.zhuanlan_host + "/api/columns/{slug}/follow".format(slug=slug)
+
+    unfollow_column = follow_column

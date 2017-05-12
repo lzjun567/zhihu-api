@@ -55,7 +55,7 @@ class Column(Model):
     @need_login
     def unfollow(self, **kwargs):
         """取消关注某专栏"""
-        r = self._execute(method="delete", url=URL.follow_column(self.slug), **kwargs)
+        r = self._execute(method="delete", url=URL.unfollow_column(self.slug), **kwargs)
         if r.ok:
             print("取消关注专栏成功")
         else:
