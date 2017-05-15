@@ -23,6 +23,7 @@ if __name__ == '__main__':
     from zhihu import Zhihu
 
     zhihu = Zhihu()
+    print(zhihu)
     profile  = zhihu.user(user_slug="xiaoxiaodouzi")
     print(profile)
 
