@@ -3,7 +3,7 @@
 通用的操作放在此模块中
 """
 
-from zhihu.auth import need_login, login
+from zhihu.auth import need_login
 from zhihu.error import ZhihuError
 from zhihu.models import Model
 from zhihu.url import URL
@@ -38,9 +38,7 @@ class Common(Model):
             self.log("发送成功")
         else:
             self.log("发送失败")
-            if response.status_code == 401:
-                self.log("登录信息已过期，需要重新登录")
-                login()
+            raise ZhihuError("操作失败：%s" % response.text)
 
     @need_login
     def user(self, user_slug=None, profile_url=None, **kwargs):
@@ -64,10 +62,7 @@ class Common(Model):
         if response.ok:
             return response.json()
         else:
-            self.log(u"获取用户信息失败, status code: %s" % response.status_code)
-            if response.status_code == 401:
-                self.log("登录信息已过期，需要重新登录")
-                login()
+            raise ZhihuError("操作失败：%s" % response.text)
 
     @need_login
     def follow(self, user_slug=None, profile_url=None, **kwargs):
@@ -88,10 +83,7 @@ class Common(Model):
         if response.ok:
             return response.json()
         else:
-            self.log(u"关注失败, status code: %s" % response.status_code)
-            if response.status_code == 401:
-                self.log("登录信息已过期，需要重新登录")
-                login()
+            raise ZhihuError("操作失败：%s" % response.text)
 
     @need_login
     def unfollow(self, user_slug=None, profile_url=None, **kwargs):
@@ -113,7 +105,4 @@ class Common(Model):
         if response.ok:
             return response.json()
         else:
-            self.log(u"取消关注失败, status code: %s" % response.status_code)
-            if response.status_code == 401:
-                self.log("登录信息已过期，需要重新登录")
-                login()
+            raise ZhihuError("操作失败：%s" % response.text)

@@ -2,7 +2,7 @@
 
 import re
 
-from zhihu.auth import need_login, login
+from zhihu.auth import need_login
 from zhihu.error import ZhihuError
 from zhihu.models import Model
 from zhihu.settings import ZHUANLAN_HEADERS
@@ -48,9 +48,7 @@ class Column(Model):
         if r.ok:
             print("关注专栏成功")
         else:
-            if r.status_code == 401:
-                self.log("登录信息已过期，需要重新登录")
-                login()
+            raise ZhihuError("操作失败：%s" % r.text)
 
     @need_login
     def unfollow(self, **kwargs):
@@ -59,9 +57,7 @@ class Column(Model):
         if r.ok:
             print("取消关注专栏成功")
         else:
-            if r.status_code == 401:
-                self.log("登录信息已过期，需要重新登录")
-                login()
+            raise ZhihuError("操作失败：%s" % r.text)
     
     def _get_xsrf(self, **kwargs):
         response = self._session.get(URL.column_index(self.slug), **kwargs)

@@ -3,9 +3,9 @@
 import logging
 import os
 import platform
+import re
 import subprocess
 import time
-import re
 
 try:
     from http import cookiejar  # py3

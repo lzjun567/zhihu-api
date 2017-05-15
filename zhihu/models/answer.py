@@ -2,7 +2,7 @@
 
 import re
 
-from zhihu.auth import need_login, login
+from zhihu.auth import need_login
 from zhihu.error import ZhihuError
 from zhihu.models import Model
 from zhihu.url import URL
@@ -34,9 +34,7 @@ class Answer(Model):
         if r.ok:
             return r.json()
         else:
-            if r.status_code == 401:
-                self.log("登录信息已过期，需要重新登录")
-                login()
+            raise ZhihuError("操作失败：%s" % r.text)
 
     @need_login
     def vote_down(self, **kwargs):
@@ -47,9 +45,7 @@ class Answer(Model):
         if r.ok:
             return r.json()
         else:
-            if r.status_code == 401:
-                self.log("登录信息已过期，需要重新登录")
-                login()
+            raise ZhihuError("操作失败：%s" % r.text)
 
     @need_login
     def vote_neutral(self, **kwargs):
@@ -60,9 +56,7 @@ class Answer(Model):
         if r.ok:
             return r.json()
         else:
-            if r.status_code == 401:
-                self.log("登录信息已过期，需要重新登录")
-                login()
+            raise ZhihuError("操作失败：%s" % r.text)
 
     @need_login
     def thank(self, **kwargs):
@@ -73,9 +67,7 @@ class Answer(Model):
         if r.ok:
             return r.json()
         else:
-            if r.status_code == 401:
-                self.log("登录信息已过期，需要重新登录")
-                login()
+            raise ZhihuError("操作失败：%s" % r.text)
 
     @need_login
     def thank_cancel(self, **kwargs):
@@ -86,6 +78,4 @@ class Answer(Model):
         if r.ok:
             return r.json()
         else:
-            if r.status_code == 401:
-                self.log("登录信息已过期，需要重新登录")
-                login()
+            raise ZhihuError("操作失败：%s" % r.text)

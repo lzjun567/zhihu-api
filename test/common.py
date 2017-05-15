@@ -1,13 +1,21 @@
 # encoding: utf-8
+import time
 import unittest
 
 from zhihu import Zhihu
 from zhihu.error import ZhihuError
-import time
-from zhihu.models import Model
 
 
 class CommonTestCase(unittest.TestCase):
+    def test_user_profile(self):
+        """
+        获取用户信息
+        :return:
+        """
+        zhihu = Zhihu()
+        profile = zhihu.user(user_slug="xiaoxiaodouzi")
+        print(profile)
+
     def test_send_message_with_no_kwargs(self):
         """
         不带关键字参数，抛出异常
