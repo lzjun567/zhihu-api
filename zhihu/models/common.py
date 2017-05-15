@@ -1,10 +1,9 @@
 # encoding: utf-8
-
 """
 通用的操作放在此模块中
 """
 
-from zhihu.auth import need_login
+from zhihu.auth import need_login, login
 from zhihu.error import ZhihuError
 from zhihu.models import Model
 from zhihu.url import URL
@@ -28,16 +27,20 @@ class Common(Model):
             raise ZhihuError("至少指定一个关键字参数")
 
         if user_id is None:
-            user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
+            user_slug = self._user_slug(
+                profile_url) if user_slug is None else user_slug
             user_id = self._user_id(user_slug)
 
         data = {"type": "common", "content": content, "receiver_hash": user_id}
         response = self._session.post(URL.message(), json=data, **kwargs)
         if response.ok:
-            response.json()
+            return response.json()
             self.log("发送成功")
         else:
             self.log("发送失败")
+            if response.status_code == 401:
+                self.log("登录信息已过期，需要重新登录")
+                login()
 
     @need_login
     def user(self, user_slug=None, profile_url=None, **kwargs):
@@ -62,6 +65,9 @@ class Common(Model):
             return response.json()
         else:
             self.log(u"获取用户信息失败, status code: %s" % response.status_code)
+            if response.status_code == 401:
+                self.log("登录信息已过期，需要重新登录")
+                login()
 
     @need_login
     def follow(self, user_slug=None, profile_url=None, **kwargs):
@@ -83,6 +89,9 @@ class Common(Model):
             return response.json()
         else:
             self.log(u"关注失败, status code: %s" % response.status_code)
+            if response.status_code == 401:
+                self.log("登录信息已过期，需要重新登录")
+                login()
 
     @need_login
     def unfollow(self, user_slug=None, profile_url=None, **kwargs):
@@ -98,9 +107,13 @@ class Common(Model):
         if not any([profile_url, user_slug]):
             raise ZhihuError("至少指定一个关键字参数")
 
-        user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
+        user_slug = self._user_slug(
+            profile_url) if user_slug is None else user_slug
         response = self._session.delete(URL.follow_people(user_slug), **kwargs)
         if response.ok:
             return response.json()
         else:
             self.log(u"取消关注失败, status code: %s" % response.status_code)
+            if response.status_code == 401:
+                self.log("登录信息已过期，需要重新登录")
+                login()

@@ -2,6 +2,7 @@
 
 import re
 
+from zhihu.auth import need_login, login
 from zhihu.error import ZhihuError
 from zhihu.models import Model
 from zhihu.settings import ZHUANLAN_HEADERS
@@ -19,6 +20,7 @@ class Column(Model):
             raise ZhihuError("没有指定专栏的的slug或者url")
         self.slug = slug
         super(Column, self).__init__(headers=ZHUANLAN_HEADERS)
+        self._session.headers["x-xsrf-token"] = self._get_xsrf()
 
     @staticmethod
     def _extract_slug(url):
@@ -38,3 +40,29 @@ class Column(Model):
         """
         r = self._session.get(URL.column_followers(self.slug), params={"limit": limit, "offset": offset}, **kwargs)
         return r.json()
+
+    @need_login
+    def follow(self, **kwargs):
+        """关注某专栏"""
+        r = self._execute(method="put", url=URL.follow_column(self.slug), **kwargs)
+        if r.ok:
+            print("关注专栏成功")
+        else:
+            if r.status_code == 401:
+                self.log("登录信息已过期，需要重新登录")
+                login()
+
+    @need_login
+    def unfollow(self, **kwargs):
+        """取消关注某专栏"""
+        r = self._execute(method="delete", url=URL.unfollow_column(self.slug), **kwargs)
+        if r.ok:
+            print("取消关注专栏成功")
+        else:
+            if r.status_code == 401:
+                self.log("登录信息已过期，需要重新登录")
+                login()
+    
+    def _get_xsrf(self, **kwargs):
+        response = self._session.get(URL.column_index(self.slug), **kwargs)
+        return response.cookies['XSRF-TOKEN']

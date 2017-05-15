@@ -56,9 +56,9 @@ class Account(Model):
             result = r.json()
             if result.get("r") == 0:
                 self.log(result.get("msg"))
+                self._session.cookies.save(ignore_discard=True)     # 保存登录信息cookies
                 return True
             else:
-
                 self.log(result.get("msg"), level=logging.ERROR)
                 return False
 

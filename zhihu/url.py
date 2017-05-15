@@ -1,5 +1,4 @@
 # encoding: utf-8
-
 """
 通用ＵＲＬ类,知乎官方ＵＲＬ接口地址
 """
@@ -70,8 +69,20 @@ class URL(object):
     def column(slug):
         return "https://zhuanlan.zhihu.com/api/columns/{slug}".format(slug=slug)
 
+    # 专栏主页
+    @staticmethod
+    def column_index(slug):
+        return URL.zhuanlan_host + "/{slug}".format(slug=slug)
+
     # 专栏的关注者
     @staticmethod
     def column_followers(slug):
-        a =  URL.zhuanlan_host + "/api/columns/{slug}/followers".format(slug=slug)
+        a = URL.zhuanlan_host + "/api/columns/{slug}/followers".format(slug=slug)
         return a
+
+    # 关注某专栏/取消关注某专栏
+    @staticmethod
+    def follow_column(slug):
+        return URL.zhuanlan_host + "/api/columns/{slug}/follow".format(slug=slug)
+
+    unfollow_column = follow_column

@@ -35,7 +35,6 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
      'url_token': 'xiaoxiaodouzi',
      'id': '1da75b85900e00adb072e91c56fd9149',
      'is_org': False}
-
 ```
 
 **私信发送**
@@ -94,6 +93,19 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
               u'name': u'keyoka', u'profileUrl': u'https://www.zhihu.com/people/yi-hu-84',
               u'avatar': {u'id': u'785bfd914', u'template': u'https://pic1.zhimg.com/{id}_{size}.jpg'},
               u'isOrgWhiteList': False, u'slug': u'yi-hu-84', u'uid': 43738302775296L}]
+```
+
+
+**关注专栏**
+```
+>>> column.follow()
+关注专栏成功
+```
+
+**取消关注专栏**
+```
+>>> column.follow()
+取消关注专栏成功
 ```
 
 每个接口都提供了不只一种方式调用，更多参考单元测试里面的例子
