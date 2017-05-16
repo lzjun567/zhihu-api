@@ -22,8 +22,13 @@ if __name__ == '__main__':
 
     from zhihu import Zhihu
 
-    zhihu = Zhihu()
-    print(zhihu)
-    profile  = zhihu.user(user_slug="xiaoxiaodouzi")
-    print(profile)
+    # zhihu = Zhihu()
+    # print(zhihu)
+    # profile  = zhihu.user(user_slug="xiaoxiaodouzi")
+    # print(profile)
+
+    from zhihu import Account
+
+    account = Account()
+    account.register("续航小三", phone_num="+33752962193", password="zhihudetail")
 

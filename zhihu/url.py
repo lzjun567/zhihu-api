@@ -3,6 +3,8 @@
 通用ＵＲＬ类,知乎官方ＵＲＬ接口地址
 """
 
+import time
+
 
 class URL(object):
     host = "https://www.zhihu.com"
@@ -25,8 +27,9 @@ class URL(object):
 
     # 验证码
     @staticmethod
-    def captcha(timestamp):
-        return URL.host + "/captcha.gif?r={timestamp}&type=login".format(timestamp=timestamp)
+    def captcha(_type="login"):
+        return URL.host + "/captcha.gif?r={timestamp}&type={type}".format(timestamp=str(int(time.time() * 1000)),
+                                                                          type=_type)
 
     # 首页
     @staticmethod

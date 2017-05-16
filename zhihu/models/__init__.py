@@ -5,7 +5,6 @@ import os
 import platform
 import re
 import subprocess
-import time
 
 try:
     from http import cookiejar  # py3
@@ -56,9 +55,8 @@ class Model(object):
     def log(self, message, level=logging.INFO, **kw):
         self.logger.log(level, message, **kw)
 
-    def _get_captcha(self, **kwargs):
-        t = str(int(time.time() * 1000))
-        r = self._session.get(URL.captcha(t), **kwargs)
+    def _get_captcha(self, _type="login", **kwargs):
+        r = self._session.get(URL.captcha(_type=_type), **kwargs)
         with open('captcha.jpg', 'wb') as f:
             f.write(r.content)
 
@@ -71,8 +69,14 @@ class Model(object):
         captcha = input("验证码：")
         return captcha
 
-    def _get_xsrf(self, **kwargs):
-        response = self._session.get(URL.index(), **kwargs)
+    def _get_xsrf(self, url=None, **kwargs):
+        """
+        获取某个页面下的xsrf
+        :param url:
+        :param kwargs:
+        :return:
+        """
+        response = self._session.get(url or URL.index(), **kwargs)
         soup = BeautifulSoup(response.content, "html.parser")
         xsrf = soup.find('input', attrs={"name": "_xsrf"}).get("value")
         return xsrf
