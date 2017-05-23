@@ -17,11 +17,11 @@ class Search(Model):
         >>> search = zhihu.Search()
         >>> search.search_content('python')
         """
-        html = self._get_search_response(type='content', q=q)
+        html = self._get_search_response(search_type='content', key_words=q)
         return self._extract_questions(html)
 
-    def _get_search_response(self, type='content', q=''):
-        response = self._session.get(URL.search(), params={'type': type, 'q': q})
+    def _get_search_response(self, search_type='content', key_words=''):
+        response = self._session.get(URL.search(), params={'type': search_type, 'q': key_words})
         return response.text
 
     @staticmethod
