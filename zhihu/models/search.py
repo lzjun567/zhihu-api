@@ -40,7 +40,7 @@ class Search(Model):
                 'offset': offset
             }
             response = self._session.get(URL.search(get_more=True), params=params)
-            return response.json()['htmls'][0]
+            return "".join(response.json()['htmls'])
         else:
             response = self._session.get(URL.search(), params={'type': search_type, 'q': key_words})
             return response.text
