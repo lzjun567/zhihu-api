@@ -16,8 +16,8 @@ class Search(Model):
         :param key_words: 搜索关键词
         :param number_of_results: 想要获得的结果数量
         :return: (ids, titles) 问题id与题目
-        >>> search = zhihu.Search()
-        >>> search.search_content('python', 20)
+        >>> search = Search()
+        >>> search.search_question('python', 20)
         """
         html = self._get_search_response(search_type='content', key_words=key_words)
         ids, titles = self._extract_questions(html)
@@ -39,8 +39,8 @@ class Search(Model):
         :param key_words: 搜索关键词
         :param number_of_results: 想要获得的结果数量
         :return: (ids, titles) 用户id与用户名
-        >>> search = zhihu.Search()
-        >>> search.search_content('python', 20)
+        >>> search = Search()
+        >>> search.search_people('python', 20)
         """
         html = self._get_search_response(search_type='people', key_words=key_words)
         ids, names = self._extract_people(html)
@@ -62,8 +62,8 @@ class Search(Model):
         :param key_words: 搜索关键词
         :param number_of_results: 想要获得的结果数量
         :return: (ids, titles) 话题id与话题名
-        >>> search = zhihu.Search()
-        >>> search.search_content('python', 20)
+        >>> search = Search()
+        >>> search.search_topic('python', 20)
         """
         html = self._get_search_response(search_type='topic', key_words=key_words)
         ids, topics = self._extract_topics(html)
