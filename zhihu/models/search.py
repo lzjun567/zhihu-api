@@ -7,6 +7,7 @@ from zhihu.error import ZhihuError
 from zhihu.models import Model
 from zhihu.url import URL
 
+
 class Search(Model):
     @need_login
     def search_content(self, key_words='', number_of_results=10):
@@ -16,7 +17,7 @@ class Search(Model):
         :param number_of_results: 想要获得的结果数量
         :return: (ids, titles) 问题id与题目
         >>> search = zhihu.Search()
-        >>> search.search_content('python', 10)
+        >>> search.search_content('python', 20)
         """
         html = self._get_search_response(search_type='content', key_words=key_words)
         ids, titles = self._extract_questions(html)
