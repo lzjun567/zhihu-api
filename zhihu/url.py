@@ -107,5 +107,5 @@ class URL(object):
 
     # 搜索内容／用户／话题
     @staticmethod
-    def search():
-        return URL.host + "/search"
+    def search(get_more=False):
+        return URL.host + "/search" if get_more else URL.host + "/r/search"
