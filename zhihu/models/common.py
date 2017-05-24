@@ -106,3 +106,37 @@ class Common(Model):
             return response.json()
         else:
             raise ZhihuError("操作失败：%s" % response.text)
+            
+    def follows(self, user_name=None):
+        """
+        用户所关注人数，被关注的人数
+        :param user_slug:
+        :param profile_url:
+        :return: {"follower_count": int}
+
+        >>> follows(user_name = "高日日")
+        """
+        if not user_name:
+            raise ZhihuError("至少指定一个关键字参数")
+
+        user_slug = self._get_token(user_name)
+
+        response = requests.get(URL.user_followed_number(user_slug), headers={'User-Agent':
+                                         'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'
+                                     })
+        if response.ok:
+            soup = BeautifulSoup(response.text, 'lxml')
+            init_data_renshu = soup.select('div[class="NumberBoard-value"]')
+
+            dicts = dict()
+            counts = 0
+            for i in init_data_renshu:
+                if counts < 1:
+                    dicts["following"] = str(i.get_text())
+                else:
+                    dicts["followers"] = str(i.get_text())
+                counts += 1
+
+            print(dicts)
+        else:
+            raise ZhihuError("操作失败：%s" % response.text)

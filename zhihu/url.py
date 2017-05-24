@@ -45,7 +45,12 @@ class URL(object):
     @staticmethod
     def follow_people(user_slug):
         return URL.host + "/api/v4/members/{user_slug}/followers".format(user_slug=user_slug)
-
+    
+    # 用户关注页面
+    @staticmethod
+    def user_followed_number(slug):
+        return URL.host + "{slug}/following".format(slug=slug)
+    
     # 赞同/反对/中立
     @staticmethod
     def vote_up(answer_id):
