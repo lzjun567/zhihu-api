@@ -120,3 +120,25 @@ class Model(object):
         else:
             r = getattr(self._session, method)(url, data=data, **kwargs)
         return r
+    def _get_token(self, Name=None, Headers=settings.HEADERS):
+        assert type(Name) == str, "name的类型必须为字符串形式"
+        """
+        根据用户名，获取最相关的用户的token。
+        :return: token
+        >>> _get_token(Name="高日日")
+        >>> 返回/people/gao-ri-ri-78
+        """
+        url = 'https://www.zhihu.com/search?type=people&q={}'.format(Name)
+        data = requests.get(url, headers=Headers)
+        soup = BeautifulSoup(data.text, 'lxml')
+        yonghu = soup.select('a[class="name-link author-link"]')
+        pattern = '<a.*?href="([^"]*)".*?>(?:[\S\s]*?)</a>'
+        token = None
+        for i in yonghu:
+            i = str(i)
+            mat = re.findall(pattern, i)
+            token = mat
+            if token[0]:
+                break
+
+        return token[0]
