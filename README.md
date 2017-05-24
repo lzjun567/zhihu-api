@@ -47,8 +47,8 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 
 ```
 >>> zhihu.follows("高日日")
-关注人数,30
-关注者,4
+{"following": 30,
+ "followers": 4}
 ```
 
 **关注用户**
