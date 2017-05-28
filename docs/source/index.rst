@@ -3,18 +3,30 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to zhihu-api's documentation!
+Zhihu API for Humans
 =====================================
 
+Zhihu API 是一个第三方知乎API工具包
+
+
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+      :maxdepth: 2
+
+      start
+      encryption
+      deploy
+      handlers
+      session
+      client
+      messages
+      events
+      replies
+      config
+      contrib
+      error-page
+      utils
+      contribution-guide
+      api
+      changelog
 
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

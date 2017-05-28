@@ -1,7 +1,8 @@
 from setuptools import setup
 
 setup(
-    name="zhihu",
+    name="zhihu-api",
+    version="",
 
     packages=[
         "zhihu",
