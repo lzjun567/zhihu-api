@@ -89,3 +89,18 @@ class URL(object):
         return URL.zhuanlan_host + "/api/columns/{slug}/follow".format(slug=slug)
 
     unfollow_column = follow_column
+
+    # 注册用的短信验证码
+    @staticmethod
+    def register_sms_code():
+        return URL.host + "/send_register_verification_code/sms"
+
+    # 注册验证URL
+    @staticmethod
+    def register_validate():
+        return URL.host + "/register/phone_num/validation"
+
+    # 注册
+    @staticmethod
+    def register():
+        return URL.host + "/register/phone_num"

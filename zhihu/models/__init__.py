@@ -66,7 +66,7 @@ class Model(object):
             subprocess.call(['xdg-open', 'captcha.jpg'])
         else:
             os.startfile('captcha.jpg')
-        captcha = input("验证码：")
+        captcha = input("输入验证码：")
         return captcha
 
     def _get_xsrf(self, url=None, **kwargs):
@@ -105,18 +105,19 @@ class Model(object):
         else:
             raise ZhihuError("invalid profile url")
 
-    def _execute(self, method="post", url=None, data=None, data_type=RequestDataType.JSON_DATA, **kwargs):
+    def _execute(self, method="post", url=None, params=None, data=None, data_type=RequestDataType.JSON_DATA, **kwargs):
         """
         通用请求方法
         :param method: 请求方法
         :param url:     请求URL
+        :param params:  请求参数
         :param data:    请求数据
         :param data_type:    提交的数据格式(可能是表单类型,也可能是json格式的字符串)
         :param kwargs:  requests支持的参数，比如可以设置代理参数
         :return: response
         """
         if data_type == RequestDataType.JSON_DATA:
-            r = getattr(self._session, method)(url, json=data, **kwargs)
+            r = getattr(self._session, method)(url, json=data, params=params, **kwargs)
         else:
-            r = getattr(self._session, method)(url, data=data, **kwargs)
+            r = getattr(self._session, method)(url, data=data, params=params, **kwargs)
         return r
