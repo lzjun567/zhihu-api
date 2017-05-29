@@ -42,6 +42,6 @@ class Question(Model):
         """取消关注某问题"""
         r = self._execute(method="delete", url=URL.unfollow_question(self.id), **kwargs)
         if r.ok:
-            return r.json()
+            return {'is_following': False}
         else:
             raise ZhihuError("操作失败：%s" % r.text)

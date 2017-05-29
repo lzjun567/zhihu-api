@@ -55,7 +55,6 @@ class Account(Model):
                                           **kwargs)
 
         if r.ok:
-            print(r.text)
             result = r.json()
             if result.get("r") == 0:
                 self.log(result.get("msg"))

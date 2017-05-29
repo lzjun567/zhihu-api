@@ -4,7 +4,7 @@ from zhihu import Account
 
 account = Account()
 # account.login("邮箱地址或者手机号码", "这里是密码")
-account.login("+33752962193", "zhihudetail")
+# account.login("+33752962193", "zhihudetail")
 
 from zhihu import Zhihu
 
@@ -21,8 +21,10 @@ logging.basicConfig(level=logging.INFO)
 
 if __name__ == '__main__':
     # vote_up_with_id()
+    from zhihu import Question
+    Question(id="60231684").unfollow_question()
 
-    Zhihu().login("+33752962193", "zhihudetail")
+    # Zhihu().login("+33752962193", "zhihudetail")
     # model.login("158", "xxxx")
 
     # from zhihu import Zhihu

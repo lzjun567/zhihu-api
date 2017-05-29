@@ -1,18 +1,29 @@
-入门
+基本操作
 ==========
 .. module:: zhihu
 
 
 登录
 -------
-
-    >>> Account().login("+xxxxx", "xxxxxxxx")
-    输入验证码：ehmk
-    True
+    >>> import logging
+    >>> logging.basicConfig(level=logging.INFO)
+    >>> from zhihu import Account
+    >>> Account().login("+33752962193", "zhihudetail")
+    输入验证码：uyhx
+    {'r': 0, 'msg': '登录成功'}
+    >>>
 
 注册
 --------
 
+    >>> Account().register(name="我是keso", phone_num="+13055639102", password="zhihudetail")
+    输入验证码：bnnf
+    INFO:Account:账号验证成功,发送短信验证码
+    INFO:Account:发送成功
+    输入短信验证码:436326
+    INFO:Account:注册成功
+    {'r': 0, 'msg': '注册成功'}
+    >>>
 
 
 用户信息
