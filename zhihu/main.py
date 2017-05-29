@@ -22,15 +22,15 @@ logging.basicConfig(level=logging.INFO)
 if __name__ == '__main__':
     # vote_up_with_id()
 
-    # model.login("+33752962193", "zhihudetail")
+    Zhihu().login("+33752962193", "zhihudetail")
     # model.login("158", "xxxx")
 
-    from zhihu import Zhihu
-
-    profile  = Zhihu().user(user_slug="xiaoxiaodouzi")
-    # print(profile)
-
-    from zhihu import Account
-
-    account = Account()
-    account.register("续航小三", phone_num="+33752962193", password="zhihudetail")
+    # from zhihu import Zhihu
+    #
+    # profile  = Zhihu().user(user_slug="xiaoxiaodouzi")
+    # # print(profile)
+    #
+    # from zhihu import Account
+    #
+    # account = Account()
+    # account.register("续航小三", phone_num="+33752962193", password="zhihudetail")

@@ -29,7 +29,7 @@ class Account(Model):
             return self._login_with_phone(account, password, **kwargs)
         else:
             self.log("无效的用户名", level=logging.ERROR)
-            return False
+            return {"r": 1, "msg": "无效的用户名"}
 
     def _login_with_phone(self, phone, password, **kwargs):
         data = {
@@ -55,19 +55,20 @@ class Account(Model):
                                           **kwargs)
 
         if r.ok:
+            print(r.text)
             result = r.json()
             if result.get("r") == 0:
                 self.log(result.get("msg"))
                 self._session.cookies.save(ignore_discard=True)  # 保存登录信息cookies
-                return True
+                return result
             else:
                 self.log(result.get("msg"), level=logging.ERROR)
-                return False
+                return result
 
         else:
             self.log("登录失败", level=logging.ERROR)
             self.log(r.text)
-            return False
+            return {'r': 1, "msg": "登录失败"}
 
     def _register_validate(self, data):
         """
@@ -107,12 +108,12 @@ class Account(Model):
             r = self._execute(method="post", url=URL.register(), data=data, data_type=RequestDataType.FORM_DATA)
             if r.ok and r.json().get("r") == 0:
                 self.log("注册成功")
-                return True
+                return r.json()
             else:
-                if r.ok and r.json.get("r") != 0:
-                    self.log(r.json.get("msg"), level=logging.ERROR)
+                if r.ok and r.json().get("r") != 0:
+                    self.log(r.json().get("msg"), level=logging.ERROR)
                 if not r.ok:
                     self.log("请求失败", level=logging.ERROR)
-                return False
+                return r.json()
         else:
             raise ZhihuError("验证失败,请查看日志")

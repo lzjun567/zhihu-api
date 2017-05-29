@@ -105,6 +105,8 @@ class Zhihu(Model):
             profile_url) if user_slug is None else user_slug
         response = self._session.delete(URL.follow_people(user_slug), **kwargs)
         if response.ok:
-            return response.json()
+            data = response.json()
+            data['followed'] = False
+            return data
         else:
             raise ZhihuError("操作失败：%s" % response.text)
