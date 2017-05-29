@@ -6,6 +6,8 @@ import io
 with io.open("README.md", encoding="utf8") as f:
     readme = f.read()
 
+install_requires = open("requirements.txt").readlines()
+
 setup(
     name="zhihu-api",
     version=zhihu.__version__,
@@ -13,7 +15,7 @@ setup(
     author_email="lzjun567@gmail.com",
     url="https://github.com/lzjun567/zhihu-api",
     packages=find_packages(),
-    keyworads = "zhihu",
+    keyworads="zhihu",
     description="zhihu api from humans",
     long_description=readme,
     # packages=[
@@ -41,16 +43,11 @@ setup(
         'Topic :: Utilities',
     ],
 
-    install_requires=[
-
-        "pytest-runner",
-        "requests",
-        "beautifulsoup4"
-    ],
+    install_requires=install_requires,
     setup_requires=[
         'pytest-runner',
     ],
     tests_require=[
-        "pytest"
+        "pytest",
     ]
 )
