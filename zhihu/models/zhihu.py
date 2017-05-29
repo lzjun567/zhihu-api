@@ -9,14 +9,14 @@ from zhihu.models import Model
 from zhihu.url import URL
 
 
-class Common(Model):
+class Zhihu(Model):
     @need_login
     def send_message(self, content, user_id=None, profile_url=None, user_slug=None, **kwargs):
         """
         给指定的用户发私信
         :param content 私信内容
         :param user_id 用户id
-        :param profile_url :用户主页地址
+        :param profile_url: 用户主页地址
         :param user_slug : 用户的个性域名
 
         >>> send_message(profile_url = "https://www.zhihu.com/people/xiaoxiaodouzi")
@@ -81,7 +81,9 @@ class Common(Model):
         user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
         response = self._session.post(URL.follow_people(user_slug), **kwargs)
         if response.ok:
-            return response.json()
+            data = response.json()
+            data['followed'] = True
+            return data
         else:
             raise ZhihuError("操作失败：%s" % response.text)
 

@@ -25,9 +25,9 @@ if __name__ == '__main__':
     # model.login("+33752962193", "zhihudetail")
     # model.login("158", "xxxx")
 
-    # from zhihu import Zhihu
+    from zhihu import Zhihu
 
-    # profile  = zhihu.user(user_slug="xiaoxiaodouzi")
+    profile  = Zhihu().user(user_slug="xiaoxiaodouzi")
     # print(profile)
 
     from zhihu import Account
