@@ -1,5 +1,4 @@
 from setuptools import setup
-import zhihu
 from setuptools import find_packages
 import io
 
@@ -10,8 +9,8 @@ install_requires = open("requirements.txt").readlines()
 
 setup(
     name="zhihu-api",
-    version=zhihu.__version__,
-    author=zhihu.__author__,
+    version="0.0.1",
+    author="liuzhijun",
     author_email="lzjun567@gmail.com",
     url="https://github.com/lzjun567/zhihu-api",
     packages=find_packages(),
