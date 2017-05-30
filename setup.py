@@ -5,7 +5,7 @@ import io
 with io.open("README.md", encoding="utf8") as f:
     readme = f.read()
 
-install_requires = open("requirements.txt").readlines()
+install_requires = open("requirement.txt").readlines()
 
 setup(
     name="zhihu-api",
