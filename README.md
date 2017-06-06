@@ -43,6 +43,14 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 >>> zhihu.send_message("你好,问候2", user_slug="xiaoxiaodouzi")
 ```
 
+**关注用户和被关注用户**
+
+```
+>>> zhihu.follows("高日日")
+关注人数,30
+关注者,4
+```
+
 **关注用户**
 ```
 >>> zhihu.follow(user_slug="xiaoxiaodouzi")
