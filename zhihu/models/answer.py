@@ -79,3 +79,25 @@ class Answer(Model):
             return r.json()
         else:
             raise ZhihuError("操作失败：%s" % r.text)
+
+    @need_login
+    def nothelp(self, **kwargs):
+        """
+        没有帮助
+        """
+        r = self._execute(url=URL.nothelp(self.id), **kwargs)
+        if r.ok:
+            return r.json()
+        else:
+            raise ZhihuError("操作失败：%s" % r.text)
+
+    @need_login
+    def nothelp_cancel(self, **kwargs):
+        """
+        撤销没有帮助
+        """
+        r = self._execute(method="delete", url=URL.nothelp_cancel(self.id), **kwargs)
+        if r.ok:
+            return r.json()
+        else:
+            raise ZhihuError("操作失败：%s" % r.text)

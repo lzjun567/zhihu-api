@@ -80,6 +80,40 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 ```
 
 
+**感谢**
+```
+>>> from zhihu import Answer
+>>> data = Answer(id=14005147).nothelp()
+>>> data
+>>> {"is_thanked": true}
+```
+
+**取消感谢**
+```
+>>> from zhihu import Answer
+>>> data = Answer(id=14005147).thank()
+>>> data
+>>> {"is_thanked": false}
+```
+
+
+**没有帮助**
+```
+>>> from zhihu import Answer
+>>> data = Answer(id=14005147).thank_cancel()
+>>> data
+>>> {"is_nothelp": true}
+```
+
+**撤销没有帮助**
+```
+>>> from zhihu import Answer
+>>> data = Answer(id=14005147).nothelp_cancel()
+>>> data
+>>> {"is_nothelp": false}
+```
+
+
 **专栏的关注列表**
 ```
 >>> from zhihu import Column
