@@ -60,6 +60,13 @@ class URL(object):
 
     thank_cancel = thank
 
+    # 某答案没有帮助/撤销没有帮助
+    @staticmethod
+    def nothelp(answer_id):
+        return URL.host + "/api/v4/answers/{id}/unhelpers".format(id=answer_id)
+
+    nothelp_cancel = nothelp
+
     # 关注某问题/取消关注某问题
     @staticmethod
     def follow_question(question_id):
