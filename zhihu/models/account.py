@@ -10,6 +10,12 @@ from zhihu.error import ZhihuError
 
 
 class Account(Model):
+    def __init__(self, **kwargs):
+        """
+        初始化
+        """
+        super(Account, self).__init__(**kwargs)
+
     def login(self, account, password, **kwargs):
         """
         账户登录
@@ -51,7 +57,9 @@ class Account(Model):
 
     def _login_execute(self, url=None, data=None, **kwargs):
 
-        r = super(Account, self)._execute(method="post", url=url, data=data, data_type=RequestDataType.FORM_DATA,
+        #r = super(Account, self)._execute(method="post", url=url, data=data, data_type=RequestDataType.FORM_DATA,
+        #                                  **kwargs)
+        r = self._execute(method="post", url=url, data=data, data_type=RequestDataType.FORM_DATA,
                                           **kwargs)
 
         if r.ok:
