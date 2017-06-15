@@ -39,7 +39,6 @@ def need_login(func):
 
     def wrapper(self, *args, **kwargs):
         success = False
-        print('TEST')
         if 'd_c0' not in requests.utils.dict_from_cookiejar(self._session.cookies):
             while not success:
                 account = input("请输入Email或者手机号码:")
