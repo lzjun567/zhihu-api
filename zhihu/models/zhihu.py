@@ -8,8 +8,12 @@ from zhihu.error import ZhihuError
 from zhihu.models import Model
 from zhihu.url import URL
 
+from zhihu.models import account
 
-class Zhihu(Model):
+class Zhihu(account.Account):
+    def __init__(self, **kwargs):
+        super(Zhihu, self).__init__(**kwargs)
+        
     @need_login
     def send_message(self, content, user_id=None, profile_url=None, user_slug=None, **kwargs):
         """
