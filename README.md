@@ -83,7 +83,7 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 **感谢**
 ```
 >>> from zhihu import Answer
->>> data = Answer(id=14005147).nothelp()
+>>> data = Answer(id=14005147).thank_cancel()
 >>> data
 >>> {"is_thanked": true}
 ```
@@ -100,7 +100,7 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 **没有帮助**
 ```
 >>> from zhihu import Answer
->>> data = Answer(id=14005147).thank_cancel()
+>>> data = Answer(id=14005147).nothelp()
 >>> data
 >>> {"is_nothelp": true}
 ```
