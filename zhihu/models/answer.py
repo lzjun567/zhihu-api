@@ -1,6 +1,10 @@
 # encoding: utf-8
 
 import re
+from urllib.parse import urlparse
+import os
+import requests
+from bs4 import BeautifulSoup
 
 from zhihu.auth import need_login
 from zhihu.error import ZhihuError
@@ -14,6 +18,10 @@ class Answer(Model):
         if not id:
             raise ZhihuError("没有指定回答的id或者url")
         self.id = str(id)
+
+        self.url = url
+
+        super().__init__()
         super(Answer, self).__init__()
 
     @staticmethod
@@ -101,3 +109,27 @@ class Answer(Model):
             return r.json()
         else:
             raise ZhihuError("操作失败：%s" % r.text)
+
+    def images(self, path="."):
+        """
+        提取回答中的图片
+        :param path 保存路径
+        """
+        assert self.url, "必须指定URL"
+        r = self._execute(method='get', url=self.url)
+        soup = BeautifulSoup(r.text, 'lxml')
+        content_tag = soup.find('div', class_="RichContent-inner")
+        images = content_tag.find_all("img")
+        result = []
+        for i in images:
+            url = i['src']
+            if url.startswith("http"):
+                filename = urlparse(url).path[1:]
+
+                filename = os.path.join(path, filename)
+                with open(filename, 'wb') as fd:
+                    r = requests.get(url)
+                    for chunk in r.iter_content(chunk_size=128):
+                        fd.write(chunk)
+                result.append(filename)
+        return result
