@@ -19,9 +19,9 @@ except:
 import requests
 import requests.packages.urllib3 as urllib3
 from bs4 import BeautifulSoup
-from zhihu.error import ZhihuError
-from zhihu.url import URL
-from zhihu import settings
+from ..error import ZhihuError
+from ..url import URL
+from .. import settings
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
