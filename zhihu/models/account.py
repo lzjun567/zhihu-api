@@ -3,7 +3,7 @@
 import logging
 import re
 
-from ..models import Model
+from . import Model
 from ..models import RequestDataType
 from ..url import URL
 from ..error import ZhihuError

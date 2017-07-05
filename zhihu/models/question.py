@@ -4,7 +4,7 @@ import re
 
 from ..auth import need_login
 from ..error import ZhihuError
-from ..models import Model
+from . import Model
 from ..url import URL
 
 
