@@ -23,8 +23,6 @@ class Answer(Model):
         self.id = str(id)
 
         self.url = url
-
-        super().__init__()
         super(Answer, self).__init__()
 
     @staticmethod
