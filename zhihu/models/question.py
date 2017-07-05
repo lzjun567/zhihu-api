@@ -2,10 +2,10 @@
 
 import re
 
-from zhihu.auth import need_login
-from zhihu.error import ZhihuError
-from zhihu.models import Model
-from zhihu.url import URL
+from ..auth import need_login
+from ..error import ZhihuError
+from ..models import Model
+from ..url import URL
 
 
 class Question(Model):

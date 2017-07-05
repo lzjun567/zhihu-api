@@ -6,10 +6,10 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
-from zhihu.auth import need_login
-from zhihu.error import ZhihuError
-from zhihu.models import Model
-from zhihu.url import URL
+from ..auth import need_login
+from ..error import ZhihuError
+from . import Model
+from ..url import URL
 
 
 class Answer(Model):
