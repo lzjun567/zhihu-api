@@ -1,7 +1,10 @@
 # encoding: utf-8
 
 import re
-from urllib.parse import urlparse
+try:
+    from urllib.parse import urlparse
+except:
+    from urlparse import urlparse
 import os
 import requests
 from bs4 import BeautifulSoup
