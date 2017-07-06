@@ -142,6 +142,26 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 取消关注专栏成功
 ```
 
+**搜索问题**
+```
+from zhihu import Search
+search = Search()
+search.search_question('python', 20)
+搜索问题“python”的前20个结果 （问题id和问题标题）
+```
+
+**搜索用户**
+```
+search.search_people('python', 20)
+搜索用户“python”的前20个结果 （用户id和用户名）
+```
+
+**搜索话题**
+```
+search.search_topic('python', 20)
+搜索话题“python”的前20个结果 （话题id和话题名称）
+```
+
 每个接口都提供了不只一种方式调用，更多参考单元测试里面的例子
 
 
