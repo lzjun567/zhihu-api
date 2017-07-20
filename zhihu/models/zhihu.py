@@ -127,12 +127,13 @@ class Zhihu(Model):
         user_slug = self._user_slug(
             profile_url) if user_slug is None else user_slug
 
-        r = self._session.get(URL.follow_people(user_slug),
+        r = self._session.get(URL.followers(user_slug),
                               params={"limit": limit, "offset": offset},
                               **kwargs)
+        print(r.url)
         self.log(r.url)
         if r.ok:
             return r.json().get("data")
         else:
             self.log("status code %s, body: %s" % (r.status_code, r.text), level=logging.ERROR)
-            return None
+            raise ZhihuError("操作失败：%s" % r.text)

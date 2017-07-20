@@ -9,7 +9,7 @@ install_requires = open("requirement.txt").readlines()
 
 setup(
     name="zhihu-api",
-    version="0.0.1",
+    version="0.0.2",
     author="liuzhijun",
     author_email="lzjun567@gmail.com",
     url="https://github.com/lzjun567/zhihu-api",

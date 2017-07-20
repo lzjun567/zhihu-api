@@ -92,4 +92,5 @@ class CommonTestCase(unittest.TestCase):
 class FollowersTestCase(unittest.TestCase):
     def test_with_slug(self):
         followers = Zhihu().followers(user_slug="zhang-jia-wei")
+        self.assertIn("follower_count", followers[0])
         self.assertIsNotNone(followers)
