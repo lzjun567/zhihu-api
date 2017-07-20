@@ -110,3 +110,14 @@ class Zhihu(Model):
             return data
         else:
             raise ZhihuError("操作失败：%s" % response.text)
+
+
+    def followers(self, user_slug=None, profile_url=None, **kwargs):
+        """
+        获取某个用户的粉丝列表
+        :param user_slug:
+        :param profile_url:
+        :param kwargs:
+        :return:
+        """
+
