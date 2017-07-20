@@ -25,7 +25,6 @@ def need_login(func):
                 success = Account().login(account, password)
             if success:
                 self._session.cookies.load(ignore_discard=True)
-
         return func(self, *args, **kwargs)
 
     return wrapper

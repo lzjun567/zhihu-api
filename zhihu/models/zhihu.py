@@ -2,10 +2,11 @@
 """
 通用的操作放在此模块中
 """
+import logging
 
+from . import Model
 from ..auth import need_login
 from ..error import ZhihuError
-from . import Model
 from ..url import URL
 
 
@@ -111,8 +112,8 @@ class Zhihu(Model):
         else:
             raise ZhihuError("操作失败：%s" % response.text)
 
-
-    def followers(self, user_slug=None, profile_url=None, **kwargs):
+    @need_login
+    def followers(self, user_slug=None, profile_url=None, limit=500, offset=0, **kwargs):
         """
         获取某个用户的粉丝列表
         :param user_slug:
@@ -120,4 +121,18 @@ class Zhihu(Model):
         :param kwargs:
         :return:
         """
+        if not any([profile_url, user_slug]):
+            raise ZhihuError("至少指定一个关键字参数")
 
+        user_slug = self._user_slug(
+            profile_url) if user_slug is None else user_slug
+
+        r = self._session.get(URL.follow_people(user_slug),
+                              params={"limit": limit, "offset": offset},
+                              **kwargs)
+        self.log(r.url)
+        if r.ok:
+            return r.json().get("data")
+        else:
+            self.log("status code %s, body: %s" % (r.status_code, r.text), level=logging.ERROR)
+            return None

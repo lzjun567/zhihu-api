@@ -28,7 +28,7 @@ class URL(object):
     # 验证码
     @classmethod
     def captcha(cls, _type="login"):
-        return cls.host + "/captcha.gif?r={timestamp}&type={type}".format(timestamp=str(int(time.time(cls) * 1000)),
+        return cls.host + "/captcha.gif?r={timestamp}&type={type}".format(timestamp=str(int(time.time() * 1000)),
                                                                           type=_type)
 
     # 首页

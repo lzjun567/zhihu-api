@@ -13,7 +13,7 @@ class CommonTestCase(unittest.TestCase):
         :return:
         """
         zhihu = Zhihu()
-        profile  = zhihu.user(user_slug="xiaoxiaodouzi")
+        profile = zhihu.user(user_slug="xiaoxiaodouzi")
         data = {'avatar_url_template': 'https://pic1.zhimg.com/v2-ca13758626bd7367febde704c66249ec_{size}.jpg',
                 'name': '我是小号',
                 'is_advertiser': False, 'url': 'http://www.zhihu.com/api/v4/people/1da75b85900e00adb072e91c56fd9149',
@@ -87,3 +87,9 @@ class CommonTestCase(unittest.TestCase):
         zhihu = Zhihu()
         data = zhihu.unfollow(user_slug="xiaoxiaodouzi")
         self.assertIn('follower_count', data)
+
+
+class FollowersTestCase(unittest.TestCase):
+    def test_with_slug(self):
+        followers = Zhihu().followers(user_slug="zhang-jia-wei")
+        self.assertIsNotNone(followers)
