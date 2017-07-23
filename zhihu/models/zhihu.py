@@ -2,10 +2,11 @@
 """
 通用的操作放在此模块中
 """
+import logging
 
+from . import Model
 from ..auth import need_login
 from ..error import ZhihuError
-from . import Model
 from ..url import URL
 
 
@@ -110,3 +111,55 @@ class Zhihu(Model):
             return data
         else:
             raise ZhihuError("操作失败：%s" % response.text)
+
+    @need_login
+    def followers(self, user_slug=None, profile_url=None, limit=20, offset=0, **kwargs):
+        """
+        获取某个用户的粉丝列表
+        :param user_slug:
+        :param profile_url:
+        :param limit: 最大返回数量
+        :param offset:游标
+        :param kwargs:
+        :return:
+                {
+                    "paging": {
+                        "is_end": true,
+                        "totals": 1381207,
+                        "is_start": false,
+                    },
+                    "data": [{
+                        "avatar_url_template": "https://pic1.zhimg.com/fdbce7544_{size}.jpg",
+                        "badge": [],
+                        "name": "OPEN",
+                        "is_advertiser": false,
+                        "url": "http://www.zhihu.com/api/v4/people/0fcb310a722c5bb99d864ace7bb2d89c",
+                        "url_token": "open",
+                        "user_type": "people",
+                        "answer_count": 50,
+                        "headline": "上知乎，恍然大悟！",
+                        "avatar_url": "https://pic1.zhimg.com/fdbce7544_is.jpg",
+                        "is_org": false,
+                        "gender": 1,
+                        "follower_count": 78,
+                        "type": "people",
+                        "id": "0fcb310a722c5bb99d864ace7bb2d89c"
+                        },
+                        ]
+                    }
+        """
+        if not any([profile_url, user_slug]):
+            raise ZhihuError("至少指定一个关键字参数")
+
+        user_slug = self._user_slug(
+            profile_url) if user_slug is None else user_slug
+
+        r = self._session.get(URL.followers(user_slug),
+                              params={"limit": limit, "offset": offset},
+                              **kwargs)
+        self.log(r.url)
+        if r.ok:
+            return r.json()
+        else:
+            self.log("status code %s, body: %s" % (r.status_code, r.text), level=logging.ERROR)
+            raise ZhihuError("操作失败：%s" % r.text)

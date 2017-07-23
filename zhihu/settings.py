@@ -22,4 +22,5 @@ ZHUANLAN_HEADERS = {
     'User-Agent': USER_AGENT
 }
 
+# COOKIE 存储位置
 COOKIES_FILE = os.path.join(os.path.expanduser('~'), "cookies.txt")
