@@ -1,4 +1,5 @@
 # encoding: utf-8
+import random
 
 from zhihu import Answer
 import unittest
@@ -56,3 +57,7 @@ class AnswerTestCase(unittest.TestCase):
 
     def test_images(self):
         Answer(url="https://www.zhihu.com/question/58481349/answer/184247410").images()
+
+
+
+

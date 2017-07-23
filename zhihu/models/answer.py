@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 import re
+
 try:
     from urllib.parse import urlparse
 except:
