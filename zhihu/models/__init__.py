@@ -35,17 +35,23 @@ class RequestDataType(object):
 
 
 class Model(object):
-    def __init__(self, **kwargs):
-        self._session = requests.Session()
+    def __init__(self, session=None, **kwargs):
+
+        session = session or kwargs.pop('session', None)
+        if session is None:
+            self._session = requests.Session()
+            self._session.cookies = cookiejar.LWPCookieJar(filename=settings.COOKIES_FILE)
+            for k, v in kwargs.items():
+                setattr(self._session, k, v)
+            try:
+                self._session.cookies.load(ignore_discard=True)
+            except:
+                pass
+        else:
+            self._session = session
+
         self._session.verify = False
         self._session.headers = settings.HEADERS
-        self._session.cookies = cookiejar.LWPCookieJar(filename=settings.COOKIES_FILE)
-        for k, v in kwargs.items():
-            setattr(self._session, k, v)
-        try:
-            self._session.cookies.load(ignore_discard=True)
-        except:
-            pass
 
     @property
     def logger(self):
