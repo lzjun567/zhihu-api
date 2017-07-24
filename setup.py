@@ -1,47 +1,30 @@
-from setuptools import setup
-from setuptools import find_packages
+# -*- encoding: UTF-8 -*-
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 import io
 
-with io.open("README.md", encoding="utf8") as f:
-    readme = f.read()
+VERSION = '0.2.4'
 
-install_requires = open("requirement.txt").readlines()
+with io.open("README.md", encoding='utf-8') as f:
+    long_description = f.read()
+
+install_requires = open("requirements.txt").readlines()
 
 setup(
-    name="zhihu-api",
-    version="0.0.2",
+    name="zhihu",  # pip 安装时用的名字
+    version=VERSION,  # 当前版本，每次更新上传到pypi都需要修改
     author="liuzhijun",
     author_email="lzjun567@gmail.com",
     url="https://github.com/lzjun567/zhihu-api",
-    packages=find_packages(),
     keyworads="zhihu",
     description="zhihu api from humans",
-    long_description=readme,
-    # packages=[
-    #     "zhihu",
-    #     "zhihu.models"
-    # ],
+    long_description=long_description,
+    packages=["zhihu"],
     include_package_data=True,
     license='MIT License',
-    classifiers=[
-        'Development Status :: 0 - Beta',
-        'License :: OSI Approved :: MIT License',
-        'Operating System :: MacOS',
-        'Operating System :: POSIX',
-        'Operating System :: POSIX :: Linux',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: PyPy',
-        'Intended Audience :: Developers',
-        'Topic :: Software Development :: Libraries',
-        'Topic :: Software Development :: Libraries :: Python Modules',
-        'Topic :: Utilities',
-    ],
-
+    classifiers=[],
     install_requires=install_requires,
     setup_requires=[
         'pytest-runner',
