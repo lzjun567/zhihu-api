@@ -82,6 +82,7 @@ class Model(object):
         :param kwargs:
         :return:
         """
+        print(kwargs)
         response = self._session.get(url or URL.index(), **kwargs)
         soup = BeautifulSoup(response.content, "html.parser")
         xsrf = soup.find('input', attrs={"name": "_xsrf"}).get("value")

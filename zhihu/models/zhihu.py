@@ -9,8 +9,12 @@ from ..auth import need_login
 from ..error import ZhihuError
 from ..url import URL
 
+from zhihu.models import account
 
-class Zhihu(Model):
+class Zhihu(account.Account):
+    def __init__(self, **kwargs):
+        super(Zhihu, self).__init__(**kwargs)
+        
     @need_login
     def send_message(self, content, user_id=None, profile_url=None, user_slug=None, **kwargs):
         """
