@@ -4,6 +4,7 @@ import requests
 import requests.utils
 
 from zhihu.models.account import Account
+from .models.zhihu import Zhihu
 
 try:
     input = raw_input  # py2
@@ -17,14 +18,16 @@ def need_login(func):
     """
 
     def wrapper(self, *args, **kwargs):
-        success = False
         if 'z_c0' not in requests.utils.dict_from_cookiejar(self._session.cookies):
-            while not success:
+            try:
+                pass
+                # Zhihu().user(user_slug='zhijun-liu')
+            except:
                 account = input("请输入Email或者手机号码:")
                 password = input("请输入密码:")
-                success = Account().login(account, password)
-            if success:
+                Account().login(account, password)
+            else:
                 self._session.cookies.load(ignore_discard=True)
-        return func(self, *args, **kwargs)
+                return func(self, *args, **kwargs)
 
     return wrapper
