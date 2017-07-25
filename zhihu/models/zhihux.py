@@ -4,49 +4,42 @@
 """
 import logging
 
-from . import Model
+from .base import Model
 from ..auth import need_login
 from ..error import ZhihuError
 from ..url import URL
 
 
-class Zhihu(Model):
+class ZhihuX(Model):
     @need_login
-    def send_message(self, content, user_id=None, profile_url=None, user_slug=None, **kwargs):
+    def send_message(self, content, user_id=None, user_url=None, user_slug=None, **kwargs):
         """
         给指定的用户发私信
         :param content 私信内容
         :param user_id 用户id
-        :param profile_url: 用户主页地址
+        :param user_url: 用户主页地址
         :param user_slug : 用户的个性域名
+        Usege::
 
-        >>> send_message(profile_url = "https://www.zhihu.com/people/xiaoxiaodouzi")
-        >>> send_message(user_slug = "xiaoxiaodouzi")
-        >>> send_message(user_id = "1da75b85900e00adb072e91c56fd9149")
+          >>> send_message(profile_url = "https://www.zhihu.com/people/xiaoxiaodouzi")
+          >>> send_message(user_slug = "xiaoxiaodouzi")
+          >>> send_message(user_id = "1da75b85900e00adb072e91c56fd9149")
         """
-        if not any([user_id, profile_url, user_slug]):
-            raise ZhihuError("至少指定一个关键字参数")
 
-        if user_id is None:
-            user_slug = self._user_slug(
-                profile_url) if user_slug is None else user_slug
-            user_id = self._user_id(user_slug)
+        assert any((user_id, user_url, user_slug)), "至少指定一个关键字参数"
 
+        if not user_id:
+            user_id = self._user_id(user_slug=user_slug, user_url=user_url)
         data = {"type": "common", "content": content, "receiver_hash": user_id}
-        response = self._session.post(URL.message(), json=data, **kwargs)
-        if response.ok:
-            return response.json()
-            self.log("发送成功")
-        else:
-            self.log("发送失败")
-            raise ZhihuError("操作失败：%s" % response.text)
+        response = self.post(URL.message(), json=data)
+        return response
 
     @need_login
-    def user(self, user_slug=None, profile_url=None, **kwargs):
+    def profile(self, user_slug=None, user_url=None):
         """
         获取用户信息
         :param user_slug : 用户的个性域名
-        :param profile_url: 用户主页地址
+        :param user_url: 用户主页地址
 
         :return:dict
 
@@ -54,12 +47,10 @@ class Zhihu(Model):
         >>> user(user_slug = "xiaoxiaodouzi")
 
         """
-        if not any([profile_url, user_slug]):
-            raise ZhihuError("至少指定一个关键字参数")
+        assert any((user_url, user_slug)), "至少指定一个关键字参数"
 
-        user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
-        response = self._session.get(URL.profile(user_slug), **kwargs)
-
+        user_slug = self._user_slug(user_url) if not user_slug  else user_slug
+        response = self.get(URL.profile(user_slug))
         if response.ok:
             return response.json()
         else:

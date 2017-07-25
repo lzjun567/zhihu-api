@@ -4,12 +4,12 @@ import re
 
 from ..auth import need_login
 from ..error import ZhihuError
-from . import Model
+from . import Zhihu
 from ..settings import ZHUANLAN_HEADERS
 from ..url import URL
 
 
-class Column(Model):
+class Column(Zhihu):
     """
     专栏
     """

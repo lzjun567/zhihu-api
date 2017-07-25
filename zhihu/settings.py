@@ -1,6 +1,5 @@
 # encoding: utf-8
 import os.path
-import random
 
 # UserAgent list
 user_agent_list = [
@@ -8,7 +7,7 @@ user_agent_list = [
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
 ]
 
-USER_AGENT = random.choice(user_agent_list)
+USER_AGENT = user_agent_list[0]
 
 HEADERS = {
     "Host": "www.zhihu.com",

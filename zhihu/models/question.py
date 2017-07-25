@@ -4,11 +4,11 @@ import re
 
 from ..auth import need_login
 from ..error import ZhihuError
-from . import Model
+from . import Zhihu
 from ..url import URL
 
 
-class Question(Model):
+class Question(Zhihu):
     def __init__(self, id=None, url=None):
         id = id if id is not None else self._extract_id(url)
         if not id:

@@ -9,6 +9,7 @@ from http import cookiejar
 import requests
 import requests.packages.urllib3 as urllib3
 from bs4 import BeautifulSoup
+
 from ..error import ZhihuError
 from ..url import URL
 from .. import settings
@@ -25,13 +26,16 @@ class RequestDataType(Enum):
     JSON = 2
 
 
-class Zhihu(requests.Session):
+class Model(requests.Session):
     def __init__(self):
-        # self.cookies = cookiejar.LWPCookieJar(filename=settings.COOKIES_FILE)
-        # self.cookies.load(filename=settings.COOKIES_FILE, ignore_discard=True)
+        super(Model, self).__init__()
+        self.cookies = cookiejar.LWPCookieJar(filename=settings.COOKIES_FILE)
+        try:
+            self.cookies.load(ignore_discard=True)
+        except FileNotFoundError:
+            pass
         self.verify = False
         self.headers = settings.HEADERS
-        super(Zhihu, self).__init__()
 
     def _get_captcha(self, _type="login"):
         r = self.get(URL.captcha(_type=_type))
@@ -55,35 +59,31 @@ class Zhihu(requests.Session):
         :return: xsrf
         """
         response = self.get(url or URL.index())
-        print(response)
         soup = BeautifulSoup(response.content, "lxml")
-        print(soup)
         xsrf = soup.find('input', attrs={"name": "_xsrf"}).get("value")
         return xsrf
 
-    def _user_id(self, user_slug):
+    def _user_id(self, user_slug=None, user_url=None):
         """
         user_slug 转 user_id
         :param user_slug:
+        :param user_url:
         :return:
         """
-        profile = self.user(user_slug=user_slug)
+        if not user_slug:
+            user_slug = self._user_slug(user_url=user_url)
+        profile = self.profile(user_slug=user_slug)
         user_id = profile.get("id")
         return user_id
 
-    def _user_slug(self, profile_url):
-        """
-        profile_url 转 user_slug
-        :param profile_url:
-        :return:
-        """
+    def _user_slug(self, user_url):
         pattern = re.compile("https?://www.zhihu.com/people/([\w-]+)")
-        match = pattern.search(profile_url)
+        match = pattern.search(user_url)
         if match:
             user_slug = match.group(1)
             return user_slug
         else:
-            raise ZhihuError("invalid profile url")
+            raise ZhihuError("invalid url")
 
     def _execute(self, method="post", url=None, params=None, data=None, data_type=RequestDataType.JSON):
         """

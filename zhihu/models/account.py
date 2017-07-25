@@ -2,8 +2,11 @@
 
 import logging
 import re
+from http import cookiejar
 
-from . import Model
+from . import settings
+
+from .base import Model
 from ..models import RequestDataType
 from ..url import URL
 from ..error import ZhihuError
@@ -28,10 +31,9 @@ class Account(Model):
         elif phone_pattern.match(account):
             return self._login_with_phone(account, password, **kwargs)
         else:
-            self.log("无效的用户名", level=logging.ERROR)
-            return {"r": 1, "msg": "无效的用户名"}
+            raise ZhihuError("无效的用户名")
 
-    def _login_with_phone(self, phone, password, **kwargs):
+    def _login_with_phone(self, phone, password):
         data = {
             '_xsrf': self._get_xsrf(),
             'password': password,
@@ -39,29 +41,28 @@ class Account(Model):
             "captcha": self._get_captcha(),
             "remeber_me": "true",
         }
-        return self._login_execute(url=URL.phone_login(), data=data, **kwargs)
+        return self._login_execute(url=URL.phone_login(), data=data)
 
     def _login_with_email(self, email, password, **kwargs):
         data = {'email': email,
                 'password': password,
-                '_xsrf': self._get_xsrf(**kwargs),
-                "captcha": self._get_captcha(**kwargs),
+                '_xsrf': self._get_xsrf(),
+                "captcha": self._get_captcha(),
                 'remember_me': 'true'}
         return self._login_execute(url=URL.email_login(), data=data, **kwargs)
 
     def _login_execute(self, url=None, data=None, **kwargs):
 
-        r = super(Account, self)._execute(method="post", url=url, data=data, data_type=RequestDataType.FORM_DATA,
-                                          **kwargs)
+        r = super(Account, self)._execute(method="post", url=url, data=data, data_type=RequestDataType.FORM)
 
         if r.ok:
             result = r.json()
             if result.get("r") == 0:
-                self.log(result.get("msg"))
-                self._session.cookies.save(ignore_discard=True)  # 保存登录信息cookies
+                self.cookies.save(ignore_discard=True)  # 保存登录信息cookies
+                self.cookies.load(filename=settings.COOKIES_FILE, ignore_discard=True)
+
                 return result
             else:
-                self.log(result.get("msg"), level=logging.ERROR)
                 return result
 
         else:
