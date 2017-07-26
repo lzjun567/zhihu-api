@@ -33,7 +33,7 @@ class Zhihu(Model):
         data = {"type": "common",
                 "content": content,
                 "receiver_hash": user_id}
-        response = self.post(URL.message(), json=data)
+        response = self._execute(method='post', url=URL.message(), json=data)
         return response
 
     @slug
@@ -64,7 +64,7 @@ class Zhihu(Model):
         >>> user(user_slug = "xiaoxiaodouzi")
 
         """
-        response = self.get(URL.profile(user_slug))
+        response = self._execute(method="get", url=URL.profile(user_slug))
         if response.ok:
             return response.json()
         else:
@@ -82,7 +82,7 @@ class Zhihu(Model):
         >>> follow(profile_url = "https://www.zhihu.com/people/xiaoxiaodouzi")
         >>> follow(user_slug = "xiaoxiaodouzi")
         """
-        response = self.post(URL.follow_people(user_slug))
+        response = self._execute(method="post", url=URL.follow_people(user_slug))
         if response.ok:
             data = response.json()
             data['followed'] = True
@@ -103,7 +103,7 @@ class Zhihu(Model):
         >>> unfollow(user_slug = "xiaoxiaodouzi")
         """
 
-        response = self.delete(URL.follow_people(user_slug))
+        response = self._execute(method="delete", url=URL.follow_people(user_slug))
         if response.ok:
             data = response.json()
             data['followed'] = False
@@ -149,7 +149,7 @@ class Zhihu(Model):
                     }
         """
 
-        r = self.get(URL.followers(user_slug), params={"limit": limit, "offset": offset})
+        r = self._execute(method="get", url=URL.followers(user_slug), params={"limit": limit, "offset": offset})
         if r.ok:
             return r.json()
         else:

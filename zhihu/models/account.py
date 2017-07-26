@@ -2,22 +2,21 @@
 
 import logging
 import re
-from http import cookiejar
 
 from . import settings
-
 from .base import Model
+from ..error import ZhihuError
 from ..models import RequestDataType
 from ..url import URL
-from ..error import ZhihuError
 
 
 class Account(Model):
-    def login(self, account, password, **kwargs):
+    def login(self, account, password):
         """
         账户登录
         :param account: email或者手机号码
         :param password:
+        :param kwargs:
         :param kwargs:
         :return:
         """
@@ -27,13 +26,13 @@ class Account(Model):
         phone_pattern = re.compile(phone_regex)
 
         if email_pattern.match(account):
-            return self._login_with_email(account, password, **kwargs)
+            return self._login_email(account, password)
         elif phone_pattern.match(account):
-            return self._login_with_phone(account, password, **kwargs)
+            return self._login_phone(account, password)
         else:
             raise ZhihuError("无效的用户名")
 
-    def _login_with_phone(self, phone, password):
+    def _login_phone(self, phone, password):
         data = {
             '_xsrf': self._get_xsrf(),
             'password': password,
@@ -43,7 +42,7 @@ class Account(Model):
         }
         return self._login_execute(url=URL.phone_login(), data=data)
 
-    def _login_with_email(self, email, password, **kwargs):
+    def _login_email(self, email, password, **kwargs):
         data = {'email': email,
                 'password': password,
                 '_xsrf': self._get_xsrf(),
@@ -53,21 +52,15 @@ class Account(Model):
 
     def _login_execute(self, url=None, data=None):
 
-        r = super(Account, self)._execute(method="post", url=url, data=data, data_type=RequestDataType.FORM)
-
+        r = self._execute(method="post", url=url, data=data)
         if r.ok:
             result = r.json()
             if result.get("r") == 0:
                 self.cookies.save(ignore_discard=True)  # 保存登录信息cookies
                 self.cookies.load(filename=settings.COOKIES_FILE, ignore_discard=True)
-
-                return result
-            else:
-                return result
+            return result
 
         else:
-            self.log("登录失败", level=logging.ERROR)
-            self.log(r.text)
             return {'r': 1, "msg": "登录失败"}
 
     def _register_validate(self, data):

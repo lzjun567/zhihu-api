@@ -23,14 +23,6 @@ from ..url import URL
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-class RequestDataType(Enum):
-    """
-    发送请求时,传给知乎服务器的数据类型
-    有两种请求,1. 表单类型,2 json格式的字符串
-    """
-    FORM = 1
-    JSON = 2
-
 
 class Model(requests.Session):
     def __init__(self):
@@ -91,7 +83,7 @@ class Model(requests.Session):
         else:
             raise ZhihuError("invalid url")
 
-    def _execute(self, method="post", url=None, params=None, data=None, data_type=RequestDataType.JSON):
+    def _execute(self, method="post", url=None, params=None, json=None, data=None, **kwargs):
         """
         通用请求方法
         :param method: 请求方法
@@ -102,9 +94,5 @@ class Model(requests.Session):
         :param kwargs:  requests支持的参数，比如可以设置代理参数
         :return: response
         """
-        if data_type == RequestDataType.JSON:
-            r = getattr(self, method)(url, json=data, params=params)
-        else:
-            r = getattr(self, method)(url, data=data, params=params)
+        r = getattr(self, method)(url, json=json, data=data, params=params, **kwargs)
         return r
-

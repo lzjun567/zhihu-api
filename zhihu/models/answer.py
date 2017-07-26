@@ -1,18 +1,15 @@
 # encoding: utf-8
 
-import re
-
-try:
-    from urllib.parse import urlparse
-except:
-    from urlparse import urlparse
 import os
+import re
+from urllib.parse import urlparse
+
 import requests
 from bs4 import BeautifulSoup
 
-from zhihu.decorators.auth import authenticated
-from ..error import ZhihuError
+from ..decorators.auth import authenticated
 from . import Zhihu
+from ..error import ZhihuError
 from ..url import URL
 
 
@@ -36,77 +33,77 @@ class Answer(Zhihu):
         return match.group(1) if match else None
 
     @authenticated
-    def vote_up(self, **kwargs):
+    def vote_up(self):
         """
         赞同
         """
-        r = self._execute(url=URL.vote_up(self.id), data={"type": "up"}, **kwargs)
+        r = self._execute(method="post", url=URL.vote_up(self.id), data={"type": "up"})
         if r.ok:
             return r.json()
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
     @authenticated
-    def vote_down(self, **kwargs):
+    def vote_down(self):
         """
         反对
         """
-        r = self._execute(url=URL.vote_down(self.id), data={"type": "down"}, **kwargs)
+        r = self._execute(method="post", url=URL.vote_down(self.id), data={"type": "down"})
         if r.ok:
             return r.json()
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
     @authenticated
-    def vote_neutral(self, **kwargs):
+    def vote_neutral(self,):
         """
         中立
         """
-        r = self._execute(url=URL.vote_neutral(self.id), data={"type": "neutral"}, **kwargs)
+        r = self._execute(method="post", url=URL.vote_neutral(self.id), data={"type": "neutral"})
         if r.ok:
             return r.json()
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
     @authenticated
-    def thank(self, **kwargs):
+    def thank(self):
         """
         感谢
         """
-        r = self._execute(url=URL.thank(self.id), **kwargs)
+        r = self._execute(method="post", url=URL.thank(self.id))
         if r.ok:
             return r.json()
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
     @authenticated
-    def thank_cancel(self, **kwargs):
+    def thank_cancel(self):
         """
         感谢取消
         """
-        r = self._execute(method="delete", url=URL.thank_cancel(self.id), **kwargs)
+        r = self._execute(method="delete", url=URL.thank_cancel(self.id))
         if r.ok:
             return r.json()
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
     @authenticated
-    def nothelp(self, **kwargs):
+    def nothelp(self):
         """
         没有帮助
         """
-        r = self._execute(url=URL.nothelp(self.id), **kwargs)
+        r = self._execute(method="delete", url=URL.nothelp(self.id))
         if r.ok:
             return r.json()
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
     @authenticated
-    def nothelp_cancel(self, **kwargs):
+    def nothelp_cancel(self):
         """
         撤销没有帮助
         """
-        r = self._execute(method="delete", url=URL.nothelp_cancel(self.id), **kwargs)
+        r = self._execute(method="delete", url=URL.nothelp_cancel(self.id))
         if r.ok:
             return r.json()
         else:
@@ -127,7 +124,6 @@ class Answer(Zhihu):
             url = i['src']
             if url.startswith("http"):
                 filename = urlparse(url).path[1:]
-
                 filename = os.path.join(path, filename)
                 with open(filename, 'wb') as fd:
                     r = requests.get(url)

@@ -16,7 +16,7 @@ def authenticated(func):
         # 先判断有没有cookie文件, 崽判断cookie是否有效
         if 'z_c0' in requests.utils.dict_from_cookiejar(self.cookies):
             from ..url import URL
-            r = self.get(URL.profile(user_slug="zhijun-liu"))
+            r = self._execute(method="get", url=URL.profile(user_slug="zhijun-liu"))
             success = r.ok
         while not success:
             account = input("请输入Email或者手机号码:")
