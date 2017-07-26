@@ -36,4 +36,4 @@ class ZhihuXTestCase(unittest.TestCase):
 
     def test_followers(self):
         data = Zhihu().followers(user_slug="zhijun-liu")
-
+        self.assertIn('paging', data)
