@@ -2,7 +2,7 @@
 
 import re
 
-from zhihu.decorators.auth import authenticated
+from ..decorators.auth import authenticated
 from . import Zhihu
 from ..error import ZhihuError
 from ..settings import ZHUANLAN_HEADERS

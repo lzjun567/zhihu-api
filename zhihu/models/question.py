@@ -31,7 +31,7 @@ class Question(Zhihu):
     @authenticated
     def follow_question(self, **kwargs):
         """关注某问题"""
-        r = self._execute(url=URL.follow_question(self.id), **kwargs)
+        r = self._execute(method="post", url=URL.follow_question(self.id), **kwargs)
         if r.ok:
             return r.json()
         else:
