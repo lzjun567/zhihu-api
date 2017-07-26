@@ -2,7 +2,7 @@
 
 import re
 
-from ..auth import need_login
+from ..auth import authenticated
 from ..error import ZhihuError
 from . import Zhihu
 from ..settings import ZHUANLAN_HEADERS
@@ -41,7 +41,7 @@ class Column(Zhihu):
         r = self._session.get(URL.column_followers(self.slug), params={"limit": limit, "offset": offset}, **kwargs)
         return r.json()
 
-    @need_login
+    @authenticated
     def follow(self, **kwargs):
         """关注某专栏"""
         r = self._execute(method="put", url=URL.follow_column(self.slug), **kwargs)
@@ -50,7 +50,7 @@ class Column(Zhihu):
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
-    @need_login
+    @authenticated
     def unfollow(self, **kwargs):
         """取消关注某专栏"""
         r = self._execute(method="delete", url=URL.unfollow_column(self.slug), **kwargs)

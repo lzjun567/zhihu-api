@@ -2,7 +2,7 @@
 
 import re
 
-from ..auth import need_login
+from ..auth import authenticated
 from ..error import ZhihuError
 from . import Zhihu
 from ..url import URL
@@ -28,7 +28,7 @@ class Question(Zhihu):
     # def _execute(self, method="post", url=None, data=None, **kwargs):
     #     super(Question, self)._execute(method=method, url=url, data=data, **kwargs)
 
-    @need_login
+    @authenticated
     def follow_question(self, **kwargs):
         """关注某问题"""
         r = self._execute(url=URL.follow_question(self.id), **kwargs)
@@ -37,7 +37,7 @@ class Question(Zhihu):
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
-    @need_login
+    @authenticated
     def unfollow_question(self, **kwargs):
         """取消关注某问题"""
         r = self._execute(method="delete", url=URL.unfollow_question(self.id), **kwargs)

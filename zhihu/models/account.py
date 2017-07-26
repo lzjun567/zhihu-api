@@ -51,7 +51,7 @@ class Account(Model):
                 'remember_me': 'true'}
         return self._login_execute(url=URL.email_login(), data=data, **kwargs)
 
-    def _login_execute(self, url=None, data=None, **kwargs):
+    def _login_execute(self, url=None, data=None):
 
         r = super(Account, self)._execute(method="post", url=url, data=data, data_type=RequestDataType.FORM)
 

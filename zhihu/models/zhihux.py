@@ -5,13 +5,13 @@
 import logging
 
 from .base import Model
-from ..auth import need_login
+from ..auth import authenticated
 from ..error import ZhihuError
 from ..url import URL
 
 
 class ZhihuX(Model):
-    @need_login
+    @authenticated
     def send_message(self, content, user_id=None, user_url=None, user_slug=None, **kwargs):
         """
         给指定的用户发私信
@@ -34,7 +34,7 @@ class ZhihuX(Model):
         response = self.post(URL.message(), json=data)
         return response
 
-    @need_login
+    @authenticated
     def profile(self, user_slug=None, user_url=None):
         """
         获取用户信息
@@ -49,14 +49,16 @@ class ZhihuX(Model):
         """
         assert any((user_url, user_slug)), "至少指定一个关键字参数"
 
-        user_slug = self._user_slug(user_url) if not user_slug  else user_slug
+        if not user_slug:
+            user_slug = self._user_slug(user_url=user_url)
+
         response = self.get(URL.profile(user_slug))
         if response.ok:
             return response.json()
         else:
             raise ZhihuError("操作失败：%s" % response.text)
 
-    @need_login
+    @authenticated
     def follow(self, user_slug=None, profile_url=None, **kwargs):
         """
         关注用户
@@ -79,7 +81,7 @@ class ZhihuX(Model):
         else:
             raise ZhihuError("操作失败：%s" % response.text)
 
-    @need_login
+    @authenticated
     def unfollow(self, user_slug=None, profile_url=None, **kwargs):
         """
         取消关注用户
@@ -103,7 +105,7 @@ class ZhihuX(Model):
         else:
             raise ZhihuError("操作失败：%s" % response.text)
 
-    @need_login
+    @authenticated
     def followers(self, user_slug=None, profile_url=None, limit=20, offset=0, **kwargs):
         """
         获取某个用户的粉丝列表

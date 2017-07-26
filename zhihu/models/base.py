@@ -1,21 +1,27 @@
 # encoding: utf-8
 
+"""
+
+Model获取知乎数据的基类对象，任何对象都可以继承该类
+
+"""
+
 import os
 import platform
 import re
-from enum import Enum
 import subprocess
+from enum import Enum
 from http import cookiejar
+
 import requests
 import requests.packages.urllib3 as urllib3
 from bs4 import BeautifulSoup
 
+from .. import settings
 from ..error import ZhihuError
 from ..url import URL
-from .. import settings
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
 
 class RequestDataType(Enum):
     """
@@ -101,3 +107,4 @@ class Model(requests.Session):
         else:
             r = getattr(self, method)(url, data=data, params=params)
         return r
+

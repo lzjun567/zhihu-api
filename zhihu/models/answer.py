@@ -10,7 +10,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
-from ..auth import need_login
+from ..auth import authenticated
 from ..error import ZhihuError
 from . import Zhihu
 from ..url import URL
@@ -35,7 +35,7 @@ class Answer(Zhihu):
         match = pattern.search(url)
         return match.group(1) if match else None
 
-    @need_login
+    @authenticated
     def vote_up(self, **kwargs):
         """
         赞同
@@ -46,7 +46,7 @@ class Answer(Zhihu):
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
-    @need_login
+    @authenticated
     def vote_down(self, **kwargs):
         """
         反对
@@ -57,7 +57,7 @@ class Answer(Zhihu):
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
-    @need_login
+    @authenticated
     def vote_neutral(self, **kwargs):
         """
         中立
@@ -68,7 +68,7 @@ class Answer(Zhihu):
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
-    @need_login
+    @authenticated
     def thank(self, **kwargs):
         """
         感谢
@@ -79,7 +79,7 @@ class Answer(Zhihu):
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
-    @need_login
+    @authenticated
     def thank_cancel(self, **kwargs):
         """
         感谢取消
@@ -90,7 +90,7 @@ class Answer(Zhihu):
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
-    @need_login
+    @authenticated
     def nothelp(self, **kwargs):
         """
         没有帮助
@@ -101,7 +101,7 @@ class Answer(Zhihu):
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
-    @need_login
+    @authenticated
     def nothelp_cancel(self, **kwargs):
         """
         撤销没有帮助
