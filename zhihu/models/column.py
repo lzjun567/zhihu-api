@@ -2,9 +2,9 @@
 
 import re
 
-from ..auth import authenticated
-from ..error import ZhihuError
+from zhihu.decorators.auth import authenticated
 from . import Zhihu
+from ..error import ZhihuError
 from ..settings import ZHUANLAN_HEADERS
 from ..url import URL
 

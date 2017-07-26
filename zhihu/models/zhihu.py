@@ -2,17 +2,17 @@
 """
 通用的操作放在此模块中
 """
-import logging
 
 from .base import Model
-from ..auth import authenticated
+from ..decorators.auth import authenticated
+from ..decorators.slug import slug
 from ..error import ZhihuError
 from ..url import URL
 
 
-class ZhihuX(Model):
+class Zhihu(Model):
     @authenticated
-    def send_message(self, content, user_id=None, user_url=None, user_slug=None, **kwargs):
+    def send_message(self, content, user_id=None, user_url=None, user_slug=None):
         """
         给指定的用户发私信
         :param content 私信内容
@@ -30,10 +30,13 @@ class ZhihuX(Model):
 
         if not user_id:
             user_id = self._user_id(user_slug=user_slug, user_url=user_url)
-        data = {"type": "common", "content": content, "receiver_hash": user_id}
+        data = {"type": "common",
+                "content": content,
+                "receiver_hash": user_id}
         response = self.post(URL.message(), json=data)
         return response
 
+    @slug
     @authenticated
     def profile(self, user_slug=None, user_url=None):
         """
@@ -42,38 +45,44 @@ class ZhihuX(Model):
         :param user_url: 用户主页地址
 
         :return:dict
+                {'avatar_url_template': 'https://pic1.zhimg.com/v2-ca13758626bd7367febde704c66249ec_{size}.jpg',
+                'name': '我是小号',
+                'is_advertiser': False,
+                'url': 'http://www.zhihu.com/api/v4/people/1da75b85900e00adb072e91c56fd9149',
+                'gender': -1,
+                'user_type': 'people',
+                'url_token': 'xiaoxiaodouzi',
+                'headline': '',
+                'avatar_url': 'https://pic1.zhimg.com/v2-ca13758626bd7367febde704c66249ec_is.jpg',
+                'is_org': False, '
+                type': 'people',
+                'badge': [],
+                'id': '1da75b85900e00adb072e91c56fd9149'}
+
 
         >>> user(profile_url = "https://www.zhihu.com/people/xiaoxiaodouzi")
         >>> user(user_slug = "xiaoxiaodouzi")
 
         """
-        assert any((user_url, user_slug)), "至少指定一个关键字参数"
-
-        if not user_slug:
-            user_slug = self._user_slug(user_url=user_url)
-
         response = self.get(URL.profile(user_slug))
         if response.ok:
             return response.json()
         else:
             raise ZhihuError("操作失败：%s" % response.text)
 
+    @slug
     @authenticated
-    def follow(self, user_slug=None, profile_url=None, **kwargs):
+    def follow(self, user_slug=None, user_url=None):
         """
         关注用户
         :param user_slug:
-        :param profile_url:
+        :param user_url:
         :return: {"follower_count": int}
 
         >>> follow(profile_url = "https://www.zhihu.com/people/xiaoxiaodouzi")
         >>> follow(user_slug = "xiaoxiaodouzi")
         """
-        if not any([profile_url, user_slug]):
-            raise ZhihuError("至少指定一个关键字参数")
-
-        user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
-        response = self._session.post(URL.follow_people(user_slug), **kwargs)
+        response = self.post(URL.follow_people(user_slug))
         if response.ok:
             data = response.json()
             data['followed'] = True
@@ -81,23 +90,20 @@ class ZhihuX(Model):
         else:
             raise ZhihuError("操作失败：%s" % response.text)
 
+    @slug
     @authenticated
-    def unfollow(self, user_slug=None, profile_url=None, **kwargs):
+    def unfollow(self, user_slug=None, user_url=None):
         """
         取消关注用户
         :param user_slug:
-        :param profile_url:
+        :param user_url:
         :return: {"follower_count": int}
 
         >>> unfollow(profile_url = "https://www.zhihu.com/people/xiaoxiaodouzi")
         >>> unfollow(user_slug = "xiaoxiaodouzi")
         """
-        if not any([profile_url, user_slug]):
-            raise ZhihuError("至少指定一个关键字参数")
 
-        user_slug = self._user_slug(
-            profile_url) if user_slug is None else user_slug
-        response = self._session.delete(URL.follow_people(user_slug), **kwargs)
+        response = self.delete(URL.follow_people(user_slug))
         if response.ok:
             data = response.json()
             data['followed'] = False
@@ -105,12 +111,13 @@ class ZhihuX(Model):
         else:
             raise ZhihuError("操作失败：%s" % response.text)
 
+    @slug
     @authenticated
-    def followers(self, user_slug=None, profile_url=None, limit=20, offset=0, **kwargs):
+    def followers(self, user_slug=None, limit=20, offset=0, user_url=None):
         """
         获取某个用户的粉丝列表
         :param user_slug:
-        :param profile_url:
+        :param user_url:
         :param limit: 最大返回数量
         :param offset:游标
         :param kwargs:
@@ -141,18 +148,9 @@ class ZhihuX(Model):
                         ]
                     }
         """
-        if not any([profile_url, user_slug]):
-            raise ZhihuError("至少指定一个关键字参数")
 
-        user_slug = self._user_slug(
-            profile_url) if user_slug is None else user_slug
-
-        r = self._session.get(URL.followers(user_slug),
-                              params={"limit": limit, "offset": offset},
-                              **kwargs)
-        self.log(r.url)
+        r = self.get(URL.followers(user_slug), params={"limit": limit, "offset": offset})
         if r.ok:
             return r.json()
         else:
-            self.log("status code %s, body: %s" % (r.status_code, r.text), level=logging.ERROR)
             raise ZhihuError("操作失败：%s" % r.text)

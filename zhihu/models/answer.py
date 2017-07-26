@@ -10,7 +10,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
-from ..auth import authenticated
+from zhihu.decorators.auth import authenticated
 from ..error import ZhihuError
 from . import Zhihu
 from ..url import URL

@@ -7,7 +7,7 @@
 import requests
 import requests.utils
 
-from zhihu.models.account import Account
+from ..models.account import Account
 
 
 def authenticated(func):
@@ -15,7 +15,7 @@ def authenticated(func):
         success = False
         # 先判断有没有cookie文件, 崽判断cookie是否有效
         if 'z_c0' in requests.utils.dict_from_cookiejar(self.cookies):
-            from .url import URL
+            from ..url import URL
             r = self.get(URL.profile(user_slug="zhijun-liu"))
             success = r.ok
         while not success:

@@ -37,6 +37,6 @@ if __name__ == '__main__':
     # account = Account()
     # account.register("续航小三", phone_num="+33752962193", password="zhihudetail")
 
-    from zhihu.models.zhihux import ZhihuX
-    data = ZhihuX().profile(user_slug="zhijun-liu")
+    from zhihu.models.zhihu import Zhihu
+    data = Zhihu().profile(user_slug="zhijun-liu")
     print(data)
