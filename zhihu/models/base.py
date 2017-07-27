@@ -10,7 +10,6 @@ import os
 import platform
 import re
 import subprocess
-from enum import Enum
 from http import cookiejar
 
 import requests
