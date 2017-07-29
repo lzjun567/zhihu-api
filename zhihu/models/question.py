@@ -3,12 +3,12 @@
 import re
 
 from zhihu.decorators.auth import authenticated
-from . import Zhihu
+from .base import Model
 from ..error import ZhihuError
 from ..url import URL
 
 
-class Question(Zhihu):
+class Question(Model):
     def __init__(self, id=None, url=None):
         id = id if id is not None else self._extract_id(url)
         if not id:

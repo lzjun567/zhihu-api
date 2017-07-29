@@ -3,13 +3,13 @@
 import re
 
 from ..decorators.auth import authenticated
-from . import Zhihu
+from .base import Model
 from ..error import ZhihuError
 from ..settings import ZHUANLAN_HEADERS
 from ..url import URL
 
 
-class Column(Zhihu):
+class Column(Model):
     """
     专栏
     """

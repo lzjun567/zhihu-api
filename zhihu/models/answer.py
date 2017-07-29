@@ -8,12 +8,12 @@ import requests
 from bs4 import BeautifulSoup
 
 from ..decorators.auth import authenticated
-from . import Zhihu
+from .base import Model
 from ..error import ZhihuError
 from ..url import URL
 
 
-class Answer(Zhihu):
+class Answer(Model):
     def __init__(self, id=None, url=None):
         id = id if id is not None else self._extract_id(url)
         if not id:
@@ -55,7 +55,7 @@ class Answer(Zhihu):
             raise ZhihuError("操作失败：%s" % r.text)
 
     @authenticated
-    def vote_neutral(self,):
+    def vote_neutral(self, ):
         """
         中立
         """

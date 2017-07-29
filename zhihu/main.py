@@ -37,6 +37,10 @@ if __name__ == '__main__':
     # account = Account()
     # account.register("续航小三", phone_num="+33752962193", password="zhihudetail")
 
-    from zhihu.models.zhihu import Zhihu
-    data = Zhihu().profile(user_slug="pansz")
-    print(data)
+    # from zhihu.models.zhihu import Zhihu
+    # data = Zhihu().profile(user_slug="pansz")
+    # print(data)
+
+    from zhihu import Answer
+    answer = Answer(id="205327777")
+    answer.vote_up()
