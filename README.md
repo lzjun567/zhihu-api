@@ -45,142 +45,34 @@ print(profile)
 >>> zhihu.follow(user_slug="xiaoxiaodouzi")
 {'follower_count': 12, 'followed': True}
 
-#取消关注
+# 取消关注
 >>> zhihu.unfollow(user_slug="xiaoxiaodouzi")
 {'follower_count': 11, 'followed': False}
 
-```
 
-
-
-### API
-
-**个人信息**
-```
->>> from zhihu import Zhihu
->>> zhihu = Zhihu()
->>> zhihu.user(user_slug="xiaoxiaodouzi")
-
-{'avatar_url_template': 'https://pic1.zhimg.com/v2-ca13758626bd7367febde704c66249ec_{size}.jpg',
-     'badge': [],
-     'name': '我是小号',
-     'headline': '程序员',
-     'gender': -1,
-     'user_type': 'people',
-     'is_advertiser': False,
-     'avatar_url': 'https://pic1.zhimg.com/v2-ca13758626bd7367febde704c66249ec_is.jpg',
-     'url': 'http://www.zhihu.com/api/v4/people/1da75b85900e00adb072e91c56fd9149', 'type': 'people',
-     'url_token': 'xiaoxiaodouzi',
-     'id': '1da75b85900e00adb072e91c56fd9149',
-     'is_org': False}
-```
-
-**私信发送**
-
-```python
->>> zhihu.send_message("你好,问候2", user_slug="xiaoxiaodouzi")
-```
-
-**关注用户**
-```
->>> zhihu.follow(user_slug="xiaoxiaodouzi")
-{"follower_count": 6}
-```
-**取消关注**
-```
->>> zhihu.unfollow(user_slug="xiaoxiaodouzi")
-{'follower_count': 5}
-```
-
-**点赞回答**
-```
 >>> from zhihu import Answer
->>> data = Answer(id=14005147).vote_up()
->>> data
->>> {"voting": 1, "voteup_count": 314}
-```
+>>> answer = Answer(url="https://www.zhihu.com/question/62569341/answer/205327777")
 
-**反对**
-```
->>> from zhihu import Answer
->>> data = Answer(id=14005147).vote_down()
->>> data
->>> {"voting": 1, "voteup_count": 314}
-```
+# 赞同回答
+>>> answer.vote_up()
+{'voting': 1, 'voteup_count': 260}
 
+# 反对
+>>> answer.vote_down()
+{'voting': -1, 'voteup_count': 259}
 
-**中立**
-```
->>> from zhihu import Answer
->>> data = Answer(id=14005147).vote_neutral()
->>> data
->>> {"voting": 1, "voteup_count": 314}
-```
+# 中立
+>>> answer.vote_neutral()
+{'voting': 0, 'voteup_count': 260}
 
+# 感谢回答
+>>> answer.thank()
+{'is_thanked': True}
 
-**感谢**
+# 取消感谢
+>>> answer.thank_cancel()
+{'is_thanked': False}
 ```
->>> from zhihu import Answer
->>> data = Answer(id=14005147).thank_cancel()
->>> data
->>> {"is_thanked": true}
-```
-
-**取消感谢**
-```
->>> from zhihu import Answer
->>> data = Answer(id=14005147).thank()
->>> data
->>> {"is_thanked": false}
-```
-
-
-**没有帮助**
-```
->>> from zhihu import Answer
->>> data = Answer(id=14005147).nothelp()
->>> data
->>> {"is_nothelp": true}
-```
-
-**撤销没有帮助**
-```
->>> from zhihu import Answer
->>> data = Answer(id=14005147).nothelp_cancel()
->>> data
->>> {"is_nothelp": false}
-```
-
-
-**专栏的关注列表**
-```
->>> from zhihu import Column
->>> column = Column(url="https://zhuanlan.zhihu.com/pythoneer")
->>> column.followers(limit=2, offset=1)
-[{u'bio': u'python', u'hash': u'463e2651f6a856d88c33bfb7fd673bf4', u'description': u'', u'isOrg': False,
-              u'name': u'zpf1024', u'profileUrl': u'https://www.zhihu.com/people/zpf1024',
-              u'avatar': {u'id': u'da8e974dc', u'template': u'https://pic1.zhimg.com/{id}_{size}.jpg'},
-              u'isOrgWhiteList': False, u'slug': u'zpf1024', u'uid': 841267452498296832L},
-             {u'bio': None, u'hash': u'45bbaa0aca55fec0d768ccb4845a1c53', u'description': u'', u'isOrg': False,
-              u'name': u'keyoka', u'profileUrl': u'https://www.zhihu.com/people/yi-hu-84',
-              u'avatar': {u'id': u'785bfd914', u'template': u'https://pic1.zhimg.com/{id}_{size}.jpg'},
-              u'isOrgWhiteList': False, u'slug': u'yi-hu-84', u'uid': 43738302775296L}]
-```
-
-
-**关注专栏**
-```
->>> column.follow()
-关注专栏成功
-```
-
-**取消关注专栏**
-```
->>> column.follow()
-取消关注专栏成功
-```
-
-每个接口都提供了不只一种方式调用，更多参考单元测试里面的例子
 
 
 ## 贡献者
