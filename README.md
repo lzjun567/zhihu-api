@@ -27,12 +27,11 @@ print(profile)
 
 >>>
 {
-    'name': '我是小号',
+    'name': '我是x',
      'headline': '程序员',
      'gender': -1,
      'user_type': 'people',
      'is_advertiser': False,
-     'url': 'http://www.zhihu.com/api/v4/people/1da75b85900e00adb072e91c56fd9149', 'type': 'people',
      'url_token': 'xiaoxiaodouzi',
      'id': '1da75b85900e00adb072e91c56fd9149',
      'is_org': False

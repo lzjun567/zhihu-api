@@ -37,7 +37,7 @@ class Answer(Model):
         """
         赞同
         """
-        r = self._execute(method="post", url=URL.vote_up(self.id), data={"type": "up"})
+        r = self._execute(method="post", url=URL.vote_up(self.id), json={"type": "up"})
         if r.ok:
             return r.json()
         else:
@@ -48,7 +48,7 @@ class Answer(Model):
         """
         反对
         """
-        r = self._execute(method="post", url=URL.vote_down(self.id), data={"type": "down"})
+        r = self._execute(method="post", url=URL.vote_down(self.id), json={"type": "down"})
         if r.ok:
             return r.json()
         else:
@@ -59,7 +59,7 @@ class Answer(Model):
         """
         中立
         """
-        r = self._execute(method="post", url=URL.vote_neutral(self.id), data={"type": "neutral"})
+        r = self._execute(method="post", url=URL.vote_neutral(self.id), json={"type": "neutral"})
         if r.ok:
             return r.json()
         else:
