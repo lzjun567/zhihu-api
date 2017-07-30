@@ -41,6 +41,8 @@ if __name__ == '__main__':
     # data = Zhihu().profile(user_slug="pansz")
     # print(data)
 
-    from zhihu import Answer
-    answer = Answer(id="205327777")
-    answer.vote_up()
+    from zhihu import Zhihu
+
+    data = Zhihu().followers(user_slug="pansz")
+    print(data)
+
