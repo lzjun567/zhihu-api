@@ -1,11 +1,11 @@
 # -*- encoding: UTF-8 -*-
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
 except ImportError:
     from distutils.core import setup
 import io
 
-VERSION = '0.2.4'
+VERSION = '0.2.6'
 
 with io.open("README.md", encoding='utf-8') as f:
     long_description = f.read()
@@ -21,7 +21,7 @@ setup(
     keyworads="zhihu",
     description="zhihu api from humans",
     long_description=long_description,
-    packages=["zhihu"],
+    packages=find_packages(exclude=('tests', 'tests.*')),
     include_package_data=True,
     license='MIT License',
     classifiers=[],
@@ -33,4 +33,3 @@ setup(
         "pytest",
     ]
 )
-

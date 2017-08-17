@@ -4,7 +4,7 @@
 判断方法中的是否有 usr_slug 参数的方法
 如果有user_url，就自动专程user_slug
 """
-from ..error import ZhihuError
+from zhihu.error import ZhihuError
 
 
 def slug(func):

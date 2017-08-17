@@ -3,11 +3,11 @@
 import logging
 import re
 
-from . import settings
-from .base import Model
-from ..error import ZhihuError
-from ..models import RequestDataType
-from ..url import URL
+from zhihu import settings
+from zhihu.models.base import Model
+from zhihu.error import ZhihuError
+from zhihu.models import RequestDataType
+from zhihu.url import URL
 
 
 class Account(Model):

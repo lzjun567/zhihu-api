@@ -3,11 +3,11 @@
 通用的操作放在此模块中
 """
 
-from .base import Model
-from ..decorators.auth import authenticated
-from ..decorators.slug import slug
-from ..error import ZhihuError
-from ..url import URL
+from zhihu.models.base import Model
+from zhihu.decorators.auth import authenticated
+from zhihu.decorators.slug import slug
+from zhihu.error import ZhihuError
+from zhihu.url import URL
 
 
 class Zhihu(Model):

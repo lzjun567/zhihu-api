@@ -7,13 +7,13 @@ from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 
-from ..decorators.auth import authenticated
-from . import Zhihu
-from ..error import ZhihuError
-from ..url import URL
+from zhihu.decorators.auth import authenticated
+from zhihu.error import ZhihuError
+from zhihu.models.base import Model
+from zhihu.url import URL
 
 
-class Answer(Zhihu):
+class Answer(Model):
     def __init__(self, id=None, url=None):
         id = id if id is not None else self._extract_id(url)
         if not id:
@@ -37,7 +37,7 @@ class Answer(Zhihu):
         """
         赞同
         """
-        r = self._execute(method="post", url=URL.vote_up(self.id), data={"type": "up"})
+        r = self._execute(method="post", url=URL.vote_up(self.id), json={"type": "up"})
         if r.ok:
             return r.json()
         else:
@@ -48,18 +48,18 @@ class Answer(Zhihu):
         """
         反对
         """
-        r = self._execute(method="post", url=URL.vote_down(self.id), data={"type": "down"})
+        r = self._execute(method="post", url=URL.vote_down(self.id), json={"type": "down"})
         if r.ok:
             return r.json()
         else:
             raise ZhihuError("操作失败：%s" % r.text)
 
     @authenticated
-    def vote_neutral(self,):
+    def vote_neutral(self, ):
         """
         中立
         """
-        r = self._execute(method="post", url=URL.vote_neutral(self.id), data={"type": "neutral"})
+        r = self._execute(method="post", url=URL.vote_neutral(self.id), json={"type": "neutral"})
         if r.ok:
             return r.json()
         else:

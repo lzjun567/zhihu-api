@@ -2,7 +2,9 @@
 
 """
 
-Model获取知乎数据的基类对象，任何对象都可以继承该类
+获取知乎数据对象的抽象既基类，任何对象都可以继承该类
+
+比如 Answer, Question, Account
 
 """
 
@@ -10,16 +12,15 @@ import os
 import platform
 import re
 import subprocess
-from enum import Enum
 from http import cookiejar
 
 import requests
 import requests.packages.urllib3 as urllib3
 from bs4 import BeautifulSoup
 
-from .. import settings
-from ..error import ZhihuError
-from ..url import URL
+from zhihu import settings
+from zhihu.error import ZhihuError
+from zhihu.url import URL
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 

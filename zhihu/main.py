@@ -42,3 +42,7 @@ if __name__ == '__main__':
     data = zhihu.send_message("请问怎么发私信呢", user_slug="zhijun-liu")
     # data = Zhihu().profile(user_slug="pansz")
     print(data.content)
+    # from zhihu.models.zhihu import Zhihu
+    # data = Zhihu().profile(user_slug="pansz")
+    # print(data)
+

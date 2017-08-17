@@ -7,7 +7,7 @@
 import requests
 import requests.utils
 
-from ..models.account import Account
+from zhihu.models.account import Account
 
 
 def authenticated(func):

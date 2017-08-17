@@ -3,15 +3,16 @@
 import os
 import platform
 import re
-from enum import Enum
 import subprocess
-from http import cookiejar
+from enum import Enum
+
 import requests
 import requests.packages.urllib3 as urllib3
 from bs4 import BeautifulSoup
-from ..error import ZhihuError
-from ..url import URL
-from .. import settings
+
+from zhihu import settings
+from zhihu.error import ZhihuError
+from zhihu.url import URL
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
