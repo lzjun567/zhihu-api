@@ -72,6 +72,25 @@ print(profile)
 # 取消感谢
 >>> answer.thank_cancel()
 {'is_thanked': False}
+
+# 提取回答中的图片
+>>> answer.images(path="images")
+['8160c14ea69b3a6674152f2c1ae6cd7a_b.jpg']
+
+
+>>> from zhihu import Zhihu
+>>> zhihu = Zhihu()
+# 关注用户
+>>>zhihu.follow(user_slug="zhijun-liu")
+
+# 取消关注
+>>>zhihu.unfollow(user_slug="zhijun-liu")
+
+# 粉丝列表
+>>> zhihu.followers(user_slug="zhijun-liu")
+
+
+
 ```
 
 
