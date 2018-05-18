@@ -49,18 +49,16 @@ class Zhihu(requests.Session):
         captcha = input("输入验证码：")
         return captcha
 
-    def _get_xsrf(self, url=None):
+    def _get_xsrf_dc0(self, url=None):
         """
         获取某个URL页面下的xsrf
         :param url:
         :return: xsrf
         """
         response = self.get(url or URL.index())
-        print(response)
-        soup = BeautifulSoup(response.content, "lxml")
-        print(soup)
-        xsrf = soup.find('input', attrs={"name": "_xsrf"}).get("value")
-        return xsrf
+        xsrf = response.cookies["_xsrf"]
+        dc0 = response.cookies["d_c0"]
+        return xsrf, dc0
 
     def _user_id(self, user_slug):
         """

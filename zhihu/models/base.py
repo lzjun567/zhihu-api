@@ -8,15 +8,16 @@
 
 """
 
-import os
-import platform
 import re
-import subprocess
 from http import cookiejar
+import hmac
+from hashlib import sha1
+import json
+import base64
+from PIL import Image
 
 import requests
 import requests.packages.urllib3 as urllib3
-from bs4 import BeautifulSoup
 
 from zhihu import settings
 from zhihu.error import ZhihuError
@@ -37,30 +38,46 @@ class Model(requests.Session):
         self.headers = settings.HEADERS
 
     def _get_captcha(self, _type="login"):
-        r = self.get(URL.captcha(_type=_type))
-        with open('captcha.jpg', 'wb') as f:
-            f.write(r.content)
-
-        # 调用系统图片预览工具
-        if platform.system() == 'Darwin':
-            subprocess.call(['open', 'captcha.jpg'])
-        elif platform.system() == 'Linux':
-            subprocess.call(['xdg-open', 'captcha.jpg'])
+        response = self.get(URL.api_captcha())
+        r = re.findall('"show_captcha":(\w+)', response.text)
+        if r[0] == 'false':
+            return ''
         else:
-            os.startfile('captcha.jpg')
-        captcha = input("输入验证码：")
-        return captcha
+            response = self.put('https://www.zhihu.com/api/v3/oauth/captcha?lang=en', headers=self.headers)
+            show_captcha = json.loads(response.text)['img_base64']
+            with open('captcha.jpg', 'wb') as f:
+                f.write(base64.b64decode(show_captcha))
+            im = Image.open('captcha.jpg')
+            im.show()
+            im.close()
+            captcha = input('输入验证码:')
+            self.post('https://www.zhihu.com/api/v3/oauth/captcha?lang=en',
+                      headers=self.headers, data={"input_text": captcha})
+            return captcha
 
-    def _get_xsrf(self, url=None):
+    @staticmethod
+    def _get_signature(time_stamp):
+        # 生成signature,利用hmac加密
+        # 根据分析之后的js，可发现里面有一段是进行hmac加密的
+        # 分析执行加密的js 代码，可得出加密的字段，利用python 进行hmac解码
+        h = hmac.new(key='d1b964811afb40118a12068ff74a12f4'.encode('utf-8'), digestmod=sha1)
+        grant_type = 'password'
+        client_id = 'c3cef7c66a1843f8b3a9e6a1e3160e20'
+        source = 'com.zhihu.web'
+        now = time_stamp
+        h.update((grant_type + client_id + source + now).encode('utf-8'))
+        return h.hexdigest()
+
+    def _get_xsrf_dc0(self, url=None):
         """
         获取某个URL页面下的xsrf
         :param url:
         :return: xsrf
         """
         response = self.get(url or URL.index())
-        soup = BeautifulSoup(response.content, "lxml")
-        xsrf = soup.find('input', attrs={"name": "_xsrf"}).get("value")
-        return xsrf
+        xsrf = response.cookies["_xsrf"]
+        dc0 = response.cookies["d_c0"]
+        return xsrf, dc0
 
     def _user_id(self, user_slug=None, user_url=None):
         """
