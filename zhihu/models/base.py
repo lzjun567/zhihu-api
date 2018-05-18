@@ -8,13 +8,15 @@
 
 """
 
+import os
+import platform
 import re
 from http import cookiejar
+import subprocess
 import hmac
 from hashlib import sha1
 import json
 import base64
-from PIL import Image
 
 import requests
 import requests.packages.urllib3 as urllib3
@@ -47,10 +49,14 @@ class Model(requests.Session):
             show_captcha = json.loads(response.text)['img_base64']
             with open('captcha.jpg', 'wb') as f:
                 f.write(base64.b64decode(show_captcha))
-            im = Image.open('captcha.jpg')
-            im.show()
-            im.close()
-            captcha = input('输入验证码:')
+            # 调用系统图片预览工具
+            if platform.system() == 'Darwin':
+                subprocess.call(['open', 'captcha.jpg'])
+            elif platform.system() == 'Linux':
+                subprocess.call(['xdg-open', 'captcha.jpg'])
+            else:
+                os.startfile('captcha.jpg')
+            captcha = input("输入验证码：")
             self.post('https://www.zhihu.com/api/v3/oauth/captcha?lang=en',
                       headers=self.headers, data={"input_text": captcha})
             return captcha
