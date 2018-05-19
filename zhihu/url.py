@@ -11,6 +11,15 @@ class URL(object):
     zhuanlan_host = "https://zhuanlan.zhihu.com"
 
     @classmethod
+    def api_login(cls):
+        # API登陆
+        return cls.host + "/api/v3/oauth/sign_in"
+
+    @classmethod
+    def api_captcha(cls):
+        return cls.host + "/api/v3/oauth/captcha?lang=en"
+
+    @classmethod
     def email_login(cls):
         # 邮箱登录
         return cls.host + "/login/email"

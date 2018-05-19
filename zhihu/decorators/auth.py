@@ -13,7 +13,7 @@ from zhihu.models.account import Account
 def authenticated(func):
     def wrapper(self, *args, **kwargs):
         success = False
-        # 先判断有没有cookie文件, 崽判断cookie是否有效
+        # 先判断有没有cookie文件, 再判断cookie是否有效
         if 'z_c0' in requests.utils.dict_from_cookiejar(self.cookies):
             from ..url import URL
             r = self._execute(method="get", url=URL.profile(user_slug="zhijun-liu"))
@@ -23,11 +23,11 @@ def authenticated(func):
             password = input("请输入密码:")
             obj = Account()
             data = obj.login(account, password)
-            if data.get("r") == 0:
+            if "error" not in data:
                 success = True
                 self.cookies = obj.cookies
             else:
-                print(data.get("msg"))
+                print(data["error"]["message"])
         else:
             return func(self, *args, **kwargs)
 

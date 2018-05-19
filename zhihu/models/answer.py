@@ -123,7 +123,7 @@ class Answer(Model):
         for i in images:
             url = i['src']
             if url.startswith("http"):
-                filename = urlparse(url).path[1:]
+                filename = urlparse(url).path[1:].split('/')[1]
                 filename = os.path.join(path, filename)
                 with open(filename, 'wb') as fd:
                     r = requests.get(url)

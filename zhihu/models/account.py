@@ -2,6 +2,8 @@
 
 import logging
 import re
+import time
+from bs4 import BeautifulSoup
 
 from zhihu import settings
 from zhihu.models.base import Model
@@ -16,8 +18,6 @@ class Account(Model):
         账户登录
         :param account: email或者手机号码
         :param password:
-        :param kwargs:
-        :param kwargs:
         :return:
         """
         email_regex = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
@@ -25,43 +25,42 @@ class Account(Model):
         email_pattern = re.compile(email_regex)
         phone_pattern = re.compile(phone_regex)
 
-        if email_pattern.match(account):
-            return self._login_email(account, password)
-        elif phone_pattern.match(account):
-            return self._login_phone(account, password)
+        if email_pattern.match(account) or phone_pattern.match(account):
+            return self._login_api(account, password)
         else:
             raise ZhihuError("无效的用户名")
 
-    def _login_phone(self, phone, password):
+    def _login_api(self, account, password):
+        time_stamp = str(int((time.time() * 1000)))
+        _xsrf, _dc0 = self._get_xsrf_dc0()
+        self.headers.update({
+            "authorization": "oauth c3cef7c66a1843f8b3a9e6a1e3160e20",  # 固定值
+            "X-Xsrftoken": _xsrf,
+        })
+        captcha = self._get_captcha()
         data = {
-            '_xsrf': self._get_xsrf(),
-            'password': password,
-            'phone_num': phone,
-            "captcha": self._get_captcha(),
-            "remeber_me": "true",
+            "client_id": "c3cef7c66a1843f8b3a9e6a1e3160e20",
+            "grant_type": "password",
+            "timestamp": time_stamp,
+            "source": "com.zhihu.web",
+            "password": password,
+            "username": account,
+            "captcha": "",
+            "lang": "en",
+            "ref_source": "homepage",
+            "utm_source": "",
+            "signature": self._get_signature(time_stamp),
+            'captcha': captcha
         }
-        return self._login_execute(url=URL.phone_login(), data=data)
-
-    def _login_email(self, email, password, **kwargs):
-        data = {'email': email,
-                'password': password,
-                '_xsrf': self._get_xsrf(),
-                "captcha": self._get_captcha(),
-                'remember_me': 'true'}
-        return self._login_execute(url=URL.email_login(), data=data, **kwargs)
+        return self._login_execute(url=URL.api_login(), data=data)
 
     def _login_execute(self, url=None, data=None):
-
-        r = self._execute(method="post", url=url, data=data)
-        if r.ok:
-            result = r.json()
-            if result.get("r") == 0:
-                self.cookies.save(ignore_discard=True)  # 保存登录信息cookies
-                self.cookies.load(filename=settings.COOKIES_FILE, ignore_discard=True)
-            return result
-
-        else:
-            return {'r': 1, "msg": "登录失败"}
+        r = self._execute(method="post", url=url, data=data, headers=self.headers, cookies=self.cookies)
+        result = r.json()
+        if r.status_code == 201:
+            self.cookies.save(ignore_discard=True)  # 保存登录信息cookies
+            self.cookies.load(filename=settings.COOKIES_FILE, ignore_discard=True)
+        return result
 
     def _register_validate(self, data):
         """
@@ -84,7 +83,7 @@ class Account(Model):
             "fullname": name,
             "phone_num": phone_num,
             "password": password,
-            "_xsrf": super(Account, self)._get_xsrf(),
+            "_xsrf": super(Account, self)._get_xsrf_dc0(),
             "captcha": super(Account, self)._get_captcha(_type="register"),
             "captcha_source": "register",
         }
