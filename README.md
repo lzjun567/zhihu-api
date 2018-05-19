@@ -102,6 +102,7 @@ print(profile)
 * [@chenghengchao](https://github.com/chenghengchao)
 * [@MaxPoon](https://github.com/MaxPoon)
 * [@Oopswc](https://github.com/Oopswc)
+* [@excitedFrog](https://github.com/excitedFrog)
 
 ## 交流
 群已经加不进，可以先加微信：lzjun567 拉你入群
