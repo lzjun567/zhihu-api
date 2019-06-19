@@ -1,4 +1,9 @@
 
+## zhihu-api
+
+[![travis](https://travis-ci.org/KellyHwong/zhihu-api.svg?branch=master)](https://travis-ci.org/KellyHwong/zhihu-api)
+[![license](https://img.shields.io/github/license/kellyhwong/zhihu-api.svg)](https://github.com/KellyHwong/zhihu-api/blob/master/LICENSE)
+
 ## 关于
 
 Zhihu-API 的初衷是希望提供一套简洁、优雅的、Pythonic的API接口，面向的用户是对知乎数据有兴趣的群体，它可以用在数据分析、数据挖掘、增长黑客、以及希望通过程序自动完成知乎某个操作等应用场景。
