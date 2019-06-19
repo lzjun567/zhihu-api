@@ -6,9 +6,16 @@ from http.cookies import SimpleCookie
 
 from zhihu import Zhihu
 from zhihu import Answer
+from zhihu import Account
 
 zhihu = Zhihu()
-# print(zhihu.cookies)
+print(zhihu.cookies)
+
+# 用户登录
+account = Account()
+result = account.login()
+print(result)
+
 # 查看用户profile 成功
 # profile = zhihu.profile(user_slug="xiaoxiaodouzi")
 # print(profile)
@@ -28,5 +35,3 @@ r = answer.images(path="images")
 response = answer.vote_neutral()
 answer.thank_cancel()
 # print(response)
-
-

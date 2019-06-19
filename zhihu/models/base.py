@@ -9,6 +9,9 @@
 """
 
 import os
+import execjs  # 加密
+from urllib.parse import urlencode
+
 import platform
 import re
 from http import cookiejar
@@ -45,7 +48,8 @@ class Model(requests.Session):
         if r[0] == 'false':
             return ''
         else:
-            response = self.put('https://www.zhihu.com/api/v3/oauth/captcha?lang=en', headers=self.headers)
+            response = self.put(
+                'https://www.zhihu.com/api/v3/oauth/captcha?lang=en', headers=self.headers)
             show_captcha = json.loads(response.text)['img_base64']
             with open('captcha.jpg', 'wb') as f:
                 f.write(base64.b64decode(show_captcha))
@@ -57,8 +61,20 @@ class Model(requests.Session):
             else:
                 os.startfile('captcha.jpg')
             captcha = input("输入验证码：")
-            self.post('https://www.zhihu.com/api/v3/oauth/captcha?lang=en',
-                      headers=self.headers, data={"input_text": captcha})
+            data = {"input_text": captcha}
+            # data = json.dumps(data)
+
+            # 要进行加密
+            path = os.path.join(os.path.split(
+                os.path.realpath(__file__))[0], 'encrypt.js')
+            with open(path, "r") as f:
+                js = execjs.compile(f.read())
+                print(data)
+                # data = js.call('Q', urlencode(data))
+            response = self.post('https://www.zhihu.com/api/v3/oauth/captcha?lang=en',
+                                 headers=self.headers, data=data)
+            print("看这里 输入验证码返回值")
+            print(response.json())
             return captcha
 
     @staticmethod
@@ -66,7 +82,8 @@ class Model(requests.Session):
         # 生成signature,利用hmac加密
         # 根据分析之后的js，可发现里面有一段是进行hmac加密的
         # 分析执行加密的js 代码，可得出加密的字段，利用python 进行hmac解码
-        h = hmac.new(key='d1b964811afb40118a12068ff74a12f4'.encode('utf-8'), digestmod=sha1)
+        h = hmac.new(key='d1b964811afb40118a12068ff74a12f4'.encode(
+            'utf-8'), digestmod=sha1)
         grant_type = 'password'
         client_id = 'c3cef7c66a1843f8b3a9e6a1e3160e20'
         source = 'com.zhihu.web'
@@ -80,10 +97,11 @@ class Model(requests.Session):
         :param url:
         :return: xsrf
         """
-        response = self.get(url or URL.index())
+        response = self.get(url or URL.index(), headers=self.headers)
         xsrf = response.cookies["_xsrf"]
-        dc0 = response.cookies["d_c0"]
-        return xsrf, dc0
+        # dc0 = response.cookies["d_c0"]
+        # return xsrf, dc0
+        return xsrf, None
 
     def _user_id(self, user_slug=None, user_url=None):
         """
@@ -118,5 +136,6 @@ class Model(requests.Session):
         :param kwargs:  requests支持的参数，比如可以设置代理参数
         :return: response
         """
-        r = getattr(self, method)(url, json=json, data=data, params=params, **kwargs)
+        r = getattr(self, method)(url, json=json,
+                                  data=data, params=params, **kwargs)
         return r
