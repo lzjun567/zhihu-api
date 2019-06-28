@@ -84,6 +84,13 @@ class URL(object):
     unfollow_question = follow_question
 
     @classmethod
+    def follow_collection(cls, collection_id):
+        # 关注某问题/取消关注某收藏夹
+        return "https://api.zhihu.com/collections/{cid}".format(cid=collection_id)
+
+    unfollow_collection = follow_collection
+
+    @classmethod
     def column(cls, slug):
         # 专栏
         return "https://zhuanlan.zhihu.com/api/columns/{slug}".format(slug=slug)
@@ -123,4 +130,5 @@ class URL(object):
     def followers(cls, user_slug):
         # 粉丝列表URL
         return cls.host + "/api/v4/members/{slug}/followers?include=data[*].answer_count,gender,follower_count," \
-                          "badge[?(type=best_answerer)].topics".format(slug=user_slug)
+                          "badge[?(type=best_answerer)].topics".format(
+                              slug=user_slug)
