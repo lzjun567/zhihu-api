@@ -62,19 +62,9 @@ class Model(requests.Session):
                 os.startfile('captcha.jpg')
             captcha = input("输入验证码：")
             data = {"input_text": captcha}
-            # data = json.dumps(data)
 
-            # 要进行加密
-            path = os.path.join(os.path.split(
-                os.path.realpath(__file__))[0], 'encrypt.js')
-            with open(path, "r") as f:
-                js = execjs.compile(f.read())
-                print(data)
-                # data = js.call('Q', urlencode(data))
             response = self.post('https://www.zhihu.com/api/v3/oauth/captcha?lang=en',
                                  headers=self.headers, data=data)
-            print("看这里 输入验证码返回值")
-            print(response.json())
             return captcha
 
     @staticmethod

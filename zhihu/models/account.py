@@ -36,7 +36,6 @@ class Account(Model):
 
     def _login_api(self, account, password):
         time_stamp = str(int((time.time() * 1000)))
-        # _dc0 没有用
         _xsrf, _ = self._get_xsrf_dc0(
             url="https://www.zhihu.com/signup?next=%2F")
         self.headers.update({
@@ -45,10 +44,8 @@ class Account(Model):
             "X-Xsrftoken": _xsrf
         })
         captcha = self._get_captcha()
-        # self.headers.update({"x-zse-83": "3_2.0"})  # 不带会有"请求参数异常，请升级客户端后重试"
         self.headers.update({'x-zse-83': '3_1.1', })  # 不带会有"请求参数异常，请升级客户端后重试"
-        print("获取好了captcha再更新headers，现在的headers")
-        print(self.headers)
+        
         data = {
             "client_id": "c3cef7c66a1843f8b3a9e6a1e3160e20",
             "grant_type": "password",
@@ -56,9 +53,7 @@ class Account(Model):
             "source": "com.zhihu.web",
             "password": password,
             "username": quote(account),
-            # "captcha": "",
             "lang": "en",
-            # "lang": "cn",
             "ref_source": "homepage",
             "utm_source": "",
             "signature": self._get_signature(time_stamp),
@@ -69,12 +64,9 @@ class Account(Model):
     def _login_execute(self, url=None, data=None):
         # 要进行加密
         path = os.path.join(os.path.split(
-            os.path.realpath(__file__))[0], 'get_formdata.js')
+            os.path.realpath(__file__))[0], 'encrypt.js')
         with open(path, "r") as f:
             js = execjs.compile(f.read())
-            print("加密前")
-            print(data)  # data是字典
-            # print()
             text = "client_id=c3cef7c66a1843f8b3a9e6a1e3160e20&grant_type=password&timestamp={0}&" \
                 "source=com.zhihu.web&signature={1}&username={2}&password={3}&" \
                 "captcha={4}&lang=en&ref_source=homepage&utm_source=".format(
@@ -84,10 +76,7 @@ class Account(Model):
                           headers=self.headers, cookies=self.cookies)
         result = r.json()
         # TODO 改成logger
-        print(r)
-        print("看这里 登录返回值")
-        print(result)
-        print(r.content)
+        
         if r.status_code == 201:
             self.cookies.save(ignore_discard=True)  # 保存登录信息cookies
             self.cookies.load(filename=settings.COOKIES_FILE,
