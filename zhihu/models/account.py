@@ -69,12 +69,9 @@ class Account(Model):
     def _login_execute(self, url=None, data=None):
         # 要进行加密
         path = os.path.join(os.path.split(
-            os.path.realpath(__file__))[0], 'get_formdata.js')
+            os.path.realpath(__file__))[0], 'encrypt.js')
         with open(path, "r") as f:
             js = execjs.compile(f.read())
-            print("加密前")
-            print(data)  # data是字典
-            # print()
             text = "client_id=c3cef7c66a1843f8b3a9e6a1e3160e20&grant_type=password&timestamp={0}&" \
                 "source=com.zhihu.web&signature={1}&username={2}&password={3}&" \
                 "captcha={4}&lang=en&ref_source=homepage&utm_source=".format(
