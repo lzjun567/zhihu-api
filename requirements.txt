@@ -1,3 +1,4 @@
 requests>=2.13.0
 beautifulsoup4>=4.5.3
 lxml>=3.8.0
+pyexecjs>=1.5.1
