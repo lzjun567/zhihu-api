@@ -85,7 +85,7 @@ class Account(Model):
     def _login_execute(self, url=None, data=None):
         # 要进行加密
         path = os.path.join(os.path.split(
-            os.path.realpath(__file__))[0], 'get_formdata.js')
+            os.path.realpath(__file__))[0], 'encrypt.js')
         with open(path, "r") as f:
             js = execjs.compile(f.read())
             print("加密前")
