@@ -2,7 +2,7 @@
 import time
 import unittest
 
-from zhihu import Zhihu
+from zhihu import User
 from zhihu.error import ZhihuError
 
 
@@ -12,8 +12,8 @@ class CommonTestCase(unittest.TestCase):
         获取用户信息
         :return:
         """
-        zhihu = Zhihu()
-        profile = zhihu.user(user_slug="xiaoxiaodouzi")
+        user = User()
+        profile = user.user(user_slug="xiaoxiaodouzi")
         data = {'avatar_url_template': 'https://pic1.zhimg.com/v2-ca13758626bd7367febde704c66249ec_{size}.jpg',
                 'name': '我是小号',
                 'is_advertiser': False, 'url': 'http://www.zhihu.com/api/v4/people/1da75b85900e00adb072e91c56fd9149',
@@ -27,8 +27,8 @@ class CommonTestCase(unittest.TestCase):
         不带关键字参数，抛出异常
         :return:
         """
-        zhihu = Zhihu()
-        self.assertRaises(ZhihuError, zhihu.send_message, "hello")
+        user = User()
+        self.assertRaises(ZhihuError, user.send_message, "hello")
 
     def test_follow_with_no_kwargs(self):
         """
@@ -36,8 +36,8 @@ class CommonTestCase(unittest.TestCase):
         :return:
         """
         time.sleep(1)
-        zhihu = Zhihu()
-        self.assertRaises(ZhihuError, zhihu.follow)
+        user = User()
+        self.assertRaises(ZhihuError, user.follow)
 
     def test_follow_with_url(self):
         """
@@ -45,8 +45,8 @@ class CommonTestCase(unittest.TestCase):
         :return:
         """
         time.sleep(1)
-        zhihu = Zhihu()
-        data = zhihu.follow(user_url="https://www.zhihu.com/people/gao-yu-dong-41")
+        user = User()
+        data = user.follow(user_url="https://www.zhihu.com/people/gao-yu-dong-41")
         self.assertIn('follower_count', data)
 
     def test_follow_with_user_slug(self):
@@ -55,8 +55,8 @@ class CommonTestCase(unittest.TestCase):
         :return:
         """
         time.sleep(1)
-        zhihu = Zhihu()
-        data = zhihu.follow(user_slug="xiaoxiaodouzi")
+        user = User()
+        data = user.follow(user_slug="xiaoxiaodouzi")
         self.assertIn('follower_count', data)
 
     def test_follow_with_no_kwargs(self):
@@ -65,8 +65,8 @@ class CommonTestCase(unittest.TestCase):
         :return:
         """
         time.sleep(1)
-        zhihu = Zhihu()
-        self.assertRaises(ZhihuError, zhihu.unfollow)
+        user = User()
+        self.assertRaises(ZhihuError, user.unfollow)
 
     def test_unfollow_with_url(self):
         """
@@ -74,8 +74,8 @@ class CommonTestCase(unittest.TestCase):
         :return:
         """
         time.sleep(1)
-        zhihu = Zhihu()
-        data = zhihu.unfollow(profile_url="https://www.zhihu.com/people/gao-yu-dong-41")
+        user = User()
+        data = user.unfollow(profile_url="https://www.zhihu.com/people/gao-yu-dong-41")
         self.assertIn('follower_count', data)
 
     def test_unfollow_with_user_slug(self):
@@ -84,13 +84,13 @@ class CommonTestCase(unittest.TestCase):
         :return:
         """
         time.sleep(1)
-        zhihu = Zhihu()
-        data = zhihu.unfollow(user_slug="xiaoxiaodouzi")
+        user = User()
+        data = user.unfollow(user_slug="xiaoxiaodouzi")
         self.assertIn('follower_count', data)
 
 
 class FollowersTestCase(unittest.TestCase):
     def test_with_slug(self):
-        followers = Zhihu().followers(user_slug="zhang-jia-wei")
+        followers = User().followers(user_slug="zhang-jia-wei")
         self.assertIn("follower_count", followers[0])
         self.assertIsNotNone(followers)

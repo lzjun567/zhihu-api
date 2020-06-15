@@ -4,11 +4,11 @@ import requests.utils
 import pickle
 from http.cookies import SimpleCookie
 
-from zhihu import Zhihu
+from zhihu import User
 from zhihu import Answer
 from zhihu import Account
 
-zhihu = Zhihu()
+zhihu = User()
 print(zhihu.cookies)
 
 # 用户登录

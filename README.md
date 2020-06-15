@@ -23,8 +23,8 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 
 ```python
 
-from zhihu import Zhihu
-zhihu = Zhihu()
+from zhihu import User
+zhihu = User()
 
 #获取用户基本信息
 profile = zhihu.profile(user_slug="xiaoxiaodouzi")
@@ -83,8 +83,8 @@ print(profile)
 ['8160c14ea69b3a6674152f2c1ae6cd7a_b.jpg']
 
 
->>> from zhihu import Zhihu
->>> zhihu = Zhihu()
+>>> from zhihu import User
+>>> zhihu = User()
 # 关注用户
 >>>zhihu.follow(user_slug="zhijun-liu")
 
