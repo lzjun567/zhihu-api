@@ -15,6 +15,9 @@ from zhihu.error import ZhihuError
 from zhihu.models import RequestDataType
 from zhihu.url import URL
 
+from DecryptLogin import login
+
+
 
 class Account(Model):
     def login(self, account, password):
@@ -30,7 +33,20 @@ class Account(Model):
         phone_pattern = re.compile(phone_regex)
 
         if email_pattern.match(account) or phone_pattern.match(account):
-            return self._login_api(account, password)
+            lg = login.Login()
+            result, session= lg.zhihu(account, password, 'pc')
+            print(result, session)
+
+            for cookie in session.cookies:
+
+                self.cookies.set_cookie( cookie )
+
+            self.cookies.save(ignore_discard=True)  # 保存登录信息cookies
+            self.cookies.load(filename=settings.COOKIES_FILE,
+                              ignore_discard=True)
+
+            return result
+            # return self._login_api(account, password)
         else:
             raise ZhihuError("无效的用户名")
 
@@ -69,7 +85,7 @@ class Account(Model):
     def _login_execute(self, url=None, data=None):
         # 要进行加密
         path = os.path.join(os.path.split(
-            os.path.realpath(__file__))[0], 'get_formdata.js')
+            os.path.realpath(__file__))[0], 'encrypt.js')
         with open(path, "r") as f:
             js = execjs.compile(f.read())
             print("加密前")

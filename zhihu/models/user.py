@@ -10,7 +10,7 @@ from zhihu.error import ZhihuError
 from zhihu.url import URL
 
 
-class Zhihu(Model):
+class User(Model):
     @authenticated
     def send_message(self, content, user_id=None, user_url=None, user_slug=None):
         """

@@ -1,5 +1,5 @@
 # encoding: utf-8
-import randomxx
+import random
 
 from zhihu import Answer
 import unittest

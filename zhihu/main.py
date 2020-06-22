@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import logging
 # from zhihu import Answer
 # from zhihu import Account
@@ -37,9 +39,9 @@ if __name__ == '__main__':
     # account = Account()
     # account.register("续航小三", phone_num="+33752962193", password="zhihudetail")
 
-    from zhihu.models.zhihu import Zhihu
-    zhihu = Zhihu()
-    data = zhihu.send_message("请问怎么发私信呢", user_slug="zhijun-liu")
+    from zhihu.models.user import User
+    user = User()
+    data = user.send_message("请问怎么发私信呢", user_slug="zhijun-liu")
     # data = Zhihu().profile(user_slug="pansz")
     print(data.content)
     # from zhihu.models.zhihu import Zhihu
